@@ -4,8 +4,8 @@ x + y addition
 x - y subtraction
 x * y multiplication
 x / y division
-x ** y  exponent (x to the power of y)
-x % y remainder of division (9 % 4 = 1)
+x ** y  exponent {x to the power of y}
+x % y remainder of division  {9 % 4 = 1}
 
 
 #Python commands
@@ -24,10 +24,13 @@ len(variable)
 #Gets the length (number of characters) of a string
 
 variable.upper()
-#Sets the string of variable to upper characters example: variable = "cookies" output would be "COOKIES"
+#Sets the string of variable to upper characters 
+{variable = "cookies" output would be "COOKIES"}
 
 variable.lower()
-#Sets the string of variable to lower characters example: variable = "COOKIES" output would be "cookies"
+#Sets the string of variable to lower characters 
+{variable = "COOKIES" output would be "cookies"}
 
 str(variable)
-#Changes the variable to string example: variable = 25.21 output would be "25.21"
+#Changes the variable to string 
+{variable = 25.21 output would be "25.21"}
