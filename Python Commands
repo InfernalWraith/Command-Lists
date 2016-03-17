@@ -1,0 +1,22 @@
+#Mathematical Operators
+
+x + y addition
+x - y subtraction
+x * y multiplication
+x / y division
+x ** y  exponent (x to the power of y)
+x % y remainder of division (9 % 4 = 1)
+
+
+#Python commands
+
+
+print "INSERT TEXT"
+#Prints the text to the console
+
+print my_variable
+#Prints the value of my_variable
+
+my_variable = x
+#Assigns the value x to the variable my_variable
+
