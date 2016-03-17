@@ -20,4 +20,12 @@ print my_variable
 my_variable = x
 #Assigns the value x to the variable my_variable
 
-asdadsada
+len(variable)
+#Gets the length (number of characters) of a string
+
+upper(variable)
+#Sets the string of variable to upper characters example: variable = "cookies" output would be "COOKIES"
+
+lower(variable)
+#Sets the string of variable to lower characters example: variable = "COOKIES" output would be "cookies"
+
