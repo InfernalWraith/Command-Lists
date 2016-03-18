@@ -25,11 +25,11 @@ len(variable)
 
 variable.upper()
 #Sets the string of variable to upper characters 
-{variable = "cookies" output would be "COOKIES"}
+{variable = "Test" output would be "TEST"}
 
 variable.lower()
 #Sets the string of variable to lower characters 
-{variable = "COOKIES" output would be "cookies"}
+{variable = "Test" output would be "test"}
 
 str(variable)
 #Changes the variable to string 
