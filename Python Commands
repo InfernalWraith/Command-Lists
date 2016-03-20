@@ -34,3 +34,12 @@ variable.lower()
 str(variable)
 #Changes the variable to string 
 {variable = 25.21 output would be "25.21"}
+
+datetime.now()
+#Gets the current date and time
+#Must have a "from datetime import datetime" line before it
+
+variable = datetime.now()
+print variable.year; print variable.month; print variable.day
+#Prints the current year, month, or day
+
