@@ -43,3 +43,13 @@ variable = datetime.now()
 print variable.year; print variable.month; print variable.day
 #Prints the current year, month, or day
 
+if CONDITION
+  ACTION 1
+  ACTION 2
+elif CONDITION
+  ACTION 1
+  ACTION 2
+else: 
+  ACTION 1
+  ACTION 2
+#Tests if the condition is fulfilled and runs code lines accordingly.
