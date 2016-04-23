@@ -14,33 +14,33 @@ x % y remainder of division  {9 % 4 = 1}
 print "INSERT TEXT"
 #Prints the text to the console
 
-print my_variable
-#Prints the value of my_variable
+print VARIABLE
+#Prints the value of VARIABLE
 
-my_variable = x
-#Assigns the value x to the variable my_variable
+VARIABLE = x
+#Assigns the value x to the variable VARIABLE
 
-len(variable)
-#Gets the length (number of characters) of a string
+len(VARIABLE)
+#Gets the length (number of characters) of a string(VARIABLE)
 
-variable.upper()
-#Sets the string of variable to upper characters 
+VARIABLE.upper()
+#Sets the string of VARIABLE to upper characters 
 {variable = "Test" output would be "TEST"}
 
-variable.lower()
-#Sets the string of variable to lower characters 
+VARIABLE.lower()
+#Sets the string of VARIABLE to lower characters 
 {variable = "Test" output would be "test"}
 
-str(variable)
-#Changes the variable to string 
+str(VARIABLE)
+#Changes the VARIABLE to string 
 {variable = 25.21 output would be "25.21"}
 
 datetime.now()
 #Gets the current date and time
 #Must have a "from datetime import datetime" line before it
 
-variable = datetime.now()
-print variable.year; print variable.month; print variable.day
+VARIABLE = datetime.now()
+print VARIABLE.year; print VARIABLE.month; print VARIABLE.day
 #Prints the current year, month, or day
 
 if CONDITION
@@ -53,3 +53,9 @@ else:
   ACTION 1
   ACTION 2
 #Tests if the condition is fulfilled and runs code lines accordingly.
+
+VARIABLE=raw_input('MESSAGE')
+#Prompts the user to input data with a preassigned message
+
+int(VARIABLE)
+#Attempts to turn a string(variable) into a number
