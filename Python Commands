@@ -14,34 +14,43 @@ x % y remainder of division  {9 % 4 = 1}
 print "INSERT TEXT"
 #Prints the text to the console
 
+
 print VARIABLE
 #Prints the value of VARIABLE
+
 
 VARIABLE = x
 #Assigns the value x to the variable VARIABLE
 
+
 len(VARIABLE)
 #Gets the length (number of characters) of a string(VARIABLE)
+
 
 VARIABLE.upper()
 #Sets the string of VARIABLE to upper characters 
 {variable = "Test" output would be "TEST"}
 
+
 VARIABLE.lower()
 #Sets the string of VARIABLE to lower characters 
 {variable = "Test" output would be "test"}
+
 
 str(VARIABLE)
 #Changes the VARIABLE to string 
 {variable = 25.21 output would be "25.21"}
 
+
 datetime.now()
 #Gets the current date and time
 #Must have a "from datetime import datetime" line before it
 
+
 VARIABLE = datetime.now()
 print VARIABLE.year; print VARIABLE.month; print VARIABLE.day
 #Prints the current year, month, or day
+
 
 if CONDITION :
   ACTION 1
@@ -54,8 +63,34 @@ else:
   ACTION 2
 #Tests if the condition is fulfilled and runs code lines accordingly.
 
+
 VARIABLE=raw_input('MESSAGE')
 #Prompts the user to input data with a preassigned message
 
+
 int(VARIABLE)
 #Attempts to turn a string(variable) into a number
+
+
+def FUNCTION_NAME(ARGUMENT1, ARGUMENT2):
+  ACTION 1
+  ACTION 2
+#Forms a function under the name FUNCTION_NAME and is called by typing FUNCTION_NAME(VALUE)
+#Example:
+  def greeting(language):
+    if language == 'ba':
+      print "Zdravo!"
+    elif language == 'de':
+      print "Hallo!"
+    else:
+      print "Hello!"
+**Then the line " greeting('de') will print out "Hallo!" "
+ALSO WORKS WITH RETURN:
+  def greeting(language):
+    if language == 'ba':
+      return "Zdravo!"
+    elif language == 'de':
+      return "Hallo!"
+    else:
+      return "Hello!"
+**Then the line " greeting('ba'), 'Haris' will print out "Zdravo Haris" "
