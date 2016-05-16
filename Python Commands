@@ -94,3 +94,9 @@ ALSO WORKS WITH RETURN:
     else:
       return "Hello!"
 **Then the line " greeting('ba'), 'Haris' will print out "Zdravo Haris" "
+
+float(NUMBER)
+#Converts a whole number into a decimal
+
+int(NUMBER)
+#Converts a decimal into a whole number by cutting off the decimal part
