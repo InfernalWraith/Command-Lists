@@ -95,8 +95,20 @@ ALSO WORKS WITH RETURN:
       return "Hello!"
 **Then the line " greeting('ba'), 'Haris' will print out "Zdravo Haris" "
 
+
 float(NUMBER)
 #Converts a whole number into a decimal
 
+
 int(NUMBER)
 #Converts a decimal into a whole number by cutting off the decimal part
+
+
+VARIABLE.isalpha()
+#Checks if the VARIABLE is made up of only letters and becomes True if it is, otherwise it becomes False
+
+
+STRING[X, Y]
+#Grabs the part of a string from the X-th character to the Y-th character. 
+#If you don't input Y, it prints out the remainder of the string.
+{Python[2, 6] is "thon"}; {Superextraultraawesome[5, ] is "extraultraawesome"
