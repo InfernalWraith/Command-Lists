@@ -112,3 +112,17 @@ STRING[X, Y]
 #Grabs the part of a string from the X-th character to the Y-th character. 
 #If you don't input Y, it prints out the remainder of the string.
 {Python[2, 6] is "thon"}; {Superextraultraawesome[5, ] is "extraultraawesome"
+
+
+while CONDITION:
+  ACTION 1
+  ACTION 2
+#Runs the indented lines of code while the condition is fulfilled. Infinite loops crash your stuff :(
+
+
+break
+#Stops the loop and continues to the next line of code, as opposed to the "continue" command which continues the loop
+
+
+for VARIABLE in [x, y, z...]
+#Runs a loop once for each of the values inside the bracket assigned to the VARIABLE
