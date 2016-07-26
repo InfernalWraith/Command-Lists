@@ -10,3 +10,8 @@ Every HTML document needs to start with the following line:
 This tells the browser that the following code is written in the HTML programming language.
 After that, we type <html> and we place our entire code there, putting a </html> at the very end of our code, marking the
 end of our website.
+
+The <head> tag serves as a place where we place general information about our website.
+Inside the <head> tag, we can add the <title> tag, inside which we write in the name of our website.
+
+The <body> tag is where we put the contents of our website.
