@@ -12,6 +12,18 @@ After that, we type <html> and we place our entire code there, putting a </html>
 end of our website.
 
 The <head> tag serves as a place where we place general information about our website.
+
 Inside the <head> tag, we can add the <title> tag, inside which we write in the name of our website.
 
+
 The <body> tag is where we put the contents of our website.
+
+Inside the <body> tag, we can designate paragraphs by using the <p> tag.
+
+Headings for our paragraphs can be formed using the <hX> tag, where X is any number from 1 to 6, where 6 has the smallest font.
+
+We can insert hyperlinks into our code by using the <a href="http://www.examplelink.com">Here's an example link!</a>
+Other things besides text can be made links as well by inserting images or other content before closing the tag.
+If we make an image a link, we don't add the description (here it's "Here's an example link")
+
+Images are inserted like so: <img src="http://www.imagehosting.com/exampleimage.jpg" />
