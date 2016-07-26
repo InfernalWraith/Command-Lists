@@ -1,0 +1,12 @@
+HTML is unique in the sense that its commands are written inside tags ( < > ).
+Example:   <html> </html>
+
+As you can see, the tags "nest," so you need to close them after opening them, just like brackets.
+The tags' area of influence is between the lines where you open the tag and where you close it.
+
+Every HTML document needs to start with the following line:
+<!DOCTYPE html>
+
+This tells the browser that the following code is written in the HTML programming language.
+After that, we type <html> and we place our entire code there, putting a </html> at the very end of our code, marking the
+end of our website.
