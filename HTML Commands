@@ -27,3 +27,7 @@ Other things besides text can be made links as well by inserting images or other
 If we make an image a link, we don't add the description (here it's "Here's an example link")
 
 Images are inserted like so: <img src="http://www.imagehosting.com/exampleimage.jpg" />
+
+The tag <ol> begins an ordered list. The items inside can be numbered by adding a <li> tag (and closing it later).
+
+If we just want a list without numbering the items inside, we use the <ul> tag, followed by <li> tags for individual items.
