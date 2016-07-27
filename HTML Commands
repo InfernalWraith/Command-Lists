@@ -15,10 +15,16 @@ The <head> tag serves as a place where we place general information about our we
 
 Inside the <head> tag, we can add the <title> tag, inside which we write in the name of our website.
 
-
 The <body> tag is where we put the contents of our website.
 
 Inside the <body> tag, we can designate paragraphs by using the <p> tag.
+We can format the font size of the tags and paragraphs by using <p style="font-size: Xpx"> where X is the font size (any number)
+We can also change the text color like so: <ANYTAG style="color: X"> where X is any valid color. 
+A list of colors can be found at: https://www.w3.org/TR/css3-color/#svg-color
+We can also change both the font size and the color at the same time by using:
+<ANYTAG style="color: X; font-size: Y"> where X is any color and Y is any number.
+You may also adjust the font type like so: <ANYTAG style="font-family: X"> where X is any valid font.
+A list of fonts can eb found at: https://www.w3.org/TR/CSS21/fonts.html#generic-font-families
 
 Headings for our paragraphs can be formed using the <hX> tag, where X is any number from 1 to 6, where 6 has the smallest font.
 
@@ -31,3 +37,5 @@ Images are inserted like so: <img src="http://www.imagehosting.com/exampleimage.
 The tag <ol> begins an ordered list. The items inside can be numbered by adding a <li> tag (and closing it later).
 
 If we just want a list without numbering the items inside, we use the <ul> tag, followed by <li> tags for individual items.
+
+Comments can be created like so: <!-- EXAMPLE COMMENT -->
