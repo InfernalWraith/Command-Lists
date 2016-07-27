@@ -18,13 +18,31 @@ Inside the <head> tag, we can add the <title> tag, inside which we write in the 
 The <body> tag is where we put the contents of our website.
 
 Inside the <body> tag, we can designate paragraphs by using the <p> tag.
-We can format the font size of the tags and paragraphs by using <p style="font-size: Xpx"> where X is the font size (any number)
-We can also change the text color like so: <ANYTAG style="color: X"> where X is any valid color. 
+_______________________________________________________________________________________________________________________________
+STYLING:
+We can format the font size of the tags and paragraphs by using: 
+<p style="font-size: Xpx"> where X is the font size (number)
+
+We can also change the text color like so: 
+<ANYTAG style="color: X"> where X is any valid color. 
 A list of colors can be found at: https://www.w3.org/TR/css3-color/#svg-color
+
 We can also change both the font size and the color at the same time by using:
-<ANYTAG style="color: X; font-size: Y"> where X is any color and Y is any number.
-You may also adjust the font type like so: <ANYTAG style="font-family: X"> where X is any valid font.
+<ANYTAG style="color: X; font-size: Y"> where X is any valid color and Y is any positive number (integer).
+
+You may also adjust the font type like so: 
+<ANYTAG style="font-family: X"> where X is any valid font.
 A list of fonts can eb found at: https://www.w3.org/TR/CSS21/fonts.html#generic-font-families
+
+We can set the background color of a certain paragraph/list, or even of the entire document like so:
+<ANYTAG style="background-color: X"> where X is any valid color
+
+We can align the text to the left, right, or even center it by using:
+<ANYTAG style="text-align: X"> where X is either "left" "right" or "center"
+
+Regarding text, we can bold it using the <strong> tag.
+We can emphasize it in italics with the <em> tag.
+_______________________________________________________________________________________________________________________________
 
 Headings for our paragraphs can be formed using the <hX> tag, where X is any number from 1 to 6, where 6 has the smallest font.
 
