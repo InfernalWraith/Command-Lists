@@ -1,8 +1,4 @@
-HTML is unique in the sense that its commands are written inside tags ( < > ).
-Example:   <html> </html>
-
-As you can see, the tags "nest," so you need to close them after opening them, just like brackets.
-The tags' area of influence is between the lines where you open the tag and where you close it.
+BASICS:
 
 Every HTML document needs to start with the following line:
 <!DOCTYPE html>
@@ -10,6 +6,15 @@ Every HTML document needs to start with the following line:
 This tells the browser that the following code is written in the HTML programming language.
 After that, we type <html> and we place our entire code there, putting a </html> at the very end of our code, marking the
 end of our website.
+_______________________________________________________________________________________________________________________________
+TAGS:
+
+HTML is unique in the sense that its commands are written inside tags ( < > ).
+Example:   <html> </html>
+
+As you can see, the tags "nest," so you need to close them after opening them, just like brackets.
+The tags' area of influence is between the lines where you open the tag and where you close it.
+_______________________________________________________________________________________________________________________________
 
 The <head> tag serves as a place where we place general information about our website.
 
@@ -18,6 +23,23 @@ Inside the <head> tag, we can add the <title> tag, inside which we write in the 
 The <body> tag is where we put the contents of our website.
 
 Inside the <body> tag, we can designate paragraphs by using the <p> tag.
+
+Headings for our paragraphs can be formed using the <hX> tag, where X is any number from 1 to 6, where 6 has the smallest font.
+
+We can insert hyperlinks into our code by using the tag <a href="http://www.examplelink.com"> and close it later with </a>
+Other things besides text can be made links as well by inserting images or other content before closing the tag.
+
+Images are inserted like so: <img src="http://www.imagehosting.com/exampleimage.jpg" />
+
+Comments can be created like so: <!-- EXAMPLE COMMENT -->
+_______________________________________________________________________________________________________________________________
+LISTS:
+
+The tag <ol> begins an ordered list. The items inside can be numbered by adding a <li> tag (and closing it later).
+
+If we just want a list without numbering the items inside, we use the <ul> tag, followed by <li> tags for individual items.
+
+Lists can also nest, that way we can put a list inside a list.
 _______________________________________________________________________________________________________________________________
 STYLING:
 We can format the font size of the tags and paragraphs by using: 
@@ -43,17 +65,12 @@ We can align the text to the left, right, or even center it by using:
 Regarding text, we can bold it using the <strong> tag.
 We can emphasize it in italics with the <em> tag.
 _______________________________________________________________________________________________________________________________
-
-Headings for our paragraphs can be formed using the <hX> tag, where X is any number from 1 to 6, where 6 has the smallest font.
-
-We can insert hyperlinks into our code by using the <a href="http://www.examplelink.com">Here's an example link!</a>
-Other things besides text can be made links as well by inserting images or other content before closing the tag.
-If we make an image a link, we don't add the description (here it's "Here's an example link")
-
-Images are inserted like so: <img src="http://www.imagehosting.com/exampleimage.jpg" />
-
-The tag <ol> begins an ordered list. The items inside can be numbered by adding a <li> tag (and closing it later).
-
-If we just want a list without numbering the items inside, we use the <ul> tag, followed by <li> tags for individual items.
-
-Comments can be created like so: <!-- EXAMPLE COMMENT -->
+TABLES:
+Tables are created with the <table> tag.
+We can add rows to the table with the <tr> tag.
+We add things to the table using the table data tag - <td>
+We can further format the table using the <thead> and <tbody> tags. They function like the normal <body> and <head> tags.
+The thickness of the table border is changed with the <table border="Xpx"> where X is any positive integer.
+Headings for the table can be created using the <th> command. This is used to designate what a column is all about.
+If we want to have our header take up multiple columns of space, use the <th colspan="X"> where X is the number of columns.
+_______________________________________________________________________________________________________________________________
