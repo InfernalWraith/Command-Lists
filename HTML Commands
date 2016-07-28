@@ -74,3 +74,11 @@ The thickness of the table border is changed with the <table border="Xpx"> where
 Headings for the table can be created using the <th> command. This is used to designate what a column is all about.
 If we want to have our header take up multiple columns of space, use the <th colspan="X"> where X is the number of columns.
 _______________________________________________________________________________________________________________________________
+
+We can divide our website into smaller portions by using the <div> tag.
+We can chance the <div> tag's width and height, as well as its background color like so:
+<div style="width: Xpx; height: Ypx; background-color: Z"> where X and Y are any positive integers, and Z is any valid color.
+
+For smaller sections of our website, such as text, we can use the <span> tag. 
+This allows us to make styling changes to a certain part of the text inside the <span> </span> tags.
+text inside it.
