@@ -1,0 +1,42 @@
+The language C has grown and evolved over the years. 
+Since its inception, many standards were formed and new functionalities were added.
+
+C has many commands we can use, but to do so we need to tell them program to access a certain library containing those commands.
+There are the preprocessor directives, and they contain groups of commands revolving around a certain theme.
+We need to add them at the very start of the program, using the #include command:
+
+#include <LIBRARY_NAME> - Where LIBRARY_NAME is the name of the library we wish to access. Commonly used are:
+
+#include <stdio.h> - Contains various functions for priting text out, user inputs, loops and various other things.
+#include <math.h> - Contains mathematical functions such as the square root, setting the power of a value etc.
+
+After adding our preprocessor directives, we need to add in our actual code, the code block that makes up our program.
+We do that by writing various functions, of which every C program ALWAYS needs to contain a function called int main() {}:
+
+#include <stdio.h>
+int main() {
+  CODE BLOCK
+  return 0;
+}
+
+The return command signals an end of a function, or in this case the end of our program.
+We can also define certain variables globally, so that we can use them anywhere in the program using the #define command:
+
+#include <stdio.h>
+#define PI 3.14159265359
+int main() ...
+
+This way, every time we use the variable PI, it will be as if we wrote the whole thing out. 
+By defining important variables we can save ourselves a lot of time and frustration since their values will be constant,
+minimizing the chance of a typo.
+These are the so called "global" variables. They retain their value throughout the entire program and can be used anywhere.
+They can, however, cause certain issues if we attempt to tamper with them, so it's advised to use "local" variables.
+Local variables can only be used inside the function they are initialized, keeping in mind that every single variable we use
+must be initialized, otherwise the program won't compile. We initialize variables in a few different ways:
+
+        int X - Creates a variable called X which is an integer, rounding down any decimal number to an integer.
+      float X - Creates a variable called X which is a real number.
+     double X - Creates a variable called X which is a real number, being more precise than a float but taking up more memory.
+   long int X - Creates a longer integer.
+ long float X - Creates a longer real number.
+long double X - Creates a longer precise real number.
