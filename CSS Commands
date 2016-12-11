@@ -1,0 +1,24 @@
+CSS is a language designed to be used alongside HTML. 
+Its purpose is to add to the aesthetic design of the page, changing the style and positioning of various elements.
+
+We can change the style of ALL tags of a certain type by using the <style> </style> tag.
+It is placed above our HTML code like so:
+
+<style>
+    h2 {color: red;}
+</style>
+
+This will change all h2 tags to a red color. 
+It is very important to add both the opening and the closing brackets, as well as the semicolon when adding a property.
+
+We can also assign multiple properties to a single class, which can be reused whenever we want:
+
+<style>
+  .blue-text {
+    color: blue;
+  }
+</style>
+
+We use it later on in the code like this:
+
+<ANYTAG class="blue-text">
