@@ -28,10 +28,13 @@ Headings for our paragraphs can be formed using the <hX> tag, where X is any num
 
 We can insert hyperlinks into our code by using the tag <a href="http://www.examplelink.com"> and close it later with </a>
 Other things besides text can be made links as well by inserting images or other content before closing the tag.
+We can create "dead" links which are placeholders for actual links by adding # inside the href area: <a href="#">
 
-Images are inserted like so: <img src="http://www.imagehosting.com/exampleimage.jpg" />
+Images are inserted like so: <img src="http://www.imagehosting.com/exampleimage.jpg" alt="IMAGE_DESCRIPTION"/>
+The "alt" part of the tag is what displays if the image fails to load, so people still have an idea of what's going on.
 
 Comments can be created like so: <!-- EXAMPLE COMMENT -->
+They can span across multiple lines of code.
 _______________________________________________________________________________________________________________________________
 LISTS:
 
@@ -74,6 +77,7 @@ The thickness of the table border is changed with the <table border="Xpx"> where
 Headings for the table can be created using the <th> command. This is used to designate what a column is all about.
 If we want to have our header take up multiple columns of space, use the <th colspan="X"> where X is the number of columns.
 _______________________________________________________________________________________________________________________________
+DIVIDING ELEMENTS:
 
 We can divide our website into smaller portions by using the <div> tag.
 We can chance the <div> tag's width and height, as well as its background color like so:
@@ -82,7 +86,8 @@ We can chance the <div> tag's width and height, as well as its background color 
 For smaller sections of our website, such as text, we can use the <span> tag. 
 This allows us to make styling changes to a certain part of the text inside the <span> </span> tags.
 text inside it.
-
+_______________________________________________________________________________________________________________________________
+LINKING:
 In HTML, we sometimes may want to include extermal resources to our website (resources outside of the code block).
 We can do that using the <link> tag:
 
@@ -90,10 +95,25 @@ We can do that using the <link> tag:
 
 For example, this command would link the HTML code with the "theme.css" document.
 This would allow the HTML and CSS to combine when the code runs, while still remaining seperate documents.
-
 The <link> tag can also be used to import web links:
 
 <link href="https://fonts.googleapis.com/css?family=Lobster" rel="stylesheet" type="text/css">
 
 This command would grab the "Lobster" font and allow us to use it later on in our website.
+_______________________________________________________________________________________________________________________________
+USER INPUT:
 
+We can create a text input field like so: <input type="text" placeholder="Your text here">
+Before typing anything in, users will see the placeholder text, so we should indicate what the users are supposed to write in.
+
+However, user input like that won't be any good. We need to store it on a server using forms.
+We need to nest our input in a form like so:
+<form action="/url-where-you-want-to-submit-form-data">
+    <input type="text" placeholder="Your text here">
+</form>
+
+This formed a link between the form and the destination server, but we still can't send it. We need to add a submit button:
+<form action="/url-where-you-want-to-submit-form-data">
+    <input type="text" placeholder="Your text here">
+    <button type="submit">BUTTON_TEXT</button>
+</form>
