@@ -15,6 +15,7 @@ Example:   <html> </html>
 As you can see, the tags "nest," so you need to close them after opening them, just like brackets.
 The tags' area of influence is between the lines where you open the tag and where you close it.
 _______________________________________________________________________________________________________________________________
+BASIC TAGS:
 
 The <head> tag serves as a place where we place general information about our website.
 
@@ -35,6 +36,10 @@ The "alt" part of the tag is what displays if the image fails to load, so people
 
 Comments can be created like so: <!-- EXAMPLE COMMENT -->
 They can span across multiple lines of code.
+
+Every tag can have the "id" attribute, which should be unique for every element on the page. It is used like so:
+<ANYTAG id="ID_NAME">, where the ID_NAME can be anything we want to call that specific tag.
+ID's can be stylized using CSS.
 _______________________________________________________________________________________________________________________________
 LISTS:
 
@@ -80,8 +85,11 @@ ________________________________________________________________________________
 DIVIDING ELEMENTS:
 
 We can divide our website into smaller portions by using the <div> tag.
-We can chance the <div> tag's width and height, as well as its background color like so:
+The div tag applies its CSS style class to all elements nested inside it.
+We can change the <div> tag's width and height, as well as its background color like so:
 <div style="width: Xpx; height: Ypx; background-color: Z"> where X and Y are any positive integers, and Z is any valid color.
+
+For a line break, we use the <br> tag.
 
 For smaller sections of our website, such as text, we can use the <span> tag. 
 This allows us to make styling changes to a certain part of the text inside the <span> </span> tags.
@@ -117,3 +125,21 @@ This formed a link between the form and the destination server, but we still can
     <input type="text" placeholder="Your text here">
     <button type="submit">BUTTON_TEXT</button>
 </form>
+
+We can also ensure certain fields are filled out before the form is sent by adding the "required" text inside our input:
+<input type="text" placeholder="Your text here" required>
+
+If we want the give the user a choice between multiple preselected answers, we can use the "radio" buttons:
+<label>
+    <input type="radio" name="BUTTON_NAME"> DISPLAYED_TEXT
+</label>
+
+We can have a button be checked by default by adding "checked" to its input command:
+<input type="radio" name="BUTTON_NAME" checked> DISPLAYED_TEXT
+
+BUTTON_NAME is what we will see once the user submits the form, the category under which the button lies.
+DISPLAYED_TEXT is visible next to the button, so it should say what the button is for. We'll see it once it's sent.
+The <label> tags allow the user to select the button by clicking on the button's text, not just the small button itself.
+
+We can also create checkboxes. They follow the same rules as radio buttons, except that the user can select multiple checkboxes:
+<label><input type="checkbox" name="CHECKBOX_NAME"> DISPLAY_TEXT</label>
