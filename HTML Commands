@@ -82,3 +82,18 @@ We can chance the <div> tag's width and height, as well as its background color 
 For smaller sections of our website, such as text, we can use the <span> tag. 
 This allows us to make styling changes to a certain part of the text inside the <span> </span> tags.
 text inside it.
+
+In HTML, we sometimes may want to include extermal resources to our website (resources outside of the code block).
+We can do that using the <link> tag:
+
+<link rel="stylesheet" type="text/css" href="theme.css">
+
+For example, this command would link the HTML code with the "theme.css" document.
+This would allow the HTML and CSS to combine when the code runs, while still remaining seperate documents.
+
+The <link> tag can also be used to import web links:
+
+<link href="https://fonts.googleapis.com/css?family=Lobster" rel="stylesheet" type="text/css">
+
+This command would grab the "Lobster" font and allow us to use it later on in our website.
+
