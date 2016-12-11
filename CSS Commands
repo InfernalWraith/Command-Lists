@@ -55,7 +55,7 @@ We can adjust the width of an image in CSS like so:
 Where X is the width of the image in pixels.
 
 
-We can also add borders to images or paragraphs with this class:�
+We can also add borders to images or paragraphs with this class:
 
 .border {
     border-color: COLOR;
