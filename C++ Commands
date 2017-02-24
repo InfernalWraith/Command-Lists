@@ -1,0 +1,34 @@
+Comments in C can be made by using // for a single line or /*  */ for a multi-line comment:
+
+//This is a single line comment
+
+/* This is a 
+multi-line comment */
+___________________________________________________________________________________________________________________________________
+In order to make life easier and use pre-existing functions, we need to include the libraries which contain them like so:
+
+#include <iostream>		//Contains the basic functions such as printing text and data input
+#include <vector>		//Contains functions for working with vectors
+#include <string>		//For working with strings
+#include <fstream>		//Used for working with files
+___________________________________________________________________________________________________________________________________
+Every C++ program needs to contain a function called "main"
+
+int main(){
+	//YOUR CODE HERE
+	return 0;
+}
+
+The main function needs to end with the command "return 0" which says the program executed without any problems.
+___________________________________________________________________________________________________________________________________
+We can initialize variables and designate which kind of value they can be like so:
+
+int Variable1;
+float var2;						//For real numbers, accurate to around the 6th decimal
+const double PI = 3.14159;		//"const" means the variable has a fixed value and can't be altered, double>float
+char letter = 'A';
+bool works = true;				//Is also equal to 1;
+bool fails = false;				//Is also equal to 0;
+___________________________________________________________________________________________________________________________________
+We can print things out like so:
+
