@@ -1,14 +1,34 @@
 # Note: Words typed out exclusively in uppercase are examples of what type of parameter is used for a certain syntax
 # Notes and comments will have the (#) character in front of them, and different commands will be separated with two empty lines
 
-#Mathematical Operators
+# Mathematical Operators
+x + y     Addition
+x - y     Subtraction
+x * y     Multiplication
+x / y     Division
+x ** y    Exponent {x to the power of y}
+x % y     Remainder of division  {9 % 4 = 1}
 
-x + y addition
-x - y subtraction
-x * y multiplication
-x / y division
-x ** y  exponent {x to the power of y}
-x % y remainder of division  {9 % 4 = 1}
+
+# Comparison
+x > y     Has the value 'True' only if x is greater than y
+x >= y    Has the value 'True' only if x is greater or equal than y
+x <= y    Has the value 'True' only if x is less or equal than y
+x < y     Has the value 'True' only if x is less than y
+x == y    Has the value 'True' only if x and y are equal
+
+____________________________________________________________________________________________________________________________
+# General Information
+Unlike in other languages such as C or C++, variables are automatically assigned a type upon initialization
+For example, we can declare both a string and an integer the same way:
+my_string = "Hello"
+my_number = 15
+
+Booleans are also present in python, and we can make a variable true or false by like so:
+true_variable = True
+false_variable = False
+
+Comments in Python are made using the # character for single line commends, or """ for multi line comments.
 
 ____________________________________________________________________________________________________________________________
 # BASIC COMMANDS
@@ -150,6 +170,8 @@ def FUNCTION_NAME(ARGUMENT1, ARGUMENT2):
     else:
       return "Hello!"
 **Then the line " greeting('ba'), 'Haris' will print out "Zdravo Haris" "
+
+#We can also call functions inside of themselves
 
 ____________________________________________________________________________________________________________________________
 # LOOPS
