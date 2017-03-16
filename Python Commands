@@ -58,6 +58,7 @@ else:
 
 VARIABLE=raw_input('MESSAGE')
 #Prompts the user to input data with a preassigned message
+#We can add modifiers such as .lower() or .upper() to the raw input itself in order to control what the user enters
 
 
 int(VARIABLE)
@@ -109,12 +110,12 @@ print "My favorite number is " str(47)
 #This prints out "My favorite number is 47"
 
 ____________________________________________________________________________________________________________________________
-#
+# DATE AND TIME
 
 
 datetime.now()
 #Gets the current date and time
-#Must have a "from datetime import datetime" line before it
+#Must have a "from datetime import datetime" line before it, meaning we must import the "datetime" library in order to use it
 
 
 VARIABLE = datetime.now()
