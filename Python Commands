@@ -1,3 +1,6 @@
+# Note: Words typed out exclusively in uppercase are examples of what type of parameter is used for a certain syntax
+# Notes and comments will have the (#) character in front of them, and different commands will be separated with two empty lines
+
 #Mathematical Operators
 
 x + y addition
@@ -7,8 +10,8 @@ x / y division
 x ** y  exponent {x to the power of y}
 x % y remainder of division  {9 % 4 = 1}
 
-
-#Python commands
+____________________________________________________________________________________________________________________________
+# BASIC COMMANDS
 
 
 print "INSERT TEXT"
@@ -22,24 +25,53 @@ print VARIABLE
 VARIABLE = x
 #Assigns the value x to the variable VARIABLE
 
+____________________________________________________________________________________________________________________________
+# STRINGS
+
 
 len(VARIABLE)
-#Gets the length (number of characters) of a string(VARIABLE)
+#Gets the length (number of characters) of a variable or the string assigned to the variable
+#Works only with strings and certain data types
 
 
-VARIABLE.upper()
-#Sets the string of VARIABLE to upper characters 
-{variable = "Test" output would be "TEST"}
+STRING.upper()
+#Sets the string of STRING to upper characters 
+{variable = "Test"; variable.upper();    Output would be "TEST"}
+{"Test".upper()                           Output is also "TEST"}
 
 
-VARIABLE.lower()
-#Sets the string of VARIABLE to lower characters 
-{variable = "Test" output would be "test"}
+STRING.lower()
+#Sets the string of STRING to lower characters, can be used with string variables or just nameless string constants 
+{variable = "Test"; variable.lower();    Output would be "test"}
+{"Test".lower()                           Output is also "test"}
 
 
 str(VARIABLE)
 #Changes the VARIABLE to string 
 {variable = 25.21 output would be "25.21"}
+
+
+STRING[X, Y]
+#Grabs the part of a string from the X-th character to the Y-th character. 
+#If you don't input Y, it prints out the remainder of the string.
+{Python[2, 6] is "thon"}; {Superextraultraawesome[5, ] is "extraultraawesome"
+
+
+VARIABLE.isalpha()
+#Checks if the VARIABLE is made up of only letters and becomes True if it is, otherwise it becomes False
+
+
+#Strings can also be "fused," or concantenated with the "+" operator:
+print "Combining " + "strings" + " " + "is" + " simple!"
+#This prints "Combining strings is simple" by adding them together 
+#"Combining _strings_ _is_ simple_"           where "_" marks the end of a string is how they're added up
+
+#If we want to combine strings with things that are not strings, such as numbers, we need to convert them to strings first:
+print "My favorite number is " str(47)
+#This prints out "My favorite number is 47"
+
+____________________________________________________________________________________________________________________________
+#
 
 
 datetime.now()
@@ -61,7 +93,7 @@ elif CONDITION :
 else: 
   ACTION 1
   ACTION 2
-#Tests if the condition is fulfilled and runs code lines accordingly.
+#Tests if the condition is fulfilled and runs the indented code block accordingly.
 
 
 VARIABLE=raw_input('MESSAGE')
@@ -70,6 +102,9 @@ VARIABLE=raw_input('MESSAGE')
 
 int(VARIABLE)
 #Attempts to turn a string(variable) into a number
+
+____________________________________________________________________________________________________________________________
+#
 
 
 def FUNCTION_NAME(ARGUMENT1, ARGUMENT2):
@@ -102,16 +137,6 @@ float(NUMBER)
 
 int(NUMBER)
 #Converts a decimal into a whole number by cutting off the decimal part
-
-
-VARIABLE.isalpha()
-#Checks if the VARIABLE is made up of only letters and becomes True if it is, otherwise it becomes False
-
-
-STRING[X, Y]
-#Grabs the part of a string from the X-th character to the Y-th character. 
-#If you don't input Y, it prints out the remainder of the string.
-{Python[2, 6] is "thon"}; {Superextraultraawesome[5, ] is "extraultraawesome"
 
 
 while CONDITION:
