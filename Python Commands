@@ -17,6 +17,16 @@ ________________________________________________________________________________
 print "INSERT TEXT"
 #Prints the text to the console
 
+#We can use string formatting to add variables to our text block that's being printed out like so:
+SAMPLE_STRING="example"
+RESULT=2
+print "This is an %s. 1+1 equals %d." % (SAMPLE_STRING, RESULT)
+#This prints out: "This is an example. 1+1 equals 2."
+
+#As of Python 2.6, we can avoid having to use specific formatting modifiers by using the more advanced "format" command:
+print "Testing, testing, {test}".format(test="one, two, three!")
+#This prints out: "Testing, testing, one, two, three!"
+
 
 print VARIABLE
 #Prints the value of VARIABLE
@@ -24,6 +34,34 @@ print VARIABLE
 
 VARIABLE = x
 #Assigns the value x to the variable VARIABLE
+
+
+float(NUMBER)
+#Converts an integer into a real number
+
+
+int(NUMBER)
+#Converts a real number into an integer by cutting off the decimal part
+
+
+if CONDITION :
+  ACTION 1
+  ACTION 2
+elif CONDITION :
+  ACTION 1
+  ACTION 2
+else: 
+  ACTION 1
+  ACTION 2
+#Tests if the condition is fulfilled and runs the indented code block accordingly.
+
+
+VARIABLE=raw_input('MESSAGE')
+#Prompts the user to input data with a preassigned message
+
+
+int(VARIABLE)
+#Attempts to turn a string(variable) into a number
 
 ____________________________________________________________________________________________________________________________
 # STRINGS
@@ -84,27 +122,9 @@ print VARIABLE.year; print VARIABLE.month; print VARIABLE.day
 #Prints the current year, month, or day
 
 
-if CONDITION :
-  ACTION 1
-  ACTION 2
-elif CONDITION :
-  ACTION 1
-  ACTION 2
-else: 
-  ACTION 1
-  ACTION 2
-#Tests if the condition is fulfilled and runs the indented code block accordingly.
-
-
-VARIABLE=raw_input('MESSAGE')
-#Prompts the user to input data with a preassigned message
-
-
-int(VARIABLE)
-#Attempts to turn a string(variable) into a number
 
 ____________________________________________________________________________________________________________________________
-#
+# FUNCTIONS
 
 
 def FUNCTION_NAME(ARGUMENT1, ARGUMENT2):
@@ -120,7 +140,7 @@ def FUNCTION_NAME(ARGUMENT1, ARGUMENT2):
     else:
       print "Hello!"
 **Then the line " greeting('de') will print out "Hallo!" "
-ALSO WORKS WITH RETURN:
+#ALSO WORKS WITH RETURN:
   def greeting(language):
     if language == 'ba':
       return "Zdravo!"
@@ -130,13 +150,8 @@ ALSO WORKS WITH RETURN:
       return "Hello!"
 **Then the line " greeting('ba'), 'Haris' will print out "Zdravo Haris" "
 
-
-float(NUMBER)
-#Converts a whole number into a decimal
-
-
-int(NUMBER)
-#Converts a decimal into a whole number by cutting off the decimal part
+____________________________________________________________________________________________________________________________
+# LOOPS
 
 
 while CONDITION:
@@ -145,9 +160,9 @@ while CONDITION:
 #Runs the indented lines of code while the condition is fulfilled. Infinite loops crash your stuff :(
 
 
-break
-#Stops the loop and continues to the next line of code, as opposed to the "continue" command which continues the loop
-
-
 for VARIABLE in [x, y, z...]
 #Runs a loop once for each of the values inside the bracket assigned to the VARIABLE
+
+
+break
+#Stops the loop and continues to the next line of code, as opposed to the "continue" command which continues the loop
