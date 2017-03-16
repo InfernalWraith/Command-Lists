@@ -16,6 +16,7 @@ x >= y    Has the value 'True' only if x is greater or equal than y
 x <= y    Has the value 'True' only if x is less or equal than y
 x < y     Has the value 'True' only if x is less than y
 x == y    Has the value 'True' only if x and y are equal
+x != y    Has the value 'True' only if x and y are not equal
 
 ____________________________________________________________________________________________________________________________
 # General Information
@@ -29,6 +30,13 @@ true_variable = True
 false_variable = False
 
 Comments in Python are made using the # character for single line commends, or """ for multi line comments.
+
+We can also use logical operators of conjunction, disjunction and negation like so:
+True and False            For conjunction, we use 'and'
+True or False             For disjunction, we use 'or'
+not True                  For negation, we use 'not'
+
+The order of evaluating these operations is as follows: First comes NOT, then comes AND, and OR comes last.
 
 ____________________________________________________________________________________________________________________________
 # BASIC COMMANDS
@@ -128,6 +136,9 @@ print "Combining " + "strings" + " " + "is" + " simple!"
 #If we want to combine strings with things that are not strings, such as numbers, we need to convert them to strings first:
 print "My favorite number is " str(47)
 #This prints out "My favorite number is 47"
+
+#We can access only a certain part of a string from the x-th to the y-th character like so:
+STRING[x, y]
 
 ____________________________________________________________________________________________________________________________
 # DATE AND TIME
