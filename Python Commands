@@ -92,6 +92,12 @@ VARIABLE=raw_input('MESSAGE')
 int(VARIABLE)
 #Attempts to turn a string(variable) into a number
 
+from X import Y
+#Imports things from library X into the local namespace, making the functions easier to write but causing potential conflicts
+
+import X
+#Imports the libary X, but its functions must be used like so: x.FUNCTIONSAMPLE
+
 ____________________________________________________________________________________________________________________________
 # STRINGS
 
