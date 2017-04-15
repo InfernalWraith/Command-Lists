@@ -1,34 +1,91 @@
-Comments in C can be made by using // for a single line or /*  */ for a multi-line comment:
+Comments in C++ can be made by using // for a single line or /*  */ for a multi-line comment:
 
 //This is a single line comment
 
 /* This is a 
 multi-line comment */
-___________________________________________________________________________________________________________________________________
+________________________________________________________________________________________________________________________________
 In order to make life easier and use pre-existing functions, we need to include the libraries which contain them like so:
 
-#include <iostream>		//Contains the basic functions such as printing text and data input
-#include <vector>		//Contains functions for working with vectors
-#include <string>		//For working with strings
-#include <fstream>		//Used for working with files
-___________________________________________________________________________________________________________________________________
+#include <iostream>		// Contains the basic functions such as printing text and data input
+#include <vector>		// Contains functions for working with vectors
+#include <string>		// For working with strings
+#include <fstream>		// Used for working with files
+________________________________________________________________________________________________________________________________
 Every C++ program needs to contain a function called "main"
 
 int main(){
-	//YOUR CODE HERE
+	// YOUR CODE HERE
 	return 0;
 }
 
 The main function needs to end with the command "return 0" which says the program executed without any problems.
-___________________________________________________________________________________________________________________________________
+If a value other than 0 returns, it usually means the program finished abruptly due to some kind of error.
+________________________________________________________________________________________________________________________________
 We can initialize variables and designate which kind of value they can be like so:
 
 int Variable1;
-float var2;						//For real numbers, accurate to around the 6th decimal
-const double PI = 3.14159;		//"const" means the variable has a fixed value and can't be altered, double>float
-char letter = 'A';
-bool works = true;				//Is also equal to 1;
-bool fails = false;				//Is also equal to 0;
-___________________________________________________________________________________________________________________________________
-We can print things out like so:
+float var2;				// For real numbers, accurate to around the 6th decimal
+const double PI = 3.14159;		// "const" means the variable has a fixed value and can't be altered, double>float
+char letter = 'A';			// For characters
+bool works = true;			// Is also equal to 1;
+bool doesnt_work = false;		// Is also equal to 0;
+________________________________________________________________________________________________________________________________
+Library <iostream>:
+
+cout << "Text" << VARIABLE;		// Prints text, variables and other things to the screen
+cout << endl;				// OUTPUT STREAM OBJECT, inserts a new line
+setw(INTEGER);				// OUTPUT STREAM OBJECT, allocates the specified width for the output
+setfill(CHARACTER);			// OUTPUT STREAM OBJECT, fills the remaining space with the specified character
+setprecision(INTEGER);			// OUTPUT STREAM OBJECT, makes the output precise to the specified amount
+fixed					// OUTPUT STREAM OBJECT, makes setprecision print out a fixed amount of digits
+
+
+// NOTE: If the input isn't the same type as the variable , cin is set to FALSE then and can be tested with if(!cin)
+cin >> VARIABLE;			// Waits for input, storing it in the variable we designated
+cin.clear();				// Resets the value of cin in case its value was changed
+cin.ignore(INTEGER, CHARACTER);		// Clears the specified amount of characters from the buffer, or until it clears the specified character
+ws;					// INPUT STREAM OBJECT, extracts all whitespace characters
+
+for(int i=0; i<10; i++)	//CODE		// Standard foor loop that loops 10 times in this case
+while(CONDITION) //CODE			// Standard while loop;
+
+
+________________________________________________________________________________________________________________________________
+Library <cmath>:
+
+sin(NUMBER);		// Sine
+asin(NUMBER);		// Inverse sine
+cos(NUMBER);		// Cosine
+acos(NUMBER);		// Inverse cosine
+tan(NUMBER);		// Tangent
+atan(NUMBER);		// Inverse tangent
+log(NUMBER);		// Natural logarithm
+log10(NUMBER);		// Common logarithm
+pow(NUMBER, EXPONENT);	// Raise NUMBER to the power of EXPONENT
+sqrt(NUMBER);		// Square root
+ceil(NUMBER);		// Round up
+floor(NUMBER);		// Round down
+abs(INTEGER);		// Absolute value of an integer
+fabs(NUMBER);		// Absolute value of a real number
+
+
+________________________________________________________________________________________________________________________________
+Library <vector>:
+
+vector<TYPE> NAME(NR_OF_ELEMENTS, DEFAULT)	// Creates a vector with the specified number of elements and default value
+VECTOR.begin();					// Returns an iterator at the first element of the specified vector
+begin(VECTOR);					// Returns an iterator at the first element of the specified vector
+rbegin(VECTOR);					// Returns a reverse iterator at the first element of the specified vector
+
+VECTOR.end();					// Returns an iterator at the past-the-end element of the specified vector
+end(VECTOR;					// Returns an iterator at the past-the-end element of the specified vector
+rend(VECTOR);					// Returns a reverse iterator at the past-the-end element of the vector
+
+VECTOR.push_back(VALUE);			// Adds the specified value or variable past the end of the vector (Size++)
+VECTOR.size();					// Returns the size of the vector
+VECTOR.resize(INTEGER);				// Resizes the vector to the specified amount of elements
+VECTOR.insert(ECTOR.begin() + X, VALUE);	// Inserts a certain value or variable to the x-th spot in the vector
+VECTOR.erase(VECTOR.begin() + X);		// Erases the x-th element of the vector and sorts the vector
+VECTOR.swap(OTHER_VECTOR);			// Swaps the elements of the two vectors of the same type, but sizes may differ
 
