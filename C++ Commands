@@ -95,6 +95,8 @@ DEQUE.push_front(VALUE);			// Adds the specified value or variable to the front 
 
 However, while vectors sort their elements in a continous block, a deque's memory is fragmented and therefore we shouldn't
 use pointer arithmetic while working with deques.
+We can also nest vectors in vectors for 2D or even 3D+
+vector<vector<int>> my_vector(5, vector<int>(3, 1));	// Creates a 5x3 matrix whose elements have the default value set to 1
 ________________________________________________________________________________________________________________________________
 Library <complex>:
 
