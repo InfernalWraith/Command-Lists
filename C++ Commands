@@ -109,3 +109,5 @@ abs(COMPLEX);					// Returns the absolute value of a complex number
 arg(COMPLEX);					// Returns the argument (phase angle) of a complex number
 polar(MODULUS ,PHASE_ANGLE);			// Returns the complex number with the given parameters (Re=ρ*cosΘ ; Im=ρ*sinΘ)
 conj(COMPLEX);					// Returns the conjugated version of a complex number [Im *= (-1)]
+
+________________________________________________________________________________________________________________________________
