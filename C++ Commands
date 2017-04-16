@@ -30,12 +30,19 @@ const double PI = 3.14159;		// "const" means the variable has a fixed value and 
 char letter = 'A';			// For characters
 bool works = true;			// Is also equal to 1;
 bool doesnt_work = false;		// Is also equal to 0;
+
+We can also change one type of variable into another like so:
+
+(int) 3.14				// C-style notation, this is equal to 3
+int(3.14)				// Same effect, functional notation
+static_cast<int> 3.14			// Same effect, but the safest when it comes to making a program multi-platform
 ________________________________________________________________________________________________________________________________
 Library <iostream>:
 
 cout << "Text" << VARIABLE;		// Prints text, variables and other things to the screen
 cout << endl;				// OUTPUT STREAM OBJECT, inserts a new line
-setw(INTEGER);				// OUTPUT STREAM OBJECT, allocates the specified width for the output
+setw(INTEGER);				// OUTPUT STREAM OBJECT, allocates the specified width for the first next output only
+cout.width(INTEGER);			// Is added as a modifier right on the "cout" and it sets the width for ALL outputs
 setfill(CHARACTER);			// OUTPUT STREAM OBJECT, fills the remaining space with the specified character
 setprecision(INTEGER);			// OUTPUT STREAM OBJECT, makes the output precise to the specified amount
 fixed					// OUTPUT STREAM OBJECT, makes setprecision print out a fixed amount of digits
@@ -46,6 +53,9 @@ cin >> VARIABLE;			// Waits for input, storing it in the variable we designated
 cin.clear();				// Resets the value of cin in case its value was changed
 cin.ignore(INTEGER, CHARACTER);		// Clears the specified amount of characters from the buffer, or until it clears the specified character
 ws;					// INPUT STREAM OBJECT, extracts all whitespace characters
+
+// NOTE: getline should be used when dealing with string input, and we should always call the cin.ignore() command before it!
+getline(cin, VARIABLE);			// Grabs the input regardless of whitespace characters and stores it in the variable
 
 for(int i=0; i<10; i++)	//CODE		// Standard foor loop that loops 10 times in this case
 while(CONDITION) //CODE			// Standard while loop;
@@ -111,3 +121,25 @@ polar(MODULUS ,PHASE_ANGLE);			// Returns the complex number with the given para
 conj(COMPLEX);					// Returns the conjugated version of a complex number [Im *= (-1)]
 
 ________________________________________________________________________________________________________________________________
+Library <string>:
+
+string NAME;					// Initializes a string
+STRING.substr(START, LENGTH);			// Returns a part of the string from the starting position to start+length
+
+________________________________________________________________________________________________________________________________
+Throwing exceptions and <stdexcept>:
+
+We can throw exceptions in C++ by using the try-catch block:
+
+try{
+	//CODE
+} catch (EXCEPTION_TYPE EXCEPTION_NAME){
+	//CODE
+} catch (OTHER_EXCEPTION_TYPE OTHER_EXCEPTION_NAME){
+	//OTHER CODE
+}
+
+This makes the program try to work with the code we passed it in the "try" block, and if an exception is thrown, it's handled
+in the "catch" block, where we specify what kind of exception we want to catch and therefore handle it accordingly.
+We can have multiple "catch" blocks under a single "try" block
+
