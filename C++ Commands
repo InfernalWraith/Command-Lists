@@ -53,6 +53,7 @@ cin >> VARIABLE;			// Waits for input, storing it in the variable we designated
 cin.clear();				// Resets the value of cin in case its value was changed
 cin.ignore(INTEGER, CHARACTER);		// Clears the specified amount of characters from the buffer, or until it clears the specified character
 ws;					// INPUT STREAM OBJECT, extracts all whitespace characters
+cin.peek();				// INPUT STREAM OBJECT, returns the next character in the input without extracting it
 
 // NOTE: getline should be used when dealing with string input, and we should always call the cin.ignore() command before it!
 getline(cin, VARIABLE);			// Grabs the input regardless of whitespace characters and stores it in the variable
