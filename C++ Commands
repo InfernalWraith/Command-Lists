@@ -57,6 +57,7 @@ cin.peek();				// INPUT STREAM OBJECT, returns the next character in the input w
 
 // NOTE: getline should be used when dealing with string input, and we should always call the cin.ignore() command before it!
 getline(cin, VARIABLE);			// Grabs the input regardless of whitespace characters and stores it in the variable
+cin.getline(STRING, sizeof STRING);	// To make sure there's enough space in our string for the input
 
 for(int i=0; i<10; i++)	//CODE		// Standard foor loop that loops 10 times in this case
 while(CONDITION) //CODE			// Standard while loop;
@@ -142,5 +143,23 @@ try{
 
 This makes the program try to work with the code we passed it in the "try" block, and if an exception is thrown, it's handled
 in the "catch" block, where we specify what kind of exception we want to catch and therefore handle it accordingly.
-We can have multiple "catch" blocks under a single "try" block
+We can have multiple "catch" blocks under a single "try" block, as seen above.
+________________________________________________________________________________________________________________________________
+Library <algorithm>:
+
+for_each(BEGIN, END, FUNCTION)		// Applies the function to each element enclosed in the block
+max_element(BEGIN, END)			// Returns the pointer to the maximal element in the block
+max_element(BEGIN, END, FUNCTION)	// Returns the pointer to the maximal element in the block with regard to the function
+min_element(BEGIN, END)			// Returns the pointer to the minimal element in the block
+min_element(BEGIN, END, FUNCTION)	// Returns the pointer to the minimal element in the block with regard to the function
+count(BEGIN, END, ELEMENT)		// Returns how many times the element is found in the block
+count_if(BEGIN, END, FUNCTION)		// Returns how many elements return TRUE when passed to the function
+remove_copy_if(BEGIN, END, LOCATION)	// Copies all elements to the location while removing duplicates
+
+
+
+
+
+
+
 
