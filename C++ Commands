@@ -34,7 +34,7 @@ bool doesnt_work = false;		// Is also equal to 0;
 We can also change one type of variable into another like so:
 
 (int) 3.14				// C-style notation, this is equal to 3
-int(3.14)				// Same effect, functional notation
+int(3.14)				// Same effect, C++ functional notation
 static_cast<int> 3.14			// Same effect, but the safest when it comes to making a program multi-platform
 ________________________________________________________________________________________________________________________________
 Library <iostream>:
@@ -66,22 +66,20 @@ while(CONDITION) //CODE			// Standard while loop;
 ________________________________________________________________________________________________________________________________
 Library <cmath>:
 
-sin(NUMBER);		// Sine
-asin(NUMBER);		// Inverse sine
-cos(NUMBER);		// Cosine
-acos(NUMBER);		// Inverse cosine
-tan(NUMBER);		// Tangent
-atan(NUMBER);		// Inverse tangent
-log(NUMBER);		// Natural logarithm
-log10(NUMBER);		// Common logarithm
-pow(NUMBER, EXPONENT);	// Raise NUMBER to the power of EXPONENT
-sqrt(NUMBER);		// Square root
-ceil(NUMBER);		// Round up
-floor(NUMBER);		// Round down
-abs(INTEGER);		// Absolute value of an integer
-fabs(NUMBER);		// Absolute value of a real number
-
-
+sin(NUMBER);			// Sine
+asin(NUMBER);			// Inverse sine
+cos(NUMBER);			// Cosine
+acos(NUMBER);			// Inverse cosine
+tan(NUMBER);			// Tangent
+atan(NUMBER);			// Inverse tangent
+log(NUMBER);			// Natural logarithm
+log10(NUMBER);			// Common logarithm
+pow(NUMBER, EXPONENT);		// Raise NUMBER to the power of EXPONENT
+sqrt(NUMBER);			// Square root
+ceil(NUMBER);			// Round up
+floor(NUMBER);			// Round down
+abs(INTEGER);			// Absolute value of an integer
+fabs(NUMBER);			// Absolute value of a real number
 ________________________________________________________________________________________________________________________________
 Library <vector>:
 
@@ -121,13 +119,16 @@ abs(COMPLEX);					// Returns the absolute value of a complex number
 arg(COMPLEX);					// Returns the argument (phase angle) of a complex number
 polar(MODULUS ,PHASE_ANGLE);			// Returns the complex number with the given parameters (Re=ρ*cosΘ ; Im=ρ*sinΘ)
 conj(COMPLEX);					// Returns the conjugated version of a complex number [Im *= (-1)]
-
 ________________________________________________________________________________________________________________________________
 Library <string>:
 
 string NAME;					// Initializes a string
 STRING.substr(START, LENGTH);			// Returns a part of the string from the starting position to start+length
-
+STRING.size();					// Returns the length of the string
+STRING.length();				// Returns the length of the string
+strlen(s);					// Returns the length of the string
+strcmp
+strcpy
 ________________________________________________________________________________________________________________________________
 Throwing exceptions and <stdexcept>:
 
@@ -155,11 +156,11 @@ min_element(BEGIN, END, FUNCTION)	// Returns the pointer to the minimal element 
 count(BEGIN, END, ELEMENT)		// Returns how many times the element is found in the block
 count_if(BEGIN, END, FUNCTION)		// Returns how many elements return TRUE when passed to the function
 remove_copy_if(BEGIN, END, LOCATION)	// Copies all elements to the location while removing duplicates
+transform(BEGIN, END, LOC, FUNCTION)	// Applies the function to all elements in the block and puts them in the location
+find
+find_if
 
+________________________________________________________________________________________________________________________________
+Pointers:
 
-
-
-
-
-
-
+SMART_POINTER.get();			// Creates a "dumb" pointer from a smart pointer
