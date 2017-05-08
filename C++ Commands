@@ -157,6 +157,7 @@ in the "catch" block, where we specify what kind of exception we want to catch a
 We can have multiple "catch" blocks under a single "try" block, as seen above.
 ________________________________________________________________________________________________________________________________
 Library <algorithm>:
+This library contains many useful and time-saving functions, many of which can take custom functions as parameters.
 
 for_each(BEGIN, END, FUNCTION)		// Applies the function to each element enclosed in the block
 max_element(BEGIN, END)			// Returns the pointer to the maximal element in the block
@@ -169,7 +170,6 @@ remove_copy_if(BEGIN, END, LOCATION)	// Copies all elements to the location whil
 transform(BEGIN, END, LOC, FUNCTION)	// Applies the function to all elements in the block and puts them in the location
 find
 find_if
-
 ________________________________________________________________________________________________________________________________
 Library <utility>:
 
@@ -188,3 +188,29 @@ unique_ptr<TYPE[]> p(new TYPE[LENGTH]);	// Creates a unique pointer to an array 
 
 NEW_POINTER(SMART_POINTER.get());	// Creates a "dumb" pointer from a smart pointer
 SMART_POINTER = nullptr;		// Used to delete the dyn. alloc. content of a smart pointer (bc "delete" doesn't work)
+________________________________________________________________________________________________________________________________
+Library <list>:
+Lists are containers whose elements aren't continuous, but where every element contains a pointer to its "adjacent" elements.
+Lists use bidirectional iterators and don't support indexing, but they're efficient for using "insert" and "erase" functions.
+In fact, their iterators can only be incremented/decremented by 1 at a time, making navigating throught lists a bit tricky.
+
+list<TYPE> NAME{elements}		// Creates a list
+ITERATOR = SOME_LIST.erase(ITERATOR); 	// How to safely delete an element of a list without the risk of a dangling iterator
+
+Library <forward_list>:
+The elements of forward lists only contain a pointer to the element "after" it, meaning they can only use ++ and not --
+
+forward_list<TYPE> NAME			// Creates a forward list
+ITERATOR = FW_LIST.before_begin;	// Creates an iterator which points to an imaginary element before the first one
+FW_LIST.insert_after(IT, VALUE)		// Inserts the VALUE at the spot just after the iterator IT
+________________________________________________________________________________________________________________________________
+Library <set>:
+Sets are containers whose elements are automatically sorted to go from lowest to highest.
+Normal sets do not contain duplicates, but multisets do. They cannot be indexed, since their elements don't have a position.
+Sets should be used when we need to quickly add, remove and find elements, but when their position isn't important.
+
+set<TYPE> NAME			// Creates a set
+multiset<TYPE> NAME		// Creates a multiset
+SET.insert(VALUE)		// Inserts the value into a set, notice that we don't add any parameter for the value's location
+SET.erase(VALUE)		// Erases the value from a set, notice that we don't add any parameter for the value's location
+
