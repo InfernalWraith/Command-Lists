@@ -126,9 +126,19 @@ string NAME;					// Initializes a string
 STRING.substr(START, LENGTH);			// Returns a part of the string from the starting position to start+length
 STRING.size();					// Returns the length of the string
 STRING.length();				// Returns the length of the string
+________________________________________________________________________________________________________________________________
+Library <cstring>:
+
+strcmp(STR1, STR2)				// Compares STR1 to STR2 and returns <0 (STR1 is lower), 0 (equal), >0 (greater)
+strcpy(DESTINATION, SOURCE);			// Copies the content from the source to the destination
 strlen(s);					// Returns the length of the string
-strcmp
-strcpy
+
+________________________________________________________________________________________________________________________________
+Comparative functions:
+
+There are many examples of functions in C++ where we can compare things based on the criteria we choose.
+Essentially, we form our own custom functions which must return a bool (a value that is either true or false)
+After that, we put our function as a parameter while calling the comparative function.
 ________________________________________________________________________________________________________________________________
 Throwing exceptions and <stdexcept>:
 
@@ -161,6 +171,20 @@ find
 find_if
 
 ________________________________________________________________________________________________________________________________
+Library <utility>:
+
+swap(VAR1, VAR2)			// Swaps the contents of VAR1 and VAR2
+________________________________________________________________________________________________________________________________
 Pointers:
 
-SMART_POINTER.get();			// Creates a "dumb" pointer from a smart pointer
+Library <memory>:
+
+shared_ptr<TYPE> NAME			// Creates a shared pointer with the type "TYPE" and the name "NAME"
+make_shared<TYPE>(VALUE);		// Like "new" but creates a shared pointer to the dynamically allocated memory
+shared_ptr<TYPE> NAME(new TYPE[ARRAYLENGTH], [](TYPE *p) { delete[] p; });	// How to make a shared pointer array
+unique_ptr<TYPE> NAME			// Creates a unique pointer with the type "TYPE" and the name "NAME"
+unique_ptr<TYPE> P2(std::move(P1));	// How to transfer one unique pointer to the other (the first becomes a null-pointer)
+unique_ptr<TYPE[]> p(new TYPE[LENGTH]);	// Creates a unique pointer to an array with the length "LENGTH"
+
+NEW_POINTER(SMART_POINTER.get());	// Creates a "dumb" pointer from a smart pointer
+SMART_POINTER = nullptr;		// Used to delete the dyn. alloc. content of a smart pointer (bc "delete" doesn't work)
