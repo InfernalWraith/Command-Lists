@@ -189,6 +189,25 @@ unique_ptr<TYPE[]> p(new TYPE[LENGTH]);	// Creates a unique pointer to an array 
 NEW_POINTER(SMART_POINTER.get());	// Creates a "dumb" pointer from a smart pointer
 SMART_POINTER = nullptr;		// Used to delete the dyn. alloc. content of a smart pointer (bc "delete" doesn't work)
 ________________________________________________________________________________________________________________________________
+Library <iterator>:
+Iterators are very similiar to pointers. They point to an object and can be dereferenced.
+They don't exactly possess all the features a pointer does, but they can navigate fragmented containers with ease.
+Iterators can be output iterators, input iterators, forward iterators, bidirectional iterators and random access iterators.
+
+VARIABLE::iterator NAME			// Creates an iterator pointing to the variable
+advance(ITERATOR, NUMBER)		// Advances the iterator the amount of times specified
+distance(IT1, IT2)			// Measures the distance between 2 iterators by incrementing IT1 until it becomes IT2
+CONST_VARIABLE::const_iterator NAME	// Creates an iterator to a constant variable, can't use a normal iterator
+VARIABLE::reverse_iterator NAME		// Creates a reverse iterator, in which everything is reversed
+VARIABLE::const_reverse_iterator NAME	// Creates a reverse iterator to a constant variable
+CONTAINER.rbegin();			// Returns a reverse iterator to the beginning of the container
+CONTAINER.rend();			// Returns a reverse iterator to the end of the container
+back_inserter(COLLECTION);		// While using this iterator to add elements, they are inserted instead of copied
+front_inserter(COLLECTION);		// Works only for containers which support "push_front"
+inserter(CONTAINER, ITERATOR);		// Function which is passed to other function, returns an inserter at the ITERATOR
+ostream_iterator<TYPE> NAME(cout, CHAR)	// Output stream iterator which prints "xyzCHAR" for the command "NAME += xyz"
+
+________________________________________________________________________________________________________________________________
 Library <list>:
 Lists are containers whose elements aren't continuous, but where every element contains a pointer to its "adjacent" elements.
 Lists use bidirectional iterators and don't support indexing, but they're efficient for using "insert" and "erase" functions.
@@ -196,6 +215,7 @@ In fact, their iterators can only be incremented/decremented by 1 at a time, mak
 
 list<TYPE> NAME{elements}		// Creates a list
 ITERATOR = SOME_LIST.erase(ITERATOR); 	// How to safely delete an element of a list without the risk of a dangling iterator
+LIST.sort()				// Sorts the elements of a list low to high, we can also pass it a custom sort function
 
 Library <forward_list>:
 The elements of forward lists only contain a pointer to the element "after" it, meaning they can only use ++ and not --
@@ -213,4 +233,37 @@ set<TYPE> NAME			// Creates a set
 multiset<TYPE> NAME		// Creates a multiset
 SET.insert(VALUE)		// Inserts the value into a set, notice that we don't add any parameter for the value's location
 SET.erase(VALUE)		// Erases the value from a set, notice that we don't add any parameter for the value's location
+
+Library <unordered_set>:
+
+unordered_set<TYPE> NAME	// Creates an unordered set
+unordered_multiset<TYPE> NAME	// Creates an unordered multiset
+________________________________________________________________________________________________________________________________
+Library <stack>:
+Stacks don't support iterators. They work on the "Last in, First out" principle
+
+stack<TYPE> NAME		// Creates a stack
+STACK.push(VALUE);		// Adds an element
+STACK.pop();			// Removes the top element
+STACK.top();			// Selects the top element
+STACK.size();			// Returns the size of the container
+STACK.empty();			// Returns true if the container is empty, or false if it's not
+________________________________________________________________________________________________________________________________
+Library <queue>:
+Queues don't support iterators. They work on the "First in, First out" principle.
+Priority queues work on the "Best First Out" principle, where the best element is by default the biggest one (it can be custom)
+
+queue<TYPE> NAME		// Creates a queue
+priority_queue<TYPE> NAME	// Creates a priority queue
+QUEUE.push(VALUE);		// Adds an element
+QUEUE.pop();			// Removes the top element
+QUEUE.top();			// Selects the top element
+QUEUE.front();			// Used for normal queues, selects the first element
+QUEUE.back();			// Used for normal queues, selects the last element
+QUEUE.size();			// Returns the size of the container
+QUEUE.empty();			// Returns true if the container is empty, or false if it's not 
+________________________________________________________________________________________________________________________________
+
+
+
 
