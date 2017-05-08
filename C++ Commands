@@ -61,8 +61,6 @@ cin.getline(STRING, sizeof STRING);	// To make sure there's enough space in our 
 
 for(int i=0; i<10; i++)	//CODE		// Standard foor loop that loops 10 times in this case
 while(CONDITION) //CODE			// Standard while loop;
-
-
 ________________________________________________________________________________________________________________________________
 Library <cmath>:
 
@@ -132,7 +130,24 @@ Library <cstring>:
 strcmp(STR1, STR2)				// Compares STR1 to STR2 and returns <0 (STR1 is lower), 0 (equal), >0 (greater)
 strcpy(DESTINATION, SOURCE);			// Copies the content from the source to the destination
 strlen(s);					// Returns the length of the string
+________________________________________________________________________________________________________________________________
+Lambda functions:
 
+Lambda functions are nameless functions which we form and use on the spot. They are formed inside the main function.
+Lambda functions are written like so:
+
+[](PARAMETERS){ CODE }
+
+If we want to capture a variable that's outside of the lambda function, we can just put it inside the square brackets.
+[VAR] is treated like a constant inside the function, while [&VAR] can be modified and affects the variable outside the function
+[=] captures all the variables as constants, while [&] captures all variables by reference 
+[&, a, b] is a mixed example, as well as [=, &a, &b]
+Lambda functions which "capture" variables are called "lambda closures" or just "closures"
+
+Closures can't be passed as parameters to functions which take regular functions as parameters.
+Pointers to normal functions can't point to closures.
+Bearing this in mind, we can create special pointers to them called polymorphic function wrappers in the library <functional>:
+function<int(int)> NAME		// We can put this in a function's prototype so it can accept closures too
 ________________________________________________________________________________________________________________________________
 Comparative functions:
 
@@ -206,7 +221,6 @@ back_inserter(COLLECTION);		// While using this iterator to add elements, they a
 front_inserter(COLLECTION);		// Works only for containers which support "push_front"
 inserter(CONTAINER, ITERATOR);		// Function which is passed to other function, returns an inserter at the ITERATOR
 ostream_iterator<TYPE> NAME(cout, CHAR)	// Output stream iterator which prints "xyzCHAR" for the command "NAME += xyz"
-
 ________________________________________________________________________________________________________________________________
 Library <list>:
 Lists are containers whose elements aren't continuous, but where every element contains a pointer to its "adjacent" elements.
@@ -216,7 +230,7 @@ In fact, their iterators can only be incremented/decremented by 1 at a time, mak
 list<TYPE> NAME{elements}		// Creates a list
 ITERATOR = SOME_LIST.erase(ITERATOR); 	// How to safely delete an element of a list without the risk of a dangling iterator
 LIST.sort()				// Sorts the elements of a list low to high, we can also pass it a custom sort function
-
+_______________________
 Library <forward_list>:
 The elements of forward lists only contain a pointer to the element "after" it, meaning they can only use ++ and not --
 
@@ -233,14 +247,14 @@ set<TYPE> NAME			// Creates a set
 multiset<TYPE> NAME		// Creates a multiset
 SET.insert(VALUE)		// Inserts the value into a set, notice that we don't add any parameter for the value's location
 SET.erase(VALUE)		// Erases the value from a set, notice that we don't add any parameter for the value's location
-
+________________________
 Library <unordered_set>:
 
 unordered_set<TYPE> NAME	// Creates an unordered set
 unordered_multiset<TYPE> NAME	// Creates an unordered multiset
 ________________________________________________________________________________________________________________________________
 Library <stack>:
-Stacks don't support iterators. They work on the "Last in, First out" principle
+Stacks don't support iterators. They work on the "Last in, First out" principle.
 
 stack<TYPE> NAME		// Creates a stack
 STACK.push(VALUE);		// Adds an element
