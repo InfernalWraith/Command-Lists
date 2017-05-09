@@ -225,7 +225,7 @@ ________________________________________________________________________________
 Library <list>:
 Lists are containers whose elements aren't continuous, but where every element contains a pointer to its "adjacent" elements.
 Lists use bidirectional iterators and don't support indexing, but they're efficient for using "insert" and "erase" functions.
-In fact, their iterators can only be incremented/decremented by 1 at a time, making navigating throught lists a bit tricky.
+In fact, their iterators can only be incremented/decremented by 1 at a time, making navigating through lists a bit tricky.
 
 list<TYPE> NAME{elements}		// Creates a list
 ITERATOR = SOME_LIST.erase(ITERATOR); 	// How to safely delete an element of a list without the risk of a dangling iterator
