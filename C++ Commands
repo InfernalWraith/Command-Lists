@@ -323,10 +323,13 @@ _________________________________
 We can also set the default values of a structure's attributes by initializing them inside of the structure with = or {}:
 
 struct date{
-	int day = 1
-	int month{1}
-	int year = 2000
+	int day = 1;
+	int month{1};
+	int year = 2000;
+	char era[4] = "AD";		// DO NOT USE {} FOR C-STYLE STRINGS, doesn't work on GNU C++ compilers
 };
+
+This, however, means that we won't be used to use initialization lists for this structure.
 _________________________________
 
 
