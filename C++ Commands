@@ -330,6 +330,8 @@ struct date{
 };
 
 This, however, means that we won't be used to use initialization lists for this structure.
+Also, we shouldn't initialize things inside of the structure if we plan on using constructors.
+If an attribute is declared as static const, we MUST declare it inside of the structure.
 _________________________________
 
 
