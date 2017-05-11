@@ -283,7 +283,7 @@ Structures are custom types of data which we can design to our own liking. They 
 struct NAME{
 	// Attributes
 };
-
+_________________________________
 The variables inside of the structure are called attributes.
 Note the semicolon ( ; ) after the curly brackets. 
 It's placed there because we can also initialize an object of that structure's type right there:
@@ -291,13 +291,13 @@ It's placed there because we can also initialize an object of that structure's t
 struct STRUCTURE_NAME{
 	// Attributes
 } MY_STRUCTURE_1, MY_STRUCTURE_2;
-
+_________________________________
 This, however, isn't really the best way to go about things.
-Since we only create objects when we need them in C++, we should create an object later on, not when we create the structure:
+Since we only create objects when we need them in C++, we should create an object later on, not when we create the structure.
+This creates an object called OBJECT_NAME whose type is the structure called STRUCTURE_NAME:
 
 STRUCTURE_NAME OBJECT_NAME
-
-This creates an object called OBJECT_NAME whose type is the structure called STRUCTURE_NAME.
+_________________________________
 Here's an example of how we can access a structure's attributes:
 
 struct location{
@@ -311,13 +311,27 @@ my_college.country = "Bosnia and Herzegowina";		// Sets the attribute "country"
 my_college.city = "Sarajevo";				// Sets the attribute "city"
 my_college.postal_code = 71000;				// Sets the attribute "postal_code"
 my_college.address = "Zmaja od Bosne bb";		// Sets the attribute "address"
-
+_________________________________
 We can initialize all of the attributes at once if we put them inside of curly brackets in the same order like in the structure:
 
 my_college{"Bosnia and Herzegowina", "Sarajevo", 71000, "Zmaja od Bosne bb"};
-
+_________________________________
 It's also possible to copy all contents from one object to another (assuming they're from the same structure):
 
 my_college = my_friends_college;
+_________________________________
+We can also set the default values of a structure's attributes by initializing them inside of the structure with = or {}:
+
+struct date{
+	int day = 1
+	int month{1}
+	int year = 2000
+};
+_________________________________
+
+
+
+
+
 
 
