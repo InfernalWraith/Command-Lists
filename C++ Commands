@@ -51,7 +51,7 @@ fixed					// OUTPUT STREAM OBJECT, makes setprecision print out a fixed amount o
 // NOTE: If the input isn't the same type as the variable , cin is set to FALSE then and can be tested with if(!cin)
 cin >> VARIABLE;			// Waits for input, storing it in the variable we designated
 cin.clear();				// Resets the value of cin in case its value was changed
-cin.ignore(INTEGER, CHARACTER);		// Clears the specified amount of characters from the buffer, or until it clears the specified character
+cin.ignore(INTEGER, CHARACTER);		// Clears INTEGER amount of characters from the buffer, or until it clears CHARACTER
 ws;					// INPUT STREAM OBJECT, extracts all whitespace characters
 cin.peek();				// INPUT STREAM OBJECT, returns the next character in the input without extracting it
 
@@ -277,7 +277,47 @@ QUEUE.back();			// Used for normal queues, selects the last element
 QUEUE.size();			// Returns the size of the container
 QUEUE.empty();			// Returns true if the container is empty, or false if it's not 
 ________________________________________________________________________________________________________________________________
+Structures:
+Structures are custom types of data which we can design to our own liking. They are made like so:
 
+struct NAME{
+	// Attributes
+};
 
+The variables inside of the structure are called attributes.
+Note the semicolon ( ; ) after the curly brackets. 
+It's placed there because we can also initialize an object of that structure's type right there:
+
+struct STRUCTURE_NAME{
+	// Attributes
+} MY_STRUCTURE_1, MY_STRUCTURE_2;
+
+This, however, isn't really the best way to go about things.
+Since we only create objects when we need them in C++, we should create an object later on, not when we create the structure:
+
+STRUCTURE_NAME OBJECT_NAME
+
+This creates an object called OBJECT_NAME whose type is the structure called STRUCTURE_NAME.
+Here's an example of how we can access a structure's attributes:
+
+struct location{
+	string country;
+	string city;
+	int postal_code;
+	string address;
+} my_college;
+
+my_college.country = "Bosnia and Herzegowina";		// Sets the attribute "country"
+my_college.city = "Sarajevo";				// Sets the attribute "city"
+my_college.postal_code = 71000;				// Sets the attribute "postal_code"
+my_college.address = "Zmaja od Bosne bb";		// Sets the attribute "address"
+
+We can initialize all of the attributes at once if we put them inside of curly brackets in the same order like in the structure:
+
+my_college{"Bosnia and Herzegowina", "Sarajevo", 71000, "Zmaja od Bosne bb"};
+
+It's also possible to copy all contents from one object to another (assuming they're from the same structure):
+
+my_college = my_friends_college;
 
 
