@@ -307,14 +307,14 @@ struct location{
 	string address;
 } my_college;
 
-my_college.country = "Bosnia and Herzegowina";		// Sets the attribute "country"
-my_college.city = "Sarajevo";				// Sets the attribute "city"
-my_college.postal_code = 71000;				// Sets the attribute "postal_code"
-my_college.address = "Zmaja od Bosne bb";		// Sets the attribute "address"
+my_college.country = "Fancyland";			// Sets the attribute "country"
+my_college.city = "Fancyville";				// Sets the attribute "city"
+my_college.postal_code = 12345;				// Sets the attribute "postal_code"
+my_college.address = "Fancy Pants Street";		// Sets the attribute "address"
 _________________________________
 We can initialize all of the attributes at once if we put them inside of curly brackets in the same order like in the structure:
 
-my_college{"Bosnia and Herzegowina", "Sarajevo", 71000, "Zmaja od Bosne bb"};
+my_college{"Fancyland", "Fancyville", 12345, "Fancy Pants Street"};
 _________________________________
 It's also possible to copy all contents from one object to another (assuming they're from the same structure):
 
