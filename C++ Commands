@@ -359,3 +359,7 @@ Library <unordered_map>:
 
 unordered_map<TYPE1, TYPE2> MAP_NAME		// Creates an unordered map
 unordered_multimap<TYPE1, TYPE2> MAP_NAME	// Creates an unordered multimap
+________________________________________________________________________________________________________________________________
+Library <array>:
+
+array<TYPE, SIZE> NAME				// Creates an array with the specified type and size
