@@ -189,6 +189,8 @@ ________________________________________________________________________________
 Library <utility>:
 
 swap(VAR1, VAR2)			// Swaps the contents of VAR1 and VAR2
+pair<TYPE1, TYPE2> PAIR_VARIABLE	// Creates an ordered pair of elements, with elements pair.first and pair.second
+PAIR_VARIABLE = make_pair(VAR1, VAR2)	// Initializes an ordered pair to the specified values
 ________________________________________________________________________________________________________________________________
 Pointers:
 
@@ -340,8 +342,20 @@ If we want to sort structures, we need to create a custom criteria function.
 To initialize all the structure's attributes at once, we use initialization lists, were we put all the attributes like so:
 {VALUE_1, VALUE_2, VALUE_3 ... }	// Passes the values to the first three attributes
 
+The expression x->y is the same as (*x).y
+________________________________________________________________________________________________________________________________
+Library <map>:
 
+map<TYPE1, TYPE2> MAP_NAME			// Creates a map comprised of elements with the specified types
+MAP_NAME.insert(make_pair(KEY_V, ASSOC_VALUE))	// Adds an element to the map, key values must be unique ( no duplicates! )
+map<TYPE1, TYPE2> MAP_NAME{{x1,y1},{x2,y2}}	// How to form an initialization list for a map
+MAP_NAME[KEY_VALUE]				// How to access an element by key value, returns the associated value
+MAP_NAME[KEY_VALUE] = ASSOCIATED_VALUE		// How to set an associated value for a certain key value
 
+multimap<TYPE1, TYPE2> MAP_NAME			// Creates a multimap, which can't access elements by a key value
 
+________________________________________________________________________________________________________________________________
+Library <unordered_map>:
 
-
+unordered_map<TYPE1, TYPE2> MAP_NAME		// Creates an unordered map
+unordered_multimap<TYPE1, TYPE2> MAP_NAME	// Creates an unordered multimap
