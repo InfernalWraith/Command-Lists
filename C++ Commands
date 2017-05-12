@@ -333,7 +333,12 @@ This, however, means that we won't be used to use initialization lists for this 
 Also, we shouldn't initialize things inside of the structure if we plan on using constructors.
 If an attribute is declared as static const, we MUST declare it inside of the structure.
 _________________________________
-
+Structures can be massive, so it's best to pass them to functions as references instead of passing them by value.
+We can also return structures from functions, and we can dynamically allocate them using the keyword "new"
+Unless we have to do otherwise, we should pass structures to functions as references to const objects.
+If we want to sort structures, we need to create a custom criteria function.
+To initialize all the structure's attributes at once, we use initialization lists, were we put all the attributes like so:
+{VALUE_1, VALUE_2, VALUE_3 ... }	// Passes the values to the first three attributes
 
 
 
