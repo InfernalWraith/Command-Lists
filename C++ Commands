@@ -277,7 +277,26 @@ QUEUE.top();			// Selects the top element
 QUEUE.front();			// Used for normal queues, selects the first element
 QUEUE.back();			// Used for normal queues, selects the last element
 QUEUE.size();			// Returns the size of the container
-QUEUE.empty();			// Returns true if the container is empty, or false if it's not 
+QUEUE.empty();			// Returns true if the container is empty, or false if it's not
+________________________________________________________________________________________________________________________________
+Library <map>:
+
+map<TYPE1, TYPE2> MAP_NAME			// Creates a map comprised of elements with the specified types
+MAP_NAME.insert(make_pair(KEY_V, ASSOC_VALUE))	// Adds an element to the map, key values must be unique ( no duplicates! )
+map<TYPE1, TYPE2> MAP_NAME{{x1,y1},{x2,y2}}	// How to form an initialization list for a map
+MAP_NAME[KEY_VALUE]				// How to access an element by key value, returns the associated value
+MAP_NAME[KEY_VALUE] = ASSOCIATED_VALUE		// How to set an associated value for a certain key value
+
+multimap<TYPE1, TYPE2> MAP_NAME			// Creates a multimap, which can't access elements by a key value
+________________________________________________________________________________________________________________________________
+Library <unordered_map>:
+
+unordered_map<TYPE1, TYPE2> MAP_NAME		// Creates an unordered map
+unordered_multimap<TYPE1, TYPE2> MAP_NAME	// Creates an unordered multimap
+________________________________________________________________________________________________________________________________
+Library <array>:
+
+array<TYPE, SIZE> NAME				// Creates an array with the specified type and size
 ________________________________________________________________________________________________________________________________
 Structures:
 Structures are custom types of data which we can design to our own liking. They are made like so:
@@ -344,22 +363,63 @@ To initialize all the structure's attributes at once, we use initialization list
 
 The expression x->y is the same as (*x).y
 ________________________________________________________________________________________________________________________________
-Library <map>:
+Classes:
+Classes can be viewed as advanced versions of structures, they lie at the core of object oriented programming (OOP).
+They key concepts an object oriented program should follow are: data concealment, encapsulation, inheritance and polymorphism.
+Essentially, classes contain variables, but also class member functions, which define what we can do with the variables.
+The data inside classes can be made private or public, where we can only use the variables and functions which are public.
+Classes in object oriented programs should have all their attributes set to private.
+We can do so using the keywords "private" and "public" like so:
 
-map<TYPE1, TYPE2> MAP_NAME			// Creates a map comprised of elements with the specified types
-MAP_NAME.insert(make_pair(KEY_V, ASSOC_VALUE))	// Adds an element to the map, key values must be unique ( no duplicates! )
-map<TYPE1, TYPE2> MAP_NAME{{x1,y1},{x2,y2}}	// How to form an initialization list for a map
-MAP_NAME[KEY_VALUE]				// How to access an element by key value, returns the associated value
-MAP_NAME[KEY_VALUE] = ASSOCIATED_VALUE		// How to set an associated value for a certain key value
+class date{
+	private:
+		int day, month, year;
+	public:
+		void PrintDate() const { cout << day << "/" << month << "/" << year; }
+}
 
-multimap<TYPE1, TYPE2> MAP_NAME			// Creates a multimap, which can't access elements by a key value
+As you can see, we restricted all access to the variables "day" "month" and "year" unless we use the PrintDate function.
+By default, everything inside a class is private unless declared public, so we can omit the "private:" part of the code.
+The public part of the class is called the class interface.
+Class member functions can be inspectors and mutators.
+Inspectors only read the data, while mutators may change the data as well.
+Because of this, it's advised to make inspector functions stand out by adding "const" as a part of their definition (see above).
+However, a function can still be an inspector if it changes a variable declared with the keyword "mutable"
 
-________________________________________________________________________________________________________________________________
-Library <unordered_map>:
+class date{
+	private:
+		int day, month, year;
+		mutable int print_amount;
+	public:
+		void PrintDate() const { cout << day << "/" << month << "/" << year; print_amount++; }
+		void HowManyPrints() const { cout << "You've printed the date " << print_amount << "times."; }
+}
 
-unordered_map<TYPE1, TYPE2> MAP_NAME		// Creates an unordered map
-unordered_multimap<TYPE1, TYPE2> MAP_NAME	// Creates an unordered multimap
-________________________________________________________________________________________________________________________________
-Library <array>:
+Like you see here, an inspector can still change a mutable variable.
+We can also write class member functions outside of the class definitions, but we must at least put their prototypes there:
 
-array<TYPE, SIZE> NAME				// Creates an array with the specified type and size
+class date{
+	int day, month, year;
+	public:
+		void PrintDate() const;
+		void SetDate(int d, int m, int y){ day=d; month=m; year=y; }
+}
+
+void date::PrintDate() const { cout << day << "/" << month << "/" << year; }
+
+If we do this, we must write the name of the function along with the class name (date::PrintDate).
+The " :: " between is called the scope operator, which allows multiple classes to have a different function with the same name.
+Class member functions must be called on an object of that class:
+
+date today;			// We create the variable
+today.SetDate(20, 5, 2017);	// We set the date to the 20th of May, 2017 (the day I wrote this and the "Classes" chapter!)
+today.PrintDate();		// We print the date
+
+If we wanted to call a Class Member Function inside another CMF, it would automatically call it on the same object as the first.
+Friend functions are interpreted as normal functions that have the ability to access private attributes of a class.
+They are created by writing their prototype after the keyword "friend" in the definition of the class.
+Even though friend functions can be defined inside of a class, this can cause issues with the function becoming unavailable.
+If a class has at least one private attribute, its objects cannot be initialized using initialization lists.
+We can also make one class a friend of some other class, allowing it to use its member functions:
+
+friend class SOME_CLASS
