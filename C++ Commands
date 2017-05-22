@@ -423,3 +423,19 @@ If a class has at least one private attribute, its objects cannot be initialized
 We can also make one class a friend of some other class, allowing it to use its member functions:
 
 friend class SOME_CLASS
+________________________________________________________________________________________________________________________________
+Constructors:
+Constructors are sets of actions which are performed when an object of the class they're defined in is created.
+They're written like so:
+
+class date{
+	int day, month, year;
+	public:
+		date () { day=1; month=1; year=2000; }		// This is a constructor with no parameters!
+		void PrintDate() const;
+		void SetDate(int d, int m, int y){ day=d; month=m; year=y; }
+}
+
+Constructors have the same name as the class they're written for, they look like functions that don't have a return value.
+However, it's important to note that constructors aren't functions.
+Constructors can help us set up the attributes of a class upon the creation of an object, as well as lots of other things.
