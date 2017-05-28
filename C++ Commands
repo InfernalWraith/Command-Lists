@@ -446,7 +446,7 @@ Constructors which take in multiple parameters can also be created, and are call
 Constructors with only 1 parameter are called when we just pass a single value, they also try to convert the value so it fits.
 
 If an attribute must be initialized to a value upon its creation, we use constructor initializational lists.
-They are also used if an attribute is declared as const, since we can't assign a value to it after its creation.
+They are also used if an attribute is declared as const or a reference, since we can't assign a value to it after its creation.
 Initializational lists call constructors of the objects they contain, to initialize them before the actual constructor starts.
 We use constructor initializational lists like so:
 
