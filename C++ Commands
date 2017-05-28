@@ -176,13 +176,13 @@ ________________________________________________________________________________
 Library <algorithm>:
 This library contains many useful and time-saving functions, many of which can take custom functions as parameters.
 
-for_each(BEGIN, END, FUNCTION)		// Applies the function to each element enclosed in the block
-max_element(BEGIN, END)			// Returns the pointer to the maximal element in the block
-max_element(BEGIN, END, FUNCTION)	// Returns the pointer to the maximal element in the block with regard to the function
-min_element(BEGIN, END)			// Returns the pointer to the minimal element in the block
-min_element(BEGIN, END, FUNCTION)	// Returns the pointer to the minimal element in the block with regard to the function
-count(BEGIN, END, ELEMENT)		// Returns how many times the element is found in the block
-count_if(BEGIN, END, FUNCTION)		// Returns how many elements return TRUE when passed to the function
+for_each(BEGIN, END, FUNCTION)			// Applies the function to each element enclosed in the block
+max_element(BEGIN, END)					// Returns the pointer to the maximal element in the block
+max_element(BEGIN, END, FUNCTION)		// Returns the pointer to the maximal element in the block with regard to the function
+min_element(BEGIN, END)					// Returns the pointer to the minimal element in the block
+min_element(BEGIN, END, FUNCTION)		// Returns the pointer to the minimal element in the block with regard to the function
+count(BEGIN, END, ELEMENT)				// Returns how many times the element is found in the block
+count_if(BEGIN, END, FUNCTION)			// Returns how many elements return TRUE when passed to the function
 remove_copy_if(BEGIN, END, LOCATION)	// Copies all elements to the location while removing duplicates
 transform(BEGIN, END, LOC, FUNCTION)	// Applies the function to all elements in the block and puts them in the location
 find
@@ -190,40 +190,40 @@ find_if
 ________________________________________________________________________________________________________________________________
 Library <utility>:
 
-swap(VAR1, VAR2)			// Swaps the contents of VAR1 and VAR2
-pair<TYPE1, TYPE2> PAIR_VARIABLE	// Creates an ordered pair of elements, with elements pair.first and pair.second
-PAIR_VARIABLE = make_pair(VAR1, VAR2)	// Initializes an ordered pair to the specified values
+swap(VAR1, VAR2)							// Swaps the contents of VAR1 and VAR2
+pair<TYPE1, TYPE2> PAIR_VARIABLE			// Creates an ordered pair of elements, with elements pair.first and pair.second
+PAIR_VARIABLE = make_pair(VAR1, VAR2)		// Initializes an ordered pair to the specified values
 ________________________________________________________________________________________________________________________________
 Pointers:
 
 Library <memory>:
 
-shared_ptr<TYPE> NAME			// Creates a shared pointer with the type "TYPE" and the name "NAME"
-make_shared<TYPE>(VALUE);		// Like "new" but creates a shared pointer to the dynamically allocated memory
+shared_ptr<TYPE> NAME					// Creates a shared pointer with the type "TYPE" and the name "NAME"
+make_shared<TYPE>(VALUE);				// Like "new" but creates a shared pointer to the dynamically allocated memory
 shared_ptr<TYPE> NAME(new TYPE[ARRAYLENGTH], [](TYPE *p) { delete[] p; });	// How to make a shared pointer array
-unique_ptr<TYPE> NAME			// Creates a unique pointer with the type "TYPE" and the name "NAME"
-unique_ptr<TYPE> P2(std::move(P1));	// How to transfer one unique pointer to the other (the first becomes a null-pointer)
+unique_ptr<TYPE> NAME					// Creates a unique pointer with the type "TYPE" and the name "NAME"
+unique_ptr<TYPE> P2(std::move(P1));		// How to transfer one unique pointer to the other (the first becomes a null-pointer)
 unique_ptr<TYPE[]> p(new TYPE[LENGTH]);	// Creates a unique pointer to an array with the length "LENGTH"
 
-NEW_POINTER(SMART_POINTER.get());	// Creates a "dumb" pointer from a smart pointer
-SMART_POINTER = nullptr;		// Used to delete the dyn. alloc. content of a smart pointer (bc "delete" doesn't work)
+NEW_POINTER(SMART_POINTER.get());		// Creates a dumb/raw pointer from a smart pointer
+SMART_POINTER = nullptr;				// Used to delete the dyn. alloc. content of a smart pointer (bc "delete" doesn't work)
 ________________________________________________________________________________________________________________________________
 Library <iterator>:
 Iterators are very similiar to pointers. They point to an object and can be dereferenced.
 They don't exactly possess all the features a pointer does, but they can navigate fragmented containers with ease.
 Iterators can be output iterators, input iterators, forward iterators, bidirectional iterators and random access iterators.
 
-VARIABLE::iterator NAME			// Creates an iterator pointing to the variable
-advance(ITERATOR, NUMBER)		// Advances the iterator the amount of times specified
-distance(IT1, IT2)			// Measures the distance between 2 iterators by incrementing IT1 until it becomes IT2
-CONST_VARIABLE::const_iterator NAME	// Creates an iterator to a constant variable, can't use a normal iterator
-VARIABLE::reverse_iterator NAME		// Creates a reverse iterator, in which everything is reversed
+VARIABLE::iterator NAME					// Creates an iterator pointing to the variable
+advance(ITERATOR, NUMBER)				// Advances the iterator the amount of times specified
+distance(IT1, IT2)						// Measures the distance between 2 iterators by incrementing IT1 until it becomes IT2
+CONST_VARIABLE::const_iterator NAME		// Creates an iterator to a constant variable, can't use a normal iterator
+VARIABLE::reverse_iterator NAME			// Creates a reverse iterator, in which everything is reversed
 VARIABLE::const_reverse_iterator NAME	// Creates a reverse iterator to a constant variable
-CONTAINER.rbegin();			// Returns a reverse iterator to the beginning of the container
-CONTAINER.rend();			// Returns a reverse iterator to the end of the container
-back_inserter(COLLECTION);		// While using this iterator to add elements, they are inserted instead of copied
-front_inserter(COLLECTION);		// Works only for containers which support "push_front"
-inserter(CONTAINER, ITERATOR);		// Function which is passed to other function, returns an inserter at the ITERATOR
+CONTAINER.rbegin();						// Returns a reverse iterator to the beginning of the container
+CONTAINER.rend();						// Returns a reverse iterator to the end of the container
+back_inserter(COLLECTION);				// While using this iterator to add elements, they are inserted instead of copied
+front_inserter(COLLECTION);				// Works only for containers which support "push_front"
+inserter(CONTAINER, ITERATOR);			// Function which is passed to other function, returns an inserter at the ITERATOR
 ostream_iterator<TYPE> NAME(cout, CHAR)	// Output stream iterator which prints "xyzCHAR" for the command "NAME += xyz"
 ________________________________________________________________________________________________________________________________
 Library <list>:
@@ -231,30 +231,30 @@ Lists are containers whose elements aren't continuous, but where every element c
 Lists use bidirectional iterators and don't support indexing, but they're efficient for using "insert" and "erase" functions.
 In fact, their iterators can only be incremented/decremented by 1 at a time, making navigating through lists a bit tricky.
 
-list<TYPE> NAME{elements}		// Creates a list
+list<TYPE> NAME{elements}				// Creates a list
 ITERATOR = SOME_LIST.erase(ITERATOR); 	// How to safely delete an element of a list without the risk of a dangling iterator
-LIST.sort()				// Sorts the elements of a list low to high, we can also pass it a custom sort function
+LIST.sort()								// Sorts the elements of a list low to high, we can also pass it a custom sort function
 _______________________
 Library <forward_list>:
 The elements of forward lists only contain a pointer to the element "after" it, meaning they can only use ++ and not --
 
-forward_list<TYPE> NAME			// Creates a forward list
-ITERATOR = FW_LIST.before_begin;	// Creates an iterator which points to an imaginary element before the first one
-FW_LIST.insert_after(IT, VALUE)		// Inserts the VALUE at the spot just after the iterator IT
+forward_list<TYPE> NAME					// Creates a forward list
+ITERATOR = FW_LIST.before_begin;		// Creates an iterator which points to an imaginary element before the first one
+FW_LIST.insert_after(IT, VALUE)			// Inserts the VALUE at the spot just after the iterator IT
 ________________________________________________________________________________________________________________________________
 Library <set>:
 Sets are containers whose elements are automatically sorted to go from lowest to highest.
 Normal sets do not contain duplicates, but multisets do. They cannot be indexed, since their elements don't have a position.
 Sets should be used when we need to quickly add, remove and find elements, but when their position isn't important.
 
-set<TYPE> NAME			// Creates a set
-multiset<TYPE> NAME		// Creates a multiset
-SET.insert(VALUE)		// Inserts the value into a set, notice that we don't add any parameter for the value's location
-SET.erase(VALUE)		// Erases the value from a set, notice that we don't add any parameter for the value's location
+set<TYPE> NAME				// Creates a set
+multiset<TYPE> NAME			// Creates a multiset
+SET.insert(VALUE)			// Inserts the value into a set, notice that we don't add any parameter for the value's location
+SET.erase(VALUE)			// Erases the value from a set, notice that we don't add any parameter for the value's location
 ________________________
 Library <unordered_set>:
 
-unordered_set<TYPE> NAME	// Creates an unordered set
+unordered_set<TYPE> NAME		// Creates an unordered set
 unordered_multiset<TYPE> NAME	// Creates an unordered multiset
 ________________________________________________________________________________________________________________________________
 Library <stack>:
@@ -271,34 +271,34 @@ Library <queue>:
 Queues don't support iterators. They work on the "First in, First out" principle.
 Priority queues work on the "Best First Out" principle, where the best element is by default the biggest one (it can be custom)
 
-queue<TYPE> NAME		// Creates a queue
+queue<TYPE> NAME			// Creates a queue
 priority_queue<TYPE> NAME	// Creates a priority queue
-QUEUE.push(VALUE);		// Adds an element
-QUEUE.pop();			// Removes the top element
-QUEUE.top();			// Selects the top element
-QUEUE.front();			// Used for normal queues, selects the first element
-QUEUE.back();			// Used for normal queues, selects the last element
-QUEUE.size();			// Returns the size of the container
-QUEUE.empty();			// Returns true if the container is empty, or false if it's not
+QUEUE.push(VALUE);			// Adds an element
+QUEUE.pop();				// Removes the top element
+QUEUE.top();				// Selects the top element
+QUEUE.front();				// Used for normal queues, selects the first element
+QUEUE.back();				// Used for normal queues, selects the last element
+QUEUE.size();				// Returns the size of the container
+QUEUE.empty();				// Returns true if the container is empty, or false if it's not
 ________________________________________________________________________________________________________________________________
 Library <map>:
 
-map<TYPE1, TYPE2> MAP_NAME			// Creates a map comprised of elements with the specified types
+map<TYPE1, TYPE2> MAP_NAME						// Creates a map comprised of elements with the specified types
 MAP_NAME.insert(make_pair(KEY_V, ASSOC_VALUE))	// Adds an element to the map, key values must be unique ( no duplicates! )
-map<TYPE1, TYPE2> MAP_NAME{{x1,y1},{x2,y2}}	// How to form an initialization list for a map
-MAP_NAME[KEY_VALUE]				// How to access an element by key value, returns the associated value
-MAP_NAME[KEY_VALUE] = ASSOCIATED_VALUE		// How to set an associated value for a certain key value
+map<TYPE1, TYPE2> MAP_NAME{{x1,y1},{x2,y2}}		// How to form an initialization list for a map
+MAP_NAME[KEY_VALUE]								// How to access an element by key value, returns the associated value
+MAP_NAME[KEY_VALUE] = ASSOCIATED_VALUE			// How to set an associated value for a certain key value
 
-multimap<TYPE1, TYPE2> MAP_NAME			// Creates a multimap, which can't access elements by a key value
+multimap<TYPE1, TYPE2> MAP_NAME					// Creates a multimap, which can't access elements by a key value
 ________________________________________________________________________________________________________________________________
 Library <unordered_map>:
 
-unordered_map<TYPE1, TYPE2> MAP_NAME		// Creates an unordered map
-unordered_multimap<TYPE1, TYPE2> MAP_NAME	// Creates an unordered multimap
+unordered_map<TYPE1, TYPE2> MAP_NAME			// Creates an unordered map
+unordered_multimap<TYPE1, TYPE2> MAP_NAME		// Creates an unordered multimap
 ________________________________________________________________________________________________________________________________
 Library <array>:
 
-array<TYPE, SIZE> NAME				// Creates an array with the specified type and size
+array<TYPE, SIZE> NAME							// Creates an array with the specified type and size
 ________________________________________________________________________________________________________________________________
 Structures:
 Structures are custom types of data which we can design to our own liking. They are made like so:
@@ -330,9 +330,9 @@ struct location{
 	string address;
 } my_college;
 
-my_college.country = "Fancyland";			// Sets the attribute "country"
-my_college.city = "Fancyville";				// Sets the attribute "city"
-my_college.postal_code = 12345;				// Sets the attribute "postal_code"
+my_college.country = "Fancyland";				// Sets the attribute "country"
+my_college.city = "Fancyville";					// Sets the attribute "city"
+my_college.postal_code = 12345;					// Sets the attribute "postal_code"
 my_college.address = "Fancy Pants Street";		// Sets the attribute "address"
 _________________________________
 We can initialize all of the attributes at once if we put them inside of curly brackets in the same order like in the structure:
@@ -349,7 +349,7 @@ struct date{
 	int day = 1;
 	int month{1};
 	int year = 2000;
-	char era[4] = "AD";		// DO NOT USE {} FOR C-STYLE STRINGS, doesn't work on GNU C++ compilers
+	char era[4] = "AD";			// DO NOT USE {} FOR C-STYLE STRINGS, doesn't work on GNU C++ compilers
 };
 
 This, however, means that we won't be used to use initialization lists for this structure.
@@ -413,9 +413,9 @@ If we do this, we must write the name of the function along with the class name 
 The " :: " between is called the scope operator, which allows multiple classes to have a different function with the same name.
 Class member functions must be called on an object of that class:
 
-date today;			// We create the variable
-today.SetDate(20, 5, 2017);	// We set the date to the 20th of May, 2017 (the day I wrote this and the "Classes" chapter!)
-today.PrintDate();		// We print the date
+date today;						// We create the variable
+today.SetDate(20, 5, 2017);		// We set the date to the 20th of May, 2017 (the day I wrote this and the "Classes" chapter!)
+today.PrintDate();				// We print the date
 
 If we wanted to call a Class Member Function inside another CMF, it would automatically call it on the same object as the first.
 Friend functions are interpreted as normal functions that have the ability to access private attributes of a class.
@@ -433,7 +433,7 @@ They're written like so:
 class date{
 	int day, month, year;
 	public:
-		date () { day=1; month=1; year=2000; }		// This is a constructor with no parameters!
+		date () { day=1; month=1; year=2000; }			// This is a constructor with no parameters!
 		void PrintDate() const;
 		void SetDate(int d, int m, int y){ day=d; month=m; year=y; }
 }
@@ -453,8 +453,8 @@ We use constructor initializational lists like so:
 class date{
 	int day, month, year;
 	public:
-		date () { day=1; month=1; year=2000; }		// This is a constructor with no parameters!
-		date (int d, int m, int y) : day(d), month(m), year(y) {}	// Note the ":" for the initializational list!
+		date () { day=1; month=1; year=2000; }							// This is a constructor with no parameters!
+		date (int d, int m, int y) : day(d), month(m), year(y) {}		// Note the ":" for the initializational list!
 		void PrintDate() const;
 		void SetDate(int d, int m, int y){ day=d; month=m; year=y; }
 }
@@ -463,10 +463,10 @@ We can also make arrays which hold objects of a certain class, but those objects
 This isn't the best way to go about things, so it's a lot better to make arrays of pointers to those objects instead.
 This allows us to make the objects themselves dynamically allocated, initializing them to concrete values as we go.
 
-date my_dates[10] = { date(1, 5, 2015), date(28, 5, 2017) };	// The rest are default, not efficient...
+date my_dates[10] = { date(1, 5, 2015), date(28, 5, 2017) };		// The rest are default, not efficient...
 
 std::shared_ptr<date> my_date_pointers[10];
-...								// This is where we input variables "day" "month" "year"
+...																	// This is where we input variables "day" "month" "year"
 for(int i=0; i<10; i++){
-	my_date_pointers[i] = make_shared date(day, month, year);	// Initializes them to values without a prior placeholder
+	my_date_pointers[i] = make_shared date(day, month, year);		// Initializes them to values without a prior placeholder
 }
