@@ -7,10 +7,10 @@ multi-line comment */
 ________________________________________________________________________________________________________________________________
 In order to make life easier and use pre-existing functions, we need to include the libraries which contain them like so:
 
-#include <iostream>		// Contains the basic functions such as printing text and data input
-#include <vector>		// Contains functions for working with vectors
-#include <string>		// For working with strings
-#include <fstream>		// Used for working with files
+#include <iostream>								// Contains the basic functions such as printing text and data input
+#include <vector>								// Contains functions for working with vectors
+#include <string>								// For working with strings
+#include <fstream>								// Used for working with files
 ________________________________________________________________________________________________________________________________
 Every C++ program needs to contain a function called "main"
 
@@ -25,81 +25,82 @@ ________________________________________________________________________________
 We can initialize variables and designate which kind of value they can be like so:
 
 int Variable1;
-float var2;				// For real numbers, accurate to around the 6th decimal
-const double PI = 3.14159;		// "const" means the variable has a fixed value and can't be altered, double>float
-char letter = 'A';			// For characters
-bool works = true;			// Is also equal to 1;
-bool doesnt_work = false;		// Is also equal to 0;
+float var2;									// For real numbers, accurate to around the 6th decimal
+const double PI = 3.14159;					// "const" means the variable has a fixed value and can't be altered, double>float
+char letter = 'A';							// For characters
+bool works = true;							// Is also equal to 1;
+bool doesnt_work = false;					// Is also equal to 0;
 
 We can also change one type of variable into another like so:
 
-(int) 3.14				// C-style notation, this is equal to 3
-int(3.14)				// Same effect, C++ functional notation
-static_cast<int> 3.14			// Same effect, but the safest when it comes to making a program multi-platform
+(int) 3.14									// C-style notation, this is equal to 3
+int(3.14)									// Same effect, C++ functional notation
+static_cast<int> 3.14						// Same effect, but the safest when it comes to making a program multi-platform
 ________________________________________________________________________________________________________________________________
 Library <iostream>:
 
-cout << "Text" << VARIABLE;		// Prints text, variables and other things to the screen
-cout << endl;				// OUTPUT STREAM OBJECT, inserts a new line
-setw(INTEGER);				// OUTPUT STREAM OBJECT, allocates the specified width for the first next output only
-cout.width(INTEGER);			// Is added as a modifier right on the "cout" and it sets the width for ALL outputs
-setfill(CHARACTER);			// OUTPUT STREAM OBJECT, fills the remaining space with the specified character
-setprecision(INTEGER);			// OUTPUT STREAM OBJECT, makes the output precise to the specified amount
-fixed					// OUTPUT STREAM OBJECT, makes setprecision print out a fixed amount of digits
+cout << "Text" << VARIABLE;				// Prints text, variables and other things to the screen
+cout << endl;							// OUTPUT STREAM OBJECT, inserts a new line
+setw(INTEGER);							// OUTPUT STREAM OBJECT, allocates the specified width for the first next output only
+cout.width(INTEGER);					// Is added as a modifier right on the "cout" and it sets the width for ALL outputs
+setfill(CHARACTER);						// OUTPUT STREAM OBJECT, fills the remaining space with the specified character
+setprecision(INTEGER);					// OUTPUT STREAM OBJECT, makes the output precise to the specified amount
+fixed									// OUTPUT STREAM OBJECT, makes setprecision print out a fixed amount of digits
 
 
 // NOTE: If the input isn't the same type as the variable , cin is set to FALSE then and can be tested with if(!cin)
-cin >> VARIABLE;			// Waits for input, storing it in the variable we designated
-cin.clear();				// Resets the value of cin in case its value was changed
-cin.ignore(INTEGER, CHARACTER);		// Clears INTEGER amount of characters from the buffer, or until it clears CHARACTER
-ws;					// INPUT STREAM OBJECT, extracts all whitespace characters
-cin.peek();				// INPUT STREAM OBJECT, returns the next character in the input without extracting it
+cin >> VARIABLE;						// Waits for input, storing it in the variable we designated
+cin.clear();							// Resets the value of cin in case its value was changed
+cin.ignore(INTEGER, CHARACTER);			// Clears INTEGER amount of characters from the buffer, or until it clears CHARACTER
+ws;										// INPUT STREAM OBJECT, extracts all whitespace characters
+cin.peek();								// INPUT STREAM OBJECT, returns the next character in the input without extracting it
 
 // NOTE: getline should be used when dealing with string input, and we should always call the cin.ignore() command before it!
-getline(cin, VARIABLE);			// Grabs the input regardless of whitespace characters and stores it in the variable
-cin.getline(STRING, sizeof STRING);	// To make sure there's enough space in our string for the input
+getline(cin, VARIABLE);					// Grabs the input regardless of whitespace characters and stores it in the variable
+cin.getline(STRING, sizeof STRING);		// To make sure there's enough space in our string for the input
 
-for(int i=0; i<10; i++)	//CODE		// Standard foor loop that loops 10 times in this case
-while(CONDITION) //CODE			// Standard while loop;
+for(int i=0; i<10; i++)	//CODE			// Standard foor loop that loops 10 times in this case
+while(CONDITION) //CODE					// Standard while loop;
 ________________________________________________________________________________________________________________________________
 Library <cmath>:
+Functions without the std:: prefix are C-style functions of the same name, their parameter is double and they return double.
 
-sin(NUMBER);			// Sine
-asin(NUMBER);			// Inverse sine
-cos(NUMBER);			// Cosine
-acos(NUMBER);			// Inverse cosine
-tan(NUMBER);			// Tangent
-atan(NUMBER);			// Inverse tangent
-log(NUMBER);			// Natural logarithm
-log10(NUMBER);			// Common logarithm
+sin(NUMBER);				// Sine
+asin(NUMBER);				// Inverse sine
+cos(NUMBER);				// Cosine
+acos(NUMBER);				// Inverse cosine
+tan(NUMBER);				// Tangent
+atan(NUMBER);				// Inverse tangent
+log(NUMBER);				// Natural logarithm
+log10(NUMBER);				// Common logarithm
 pow(NUMBER, EXPONENT);		// Raise NUMBER to the power of EXPONENT
-sqrt(NUMBER);			// Square root
-ceil(NUMBER);			// Round up
-floor(NUMBER);			// Round down
-abs(INTEGER);			// Absolute value of an integer
-fabs(NUMBER);			// Absolute value of a real number
+sqrt(NUMBER);				// Square root
+ceil(NUMBER);				// Round up
+floor(NUMBER);				// Round down
+abs(INTEGER);				// Absolute value of an integer
+fabs(NUMBER);				// Absolute value of a real number
 ________________________________________________________________________________________________________________________________
 Library <vector>:
 
-vector<TYPE> NAME(NR_OF_ELEMENTS, DEFAULT)	// Creates a vector with the specified number of elements and default value
-VECTOR.begin();					// Returns an iterator at the first element of the specified vector
-begin(VECTOR);					// Returns an iterator at the first element of the specified vector
-rbegin(VECTOR);					// Returns a reverse iterator at the first element of the specified vector
+vector<TYPE> NAME(NR_OF_ELEMENTS, DEFAULT)		// Creates a vector with the specified number of elements and default value
+VECTOR.begin();									// Returns an iterator at the first element of the specified vector
+begin(VECTOR);									// Returns an iterator at the first element of the specified vector
+rbegin(VECTOR);									// Returns a reverse iterator at the first element of the specified vector
 
-VECTOR.end();					// Returns an iterator at the past-the-end element of the specified vector
-end(VECTOR;					// Returns an iterator at the past-the-end element of the specified vector
-rend(VECTOR);					// Returns a reverse iterator at the past-the-end element of the vector
+VECTOR.end();									// Returns an iterator at the past-the-end element of the specified vector
+end(VECTOR;										// Returns an iterator at the past-the-end element of the specified vector
+rend(VECTOR);									// Returns a reverse iterator at the past-the-end element of the vector
 
-VECTOR.push_back(VALUE);			// Adds the specified value or variable past the end of the vector (Size++)
-VECTOR.size();					// Returns the size of the vector
-VECTOR.resize(INTEGER);				// Resizes the vector to the specified amount of elements
-VECTOR.insert(ECTOR.begin() + X, VALUE);	// Inserts a certain value or variable to the x-th spot in the vector
-VECTOR.erase(VECTOR.begin() + X);		// Erases the x-th element of the vector and sorts the vector
-VECTOR.swap(OTHER_VECTOR);			// Swaps the elements of the two vectors of the same type, but sizes may differ
+VECTOR.push_back(VALUE);						// Adds the specified value or variable past the end of the vector (Size++)
+VECTOR.size();									// Returns the size of the vector
+VECTOR.resize(INTEGER);							// Resizes the vector to the specified amount of elements
+VECTOR.insert(ECTOR.begin() + X, VALUE);		// Inserts a certain value or variable to the x-th spot in the vector
+VECTOR.erase(VECTOR.begin() + X);				// Erases the x-th element of the vector and sorts the vector
+VECTOR.swap(OTHER_VECTOR);						// Swaps the elements of the two vectors of the same type, but sizes may differ
 
 All of the above also works for the library <deque>, with the added bonus of being able to use:
 
-DEQUE.push_front(VALUE);			// Adds the specified value or variable to the front of the deque
+DEQUE.push_front(VALUE);						// Adds the specified value or variable to the front of the deque
 
 However, while vectors sort their elements in a continous block, a deque's memory is fragmented and therefore we shouldn't
 use pointer arithmetic while working with deques.
@@ -109,27 +110,27 @@ ________________________________________________________________________________
 Library <complex>:
 
 complex<TYPE> NAME(REAL, IMAGINARY);		// Initializes a complex number of the given type and sets its Re and Im values
-COMPLEX.real(X);				// Sets the real value of a complex number to X
-COMPLEX.real();					// Returns the real value of a complex number
-COMPLEX.imag(X);				// Sets the imaginary value of a complex number to X
-COMPLEX.imag();					// Returns the imaginary value of a complex number
-abs(COMPLEX);					// Returns the absolute value of a complex number
-arg(COMPLEX);					// Returns the argument (phase angle) of a complex number
-polar(MODULUS ,PHASE_ANGLE);			// Returns the complex number with the given parameters (Re=ρ*cosΘ ; Im=ρ*sinΘ)
-conj(COMPLEX);					// Returns the conjugated version of a complex number [Im *= (-1)]
+COMPLEX.real(X);							// Sets the real value of a complex number to X
+COMPLEX.real();								// Returns the real value of a complex number
+COMPLEX.imag(X);							// Sets the imaginary value of a complex number to X
+COMPLEX.imag();								// Returns the imaginary value of a complex number
+abs(COMPLEX);								// Returns the absolute value of a complex number
+arg(COMPLEX);								// Returns the argument (phase angle) of a complex number
+polar(MODULUS ,PHASE_ANGLE);				// Returns the complex number with the given parameters (Re=ρ*cosΘ ; Im=ρ*sinΘ)
+conj(COMPLEX);								// Returns the conjugated version of a complex number [Im *= (-1)]
 ________________________________________________________________________________________________________________________________
 Library <string>:
 
-string NAME;					// Initializes a string
-STRING.substr(START, LENGTH);			// Returns a part of the string from the starting position to start+length
-STRING.size();					// Returns the length of the string
-STRING.length();				// Returns the length of the string
+string NAME;								// Initializes a string
+STRING.substr(START, LENGTH);				// Returns a part of the string from the starting position to start+length
+STRING.size();								// Returns the length of the string
+STRING.length();							// Returns the length of the string
 ________________________________________________________________________________________________________________________________
 Library <cstring>:
 
-strcmp(STR1, STR2)				// Compares STR1 to STR2 and returns <0 (STR1 is lower), 0 (equal), >0 (greater)
-strcpy(DESTINATION, SOURCE);			// Copies the content from the source to the destination
-strlen(s);					// Returns the length of the string
+strcmp(STR1, STR2)							// Compares STR1 to STR2 and returns <0 (STR1 is lower), 0 (equal), >0 (greater)
+strcpy(DESTINATION, SOURCE);				// Copies the content from the source to the destination
+strlen(s);									// Returns the length of the string
 ________________________________________________________________________________________________________________________________
 Lambda functions:
 
@@ -144,16 +145,17 @@ If we want to capture a variable that's outside of the lambda function, we can j
 [&, a, b] is a mixed example, as well as [=, &a, &b]
 Lambda functions which "capture" variables are called "lambda closures" or just "closures"
 
-Closures can't be passed as parameters to functions which take regular functions as parameters.
-Pointers to normal functions can't point to closures.
+Lambda closures can't be passed as parameters to functions which take regular functions as parameters.
+Pointers to normal functions can't point to lambda closures.
 Bearing this in mind, we can create special pointers to them called polymorphic function wrappers in the library <functional>:
-function<int(int)> NAME		// We can put this in a function's prototype so it can accept closures too
+function<int(int)> NAME					// We can put this in a function's prototype so it can accept lambda closures too
 ________________________________________________________________________________________________________________________________
 Comparative functions:
 
 There are many examples of functions in C++ where we can compare things based on the criteria we choose.
 Essentially, we form our own custom functions which must return a bool (a value that is either true or false)
 After that, we put our function as a parameter while calling the comparative function.
+The function should return false if the objects need to be swapped, or true if the function shouldn't change anything.
 ________________________________________________________________________________________________________________________________
 Throwing exceptions and <stdexcept>:
 
@@ -439,3 +441,32 @@ class date{
 Constructors have the same name as the class they're written for, they look like functions that don't have a return value.
 However, it's important to note that constructors aren't functions.
 Constructors can help us set up the attributes of a class upon the creation of an object, as well as lots of other things.
+Constructors without parameters are called when an object of that class is just declared, acting as a default value of sorts.
+Constructors which take in multiple parameters can also be created, and are called depending on whether they are the best fit.
+Constructors with only 1 parameter are called when we just pass a single value, they also try to convert the value so it fits.
+
+If an attribute must be initialized to a value upon its creation, we use constructor initializational lists.
+They are also used if an attribute is declared as const, since we can't assign a value to it after its creation.
+Initializational lists call constructors of the objects they contain, to initialize them before the actual constructor starts.
+We use constructor initializational lists like so:
+
+class date{
+	int day, month, year;
+	public:
+		date () { day=1; month=1; year=2000; }		// This is a constructor with no parameters!
+		date (int d, int m, int y) : day(d), month(m), year(y) {}	// Note the ":" for the initializational list!
+		void PrintDate() const;
+		void SetDate(int d, int m, int y){ day=d; month=m; year=y; }
+}
+
+We can also make arrays which hold objects of a certain class, but those objects must have a constructor with no parameters.
+This isn't the best way to go about things, so it's a lot better to make arrays of pointers to those objects instead.
+This allows us to make the objects themselves dynamically allocated, initializing them to concrete values as we go.
+
+date my_dates[10] = { date(1, 5, 2015), date(28, 5, 2017) };	// The rest are default, not efficient...
+
+std::shared_ptr<date> my_date_pointers[10];
+...								// This is where we input variables "day" "month" "year"
+for(int i=0; i<10; i++){
+	my_date_pointers[i] = make_shared date(day, month, year);	// Initializes them to values without a prior placeholder
+}
