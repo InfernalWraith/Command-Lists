@@ -470,3 +470,13 @@ std::shared_ptr<date> my_date_pointers[10];
 for(int i=0; i<10; i++){
 	my_date_pointers[i] = make_shared date(day, month, year);	// Initializes them to values without a prior placeholder
 }
+________________________________________________________________________________________________________________________________
+Destructors:
+Destructors are sets of actions which are performed whenever an object of a class is destroyed.
+They are usually set up to delete any resources that a constructor might have allocated, and thus save us time and frustration.
+Destructors are essential to the RAII (Resource Acquisition Is Initialization) programming technique.
+They are declared the same way as constructors, except with the "tilde" (~) sign in front of the class name:
+
+~ClassName(){}					// Destructor
+
+
