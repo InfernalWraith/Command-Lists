@@ -479,4 +479,4 @@ They are declared the same way as constructors, except with the "tilde" (~) sign
 
 ~ClassName(){}					// Destructor
 
-
+The Law of Big Three: A class that has a destructor should have its own copy constructor and assignment operator (non-default).
