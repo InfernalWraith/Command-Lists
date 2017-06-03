@@ -480,3 +480,24 @@ They are declared the same way as constructors, except with the "tilde" (~) sign
 ~ClassName(){}					// Destructor
 
 The Law of Big Three: A class that has a destructor should have its own copy constructor and assignment operator (non-default).
+Destructors never have any parametres.
+________________________________________________________________________________________________________________________________
+Operators:
+Operators for custom made classes can be defined with operator functions.
+Operator functions are written like normal functions, except that their name is always written like so:
+
+RETURN_TYPE operator EXISTING_OPERATOR (PARAMETERS) { //Code here... }	// The general template
+myClass operator -(const myClass &substract) { //Code here... }		// An example of defining the "-" operator for myClass
+
+Operators can be unary or binary, and at least one of the parameters must be a custom class (or a standard library class)
+Operator functions for a class should be set as friend functions of that class.
+Due to the operator functions being generally simple, they should be set as inline functions.
+When choosing a sign to represent our operator, we should take into account that the operator priority cannot be changed.
+Some rules when creating operators for a class:
+	1) We should create an operator for a class only if it's intuitive as to what the operator does.
+	2) Whenever we define an operator like "+", "-", "*", we should also define "+=", "-=", "*="
+	3) If we define operators for a class, we should also implement the operators "==" and "!="
+	4) It's recommended to implement the operators "<", "<=", ">", ">=" especially so we can use functions from <algorithm>
+	
+If we want to input or print out a class member with an operator, we should use the "<<" and ">>" operators.
+
