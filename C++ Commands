@@ -500,4 +500,3 @@ Some rules when creating operators for a class:
 	4) It's recommended to implement the operators "<", "<=", ">", ">=" especially so we can use functions from <algorithm>
 	
 If we want to input or print out a class member with an operator, we should use the "<<" and ">>" operators.
-
