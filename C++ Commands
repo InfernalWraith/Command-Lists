@@ -11,6 +11,9 @@ In order to make life easier and use pre-existing functions, we need to include 
 #include <vector>			// Contains functions for working with vectors
 #include <string>			// For working with strings
 #include <fstream>			// Used for working with files
+
+There's a lot of standard libraries, as well as millions of user-made libraries available.
+Functions of standard libraries are accessed with the prefix "std::"
 ________________________________________________________________________________________________________________________________
 Every C++ program needs to contain a function called "main"
 
@@ -19,13 +22,13 @@ int main(){
 	return 0;
 }
 
-The main function needs to end with the command "return 0" which says the program executed without any problems.
-If a value other than 0 returns, it usually means the program finished abruptly due to some kind of error.
+The main function should end with the command "return 0" which says the program executed without any problems.
+If a value other than 0 is returned, it usually means the program finished abruptly due to some kind of error.
 ________________________________________________________________________________________________________________________________
 We can initialize variables and designate which kind of value they can be like so:
 
-int Variable1;
-float var2;				// For real numbers, accurate to around the 6th decimal
+int VARIABLE_1;
+float VARIABLE_";			// For real numbers, accurate to around the 6th decimal
 const double PI = 3.14159;		// "const" means the variable has a fixed value and can't be altered, double>float
 char letter = 'A';			// For characters
 bool works = true;			// Is also equal to 1;
@@ -57,9 +60,9 @@ cin.peek();				// INPUT STREAM OBJECT, returns the next character in the input w
 
 // NOTE: getline should be used when dealing with string input, and we should always call the cin.ignore() command before it!
 getline(cin, VARIABLE);			// Grabs the input regardless of whitespace characters and stores it in the variable
-cin.getline(STRING, sizeof STRING);	// To make sure there's enough space in our string for the input
+cin.getline(STRING, sizeof STRING);	// sizeof ensures there's enough space in our string for the input, no buffer overflow
 
-for(int i=0; i<10; i++)	//CODE		// Standard foor loop that loops 10 times in this case
+for(int i=0; i<10; i++)	//CODE		// Standard for loop that loops 10 times in this case
 while(CONDITION) //CODE			// Standard while loop;
 ________________________________________________________________________________________________________________________________
 Library <cmath>:
@@ -94,7 +97,7 @@ rend(VECTOR);					// Returns a reverse iterator at the past-the-end element of t
 VECTOR.push_back(VALUE);			// Adds the specified value or variable past the end of the vector (Size++)
 VECTOR.size();					// Returns the size of the vector
 VECTOR.resize(INTEGER);				// Resizes the vector to the specified amount of elements
-VECTOR.insert(ECTOR.begin() + X, VALUE);	// Inserts a certain value or variable to the x-th spot in the vector
+VECTOR.insert(VECTOR.begin() + X, VALUE);	// Inserts a certain value or variable to the x-th spot in the vector
 VECTOR.erase(VECTOR.begin() + X);		// Erases the x-th element of the vector and sorts the vector
 VECTOR.swap(OTHER_VECTOR);			// Swaps the elements of the two vectors of the same type, but sizes may differ
 
