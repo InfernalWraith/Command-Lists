@@ -27,7 +27,7 @@ If a value other than 0 is returned, it usually means the program finished abrup
 ________________________________________________________________________________________________________________________________
 We can initialize variables and designate which kind of value they can be like so:
 
-int VARIABLE_1;
+int VARIABLE_1;				// Creates an integer, a number without any decimals
 float VARIABLE_";			// For real numbers, accurate to around the 6th decimal
 const double PI = 3.14159;		// "const" means the variable has a fixed value and can't be altered, double>float
 char letter = 'A';			// For characters
