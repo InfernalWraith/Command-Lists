@@ -188,8 +188,9 @@ count(BEGIN, END, ELEMENT)		// Returns how many times the element is found in th
 count_if(BEGIN, END, FUNCTION)		// Returns how many elements return TRUE when passed to the function
 remove_copy_if(BEGIN, END, LOCATION)	// Copies all elements to the location while removing duplicates
 transform(BEGIN, END, LOC, FUNCTION)	// Applies the function to all elements in the block and puts them in the location
-find
+find(BEGIN, END, ELEMENT)		// Returns an iterator to the position of the element, or to the end if it isn't found
 find_if
+unique(BEGIN, END)			// Needs to be used with a sorted container, removes all copies from it
 ________________________________________________________________________________________________________________________________
 Library <utility>:
 
@@ -511,10 +512,17 @@ Contains functions which work with files.
 
 
 ________________________________________________________________________________________________________________________________
+Polymorphism:
+A polymorph class must contain virtual functions and a virtual destructor.
+Pointers to the base polymorph class can also point to inherited classes, thus being able to take on different types
+
 Library <typeinfo>:
+typeid(VARIABLE OR TYPE)		// Returns a typeinfo object containing information on the type of the variable
+Example:	if(typeid(test) == typeid(string)) cout << "The variable test is a string!";
+____________________________________________
+dynamic_cast<POINTER_TYPE>(POINTER)	// Transforms the POINTER into POINTER_TYPE or into a nullptr if that's not possible
+Example:	if(PointerType1 *p1 = dynamic_cast<PointerType1 *>(p2)) cout << "It can be converted!";
 
-typeid(VARIABLE OR TYPE)		// Returns the type of the variable, can be useful for type comparisons
-
-Example:
-if(typeid(test) == typeid(string)) cout << "The variable test is a string!";
+Dynamic cast can only be used for classes with at least one virtual function, meaning they're polymorph classes.
+If we're using smart pointers, we should use static_pointer_cast and dynamic_pointer_cast instead of the regular versions.
 ________________________________________________________________________________________________________________________________
