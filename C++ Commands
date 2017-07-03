@@ -506,3 +506,15 @@ If we want to input or print out a class member with an operator, we should use 
 ________________________________________________________________________________________________________________________________
 Library <fstream>:
 Contains functions which work with files.
+
+
+
+
+________________________________________________________________________________________________________________________________
+Library <typeinfo>:
+
+typeid(VARIABLE OR TYPE)		// Returns the type of the variable, can be useful for type comparisons
+
+Example:
+if(typeid(test) == typeid(string)) cout << "The variable test is a string!";
+________________________________________________________________________________________________________________________________
