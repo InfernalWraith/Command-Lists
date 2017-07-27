@@ -5,10 +5,11 @@ C has many commands we can use, but to do so we need to tell them program to acc
 There are the preprocessor directives, and they contain groups of commands revolving around a certain theme.
 We need to add them at the very start of the program, using the #include command:
 
-#include <LIBRARY_NAME> - Where LIBRARY_NAME is the name of the library we wish to access. Commonly used are:
+#include <LIBRARY_NAME> - Where LIBRARY_NAME is the name of the library we wish to access. Examples are:
 
 #include <stdio.h> - Contains various functions for priting text out, user inputs, loops and various other things.
 #include <math.h> - Contains mathematical functions such as the square root, setting the power of a value etc.
+
 
 After adding our preprocessor directives, we need to add in our actual code, the code block that makes up our program.
 We do that by writing various functions, of which every C program ALWAYS needs to contain a function called int main() {}:
@@ -24,7 +25,8 @@ We can also define certain variables globally, so that we can use them anywhere 
 
 #include <stdio.h>
 #define PI 3.14159265359
-int main() ...
+int main() { ... }
+
 
 This way, every time we use the variable PI, it will be as if we wrote the whole thing out. 
 By defining important variables we can save ourselves a lot of time and frustration since their values will be constant,
@@ -40,3 +42,23 @@ must be initialized, otherwise the program won't compile. We initialize variable
    long int X - Creates a longer integer.
  long float X - Creates a longer real number.
 long double X - Creates a longer precise real number.
+
+Now that we have the basics out of the way, lets get to know the different libraries which are supported in C.
+________________________________________________________________________________________________________________________________
+Library <stdio.h>:
+
+printf("TEXT AND FORMAT MODIFIERS", VARIABLES)      // Prints out the text, modifiers are %d(int), %f(float, double), %c(char)
+scanf("FORMAT MODIFIERS", VARIABLES)                // Takes an input and places is in the corresponding variable
+
+
+
+
+
+
+switch(VARIABLE){
+    case VALUE:
+        ...
+        break;
+    default:
+        ...
+}
