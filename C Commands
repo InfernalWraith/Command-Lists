@@ -62,3 +62,8 @@ switch(VARIABLE){
     default:
         ...
 }
+________________________________________________________________________________________________________________________________
+Library <math.h>:
+
+pow(VARIABLE, EXPONENT)                               // Returns VARIABLE to the power of EXPONENT
+sqrt(VARIABLE)                                        // Returns the square root of VARIABLE
