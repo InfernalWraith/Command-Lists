@@ -48,8 +48,8 @@ This only needs to be done if the numbers are a result of mathematical operation
 
 #define EPSILON 0.001
 float A=0.05, B=0.05, X;
-X = A + B;															// X should now be 0.1 but there are small errors...
-if (X==0.1) printf("This will never print itself");					// This won't print itself because of the error
+X = A + B;								// X should now be 0.1 but there are small errors...
+if (X==0.1) printf("This will never print itself");			// This won't print itself because of the error
 if (fabs(X – 0.1) < EPSILON) printf("This will print itself");		// But this interval is just fine
 
 
@@ -69,11 +69,11 @@ printf("TEXT AND FORMAT MODIFIERS", VARIABLES)		// Prints out the text, returns 
 // Formats: %d(int), %u(unsigned int), %f(float, double), %g(precise), %e(scientific), %c(char), %s(C-string), %n(nothing)
 // Specifiers: hh(char), h(short), l(long), ll(long long), *(for scanf, doesn't store the input in any variable)  
 
-scanf("FORMAT MODIFIERS", VARIABLES)				// Takes an input and places is in the corresponding variable, %lf for double
+scanf("FORMAT MODIFIERS", VARIABLES)		// Takes an input and places is in the corresponding variable, %lf for double
 // Returns the amount of variables which were taken as input
 
-getchar()											// Prompts a single char input and returns it
-putchar(CHAR)										// Prints CHAR to the screen
+getchar()					// Prompts a single char input and returns it
+putchar(CHAR)					// Prints CHAR to the screen
 
 switch(VARIABLE){
     case VALUE:
@@ -85,21 +85,20 @@ switch(VARIABLE){
 ________________________________________________________________________________________________________________________________
 Library <math.h>:
 
-pow(VARIABLE, EXPONENT)								// Returns VARIABLE to the power of EXPONENT
-sqrt(VARIABLE)										// Returns the square root of VARIABLE
-fabs(VARIABLE)										// Returns the absolute value of VARIABLE as a type 'double'
+pow(VARIABLE, EXPONENT)			// Returns VARIABLE to the power of EXPONENT
+sqrt(VARIABLE)				// Returns the square root of VARIABLE
+fabs(VARIABLE)				// Returns the absolute value of VARIABLE as a type 'double'
 sin, cos, tan, asin, acos, atan		// Trigonometry
-log(VARIABLE)										// Natural logarithm
-log10(VARIABLE)										// Logarithm with the base 10
-floor(VARIABLE)										// Rounds VARIABLE down
-ceil(VARIABLE)										// Rounds VARIABLE up
-round(VARIABLE)										// Rounds VARIABLE up or down, depending on the value (down for <0.5)
-fmod(VARIABLE)										// Remainder when dividing with a real number
+log(VARIABLE)				// Natural logarithm
+log10(VARIABLE)				// Logarithm with the base 10
+floor(VARIABLE)				// Rounds VARIABLE down
+ceil(VARIABLE)				// Rounds VARIABLE up
+round(VARIABLE)				// Rounds VARIABLE up or down, depending on the value (down for <0.5)
+fmod(VARIABLE)				// Remainder when dividing with a real number
 ________________________________________________________________________________________________________________________________
 Library <stdlib.h>
 
-abs(INTEGER)								  		// Returns the absolute value of INTEGER as an int
-exit(INTEGER)								  		// Exits the program from any function with exit code INTEGER
-rand()												// Returns a random number from 0 to 2^31 - 1, needs a seed to be random
-srand(INTEGER)										// Uses INTEGER as a seed for the random selection, such as 'time(NULL)'
-e
+abs(INTEGER)				// Returns the absolute value of INTEGER as an int
+exit(INTEGER)				// Exits the program from any function with exit code INTEGER
+rand()					// Returns a random number from 0 to 2^31 - 1, needs a seed to be random
+srand(INTEGER)				// Uses INTEGER as a seed for the random selection, such as 'time(NULL)'
