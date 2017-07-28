@@ -102,3 +102,4 @@ abs(INTEGER)								  		// Returns the absolute value of INTEGER as an int
 exit(INTEGER)								  		// Exits the program from any function with exit code INTEGER
 rand()												// Returns a random number from 0 to 2^31 - 1, needs a seed to be random
 srand(INTEGER)										// Uses INTEGER as a seed for the random selection, such as 'time(NULL)'
+e
