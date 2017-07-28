@@ -88,7 +88,7 @@ Library <math.h>:
 pow(VARIABLE, EXPONENT)								// Returns VARIABLE to the power of EXPONENT
 sqrt(VARIABLE)										// Returns the square root of VARIABLE
 fabs(VARIABLE)										// Returns the absolute value of VARIABLE as a type 'double'
-sin, cos, tan, asin, acos, atan						// Trigonometry
+sin, cos, tan, asin, acos, atan		// Trigonometry
 log(VARIABLE)										// Natural logarithm
 log10(VARIABLE)										// Logarithm with the base 10
 floor(VARIABLE)										// Rounds VARIABLE down
@@ -98,7 +98,7 @@ fmod(VARIABLE)										// Remainder when dividing with a real number
 ________________________________________________________________________________________________________________________________
 Library <stdlib.h>
 
-abs(INTEGER)										// Returns the absolute value of INTEGER as an int
-exit(INTEGER)										// Exits the program from any function with exit code INTEGER
+abs(INTEGER)								  		// Returns the absolute value of INTEGER as an int
+exit(INTEGER)								  		// Exits the program from any function with exit code INTEGER
 rand()												// Returns a random number from 0 to 2^31 - 1, needs a seed to be random
 srand(INTEGER)										// Uses INTEGER as a seed for the random selection, such as 'time(NULL)'
