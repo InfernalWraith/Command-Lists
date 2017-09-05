@@ -96,9 +96,12 @@ ceil(VARIABLE)				// Rounds VARIABLE up
 round(VARIABLE)				// Rounds VARIABLE up or down, depending on the value (down for <0.5)
 fmod(VARIABLE)				// Remainder when dividing with a real number
 ________________________________________________________________________________________________________________________________
-Library <stdlib.h>
+Library <stdlib.h>:
 
 abs(INTEGER)				// Returns the absolute value of INTEGER as an int
 exit(INTEGER)				// Exits the program from any function with exit code INTEGER
 rand()					// Returns a random number from 0 to 2^31 - 1, needs a seed to be random
 srand(INTEGER)				// Uses INTEGER as a seed for the random selection, such as 'time(NULL)'
+________________________________________________________________________________________________________________________________
+Library <string.h>:
+
