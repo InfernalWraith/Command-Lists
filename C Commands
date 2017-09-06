@@ -61,9 +61,9 @@ if(a==b) printf("This will print!");
 The 'sizeof' operator can be pretty useful when determining the size of something.
 It returns how many bytes of memory does the variable or type take up, so:
 
-sizeof(char)			returns 1
-sizeof(int)				returns 4
-sizeof(float)			returns 4
+sizeof(char)		returns 1
+sizeof(int)		returns 4
+sizeof(float)		returns 4
 sizeof(double)		returns 8
 
 Now that we have the basics out of the way, let's get to know the different libraries which are supported in C.
@@ -96,8 +96,8 @@ printf("TEXT AND FORMAT MODIFIERS", VARIABLES)		// Prints out the text, returns 
 
 scanf("FORMAT MODIFIERS", VARIABLES)		// Takes an input and places is in the corresponding variable, %lf for double
 // Returns the amount of variables which were taken as input, test input like: 
-	a=scanf("%d", x);		// Works if the user inputs a letter, doesn't work for real numbers 
-	if(a==0) printf("No input.");	// (the decimal is treated as a new number), doesn't work for SPACE inputs
+	a=scanf("%d", x);			// Works if the user inputs a letter, doesn't work for real numbers 
+	if(a==0) printf("No input.");		// (the decimal is treated as a new number), doesn't work for SPACE inputs
 
 getchar()			// Prompts a single char input and returns it, allows for constructions like a=getchar();
 putchar(CHAR)			// Prints CHAR to the screen
@@ -128,7 +128,12 @@ Library <stdlib.h>:
 abs(INTEGER)				// Returns the absolute value of INTEGER as an int
 exit(INTEGER)				// Exits the program from any function with exit code INTEGER
 int rand()				// Returns a random number from 0 to 2^31 - 1, needs a seed to be random
+					// For a random number between [a, b), use:	int x = a + rand()%b;
 srand(INTEGER)				// Uses INTEGER as a seed for the random selection, such as 'time(NULL)'
+________________________________________________________________________________________________________________________________
+Library <time.h>:
+
+time_t time(time_t* t)			// Returns the number of seconds between now and 1.1.1970. at 00:00:00
 ________________________________________________________________________________________________________________________________
 Library <string.h>:
 
