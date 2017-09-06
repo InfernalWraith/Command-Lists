@@ -99,8 +99,8 @@ scanf("FORMAT MODIFIERS", VARIABLES)		// Takes an input and places is in the cor
 	a=scanf("%d", x);		// Works if the user inputs a letter, doesn't work for real numbers 
 	if(a==0) printf("No input.");	// (the decimal is treated as a new number), doesn't work for SPACE inputs
 
-getchar()					// Prompts a single char input and returns it, allows for constructions like a=getchar();
-putchar(CHAR)					// Prints CHAR to the screen
+getchar()			// Prompts a single char input and returns it, allows for constructions like a=getchar();
+putchar(CHAR)			// Prints CHAR to the screen
 
 switch(VARIABLE){
     case VALUE:
@@ -127,7 +127,7 @@ Library <stdlib.h>:
 
 abs(INTEGER)				// Returns the absolute value of INTEGER as an int
 exit(INTEGER)				// Exits the program from any function with exit code INTEGER
-int rand()					// Returns a random number from 0 to 2^31 - 1, needs a seed to be random
+int rand()				// Returns a random number from 0 to 2^31 - 1, needs a seed to be random
 srand(INTEGER)				// Uses INTEGER as a seed for the random selection, such as 'time(NULL)'
 ________________________________________________________________________________________________________________________________
 Library <string.h>:
