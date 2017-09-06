@@ -96,7 +96,7 @@ printf("TEXT AND FORMAT MODIFIERS", VARIABLES)		// Prints out the text, returns 
 
 scanf("FORMAT MODIFIERS", VARIABLES)		// Takes an input and places is in the corresponding variable, %lf for double
 // Returns the amount of variables which were taken as input, test input like: 
-	a=scanf("%d", x);				// Works if the user inputs a letter, doesn't work for real numbers 
+	a=scanf("%d", x);		// Works if the user inputs a letter, doesn't work for real numbers 
 	if(a==0) printf("No input.");	// (the decimal is treated as a new number), doesn't work for SPACE inputs
 
 getchar()					// Prompts a single char input and returns it, allows for constructions like a=getchar();
