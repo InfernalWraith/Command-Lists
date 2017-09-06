@@ -52,13 +52,18 @@ X = A + B;								// X should now be 0.1 but there are small errors...
 if (X==0.1) printf("This will never print itself");			// This won't print itself because of the error
 if (fabs(X – 0.1) < EPSILON) printf("This will print itself");		// But this interval is just fine
 
+If we don't use mathematical operations, and instead just compare numbers right after they're put into the program.
+So for example:
+
+scanf("%f, %f", a, b);
+if(a==b) printf("This will print!");
 
 The 'sizeof' operator can be pretty useful when determining the size of something.
 It returns how many bytes of memory does the variable or type take up, so:
 
-sizeof(char)		returns 1
-sizeof(int)			returns 4
-sizeof(float)		returns 4
+sizeof(char)			returns 1
+sizeof(int)				returns 4
+sizeof(float)			returns 4
 sizeof(double)		returns 8
 
 Now that we have the basics out of the way, let's get to know the different libraries which are supported in C.
@@ -67,12 +72,34 @@ Library <stdio.h>:
 
 printf("TEXT AND FORMAT MODIFIERS", VARIABLES)		// Prints out the text, returns the amount of characters printed out
 // Formats: %d(int), %u(unsigned int), %f(float, double), %g(precise), %e(scientific), %c(char), %s(C-string), %n(nothing)
-// Specifiers: hh(char), h(short), l(long), ll(long long), *(for scanf, doesn't store the input in any variable)  
+// Specifiers: hh(char), h(short), l(long), ll(long long), L(long double), *(for scanf, doesn't store the input in any variable)
+// Escape sequences are sets of characters which are displayed differently than the way they're typed inside a printf function:
+\n - New line
+\t - Tab
+\\ - Backslash (a single backslash, as you can see, is used to mark the start of an escape sequence)
+\b - One character to the left (erase)
+\r - Move back to the start of the line
+\v - Vertical Tab
+\f - New page (no effect on screen)
+\" - The " character
+\' - The ' character
+\0 - Null character, marks the end of a character array
+\NUMBER - Octal constant, put in any number
+\xNUMBER - Hexadecimal constant
+// Since we can add different things to a printf format (like %5.2f), here's a list of subspecifiers that go after the %:
+- Allign left
++ Always print a signed number
+0 Fill excess reserved space with zeroes
+. Set precision of the output
+*.* Add the reserved space and precision as parameters at the end of printf, but before the actual variable
+
 
 scanf("FORMAT MODIFIERS", VARIABLES)		// Takes an input and places is in the corresponding variable, %lf for double
-// Returns the amount of variables which were taken as input
+// Returns the amount of variables which were taken as input, test input like: 
+	a=scanf("%d", x);				// Works if the user inputs a letter, doesn't work for real numbers 
+	if(a==0) printf("No input.");	// (the decimal is treated as a new number), doesn't work for SPACE inputs
 
-getchar()					// Prompts a single char input and returns it
+getchar()					// Prompts a single char input and returns it, allows for constructions like a=getchar();
 putchar(CHAR)					// Prints CHAR to the screen
 
 switch(VARIABLE){
@@ -100,7 +127,7 @@ Library <stdlib.h>:
 
 abs(INTEGER)				// Returns the absolute value of INTEGER as an int
 exit(INTEGER)				// Exits the program from any function with exit code INTEGER
-rand()					// Returns a random number from 0 to 2^31 - 1, needs a seed to be random
+int rand()					// Returns a random number from 0 to 2^31 - 1, needs a seed to be random
 srand(INTEGER)				// Uses INTEGER as a seed for the random selection, such as 'time(NULL)'
 ________________________________________________________________________________________________________________________________
 Library <string.h>:
