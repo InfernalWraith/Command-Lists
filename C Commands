@@ -66,6 +66,23 @@ sizeof(int)		returns 4
 sizeof(float)		returns 4
 sizeof(double)		returns 8
 
+-Functions:
+
+Functions in C are written like so:
+FUNCTION_TYPE FUNCTION_NAME (PARAMETER_1, PARAMETER_2...){
+	// Function code goes here
+	return VALUE;
+}
+
+Here's a practical example:
+int multiplyByTwo(int x){	// Function called multiplyByTwo, which takes one integer as a parameter and returns an integer
+	x*=2;			// Multiplying x by two
+	return x;		// Returning x as a value
+}
+
+Functions whose type is "void" don't need to have a return command to exit the function, but all others do.
+Functions take parameters as values, they don't affect the value of the variable itself (unless they take in a pointer).
+
 Now that we have the basics out of the way, let's get to know the different libraries which are supported in C.
 ________________________________________________________________________________________________________________________________
 Library <stdio.h>:
@@ -137,3 +154,20 @@ time_t time(time_t* t)			// Returns the number of seconds between now and 1.1.19
 ________________________________________________________________________________________________________________________________
 Library <string.h>:
 
+strlen(C-STRING)			// Returns the length of the string passed as the argument
+strcpy(DESTINATION, SOURCE)		// Copies one C-string to the other, deleting all previously stored data in the process
+strcpy(DESTINATION, SOURCE, LENGTH)	// Replaces only LENGTH characters, meaning we can edit the middle of a string
+strcmp(STRING_1, STRING_2)		// Returns 0 if the strings are equal, >0 if the first is ahead and <0 otherwise
+strcat(STRING_1, STRING_2)		// Concantenates (merges) the two strings into the first one
+
+strchr(STRING, CHAR)			// Returns the pointer to the first instance of CHAR in STRING
+// Can be used to find all examples of one char by using a while loop with:
+	char* POINT_STRING = STRING;
+	while(POINT_STRING!='\0'){
+		printf ("Found at %d\n", POINT_STRING-STRING+1);	// POINT_STRING-STRING+1 gives us the location
+		POINT_STRING=strchr(POINT_STRING+1, CHAR);		// POINT_STRING+1 means we start AFTER the last find
+	}
+	
+strstr(SOURCE, TARGET)			// Returns a pointer to where TARGET is found inside of the SOURCE
+
+________________________________________________________________________________________________________________________________
