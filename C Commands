@@ -95,7 +95,28 @@ int multiplyByTwo(int x){	// Function called multiplyByTwo, which takes one inte
 
 Functions whose type is "void" don't need to have a return command to exit the function, but all others do.
 Functions take parameters as values, they don't affect the value of the variable itself (unless they take in a pointer).
+___________________________
+Structures:
 
+Structures serve as custom user-made data types. We form structures like so:
+
+struct Student{
+	int index_number;
+	char name[20], surname[20];
+};
+
+We can then create a variable of the type 'Student' like so:
+
+struct Student mike, bruce, alice;
+mike.index_number=12345;				// Assigns the value '12345' to Mike's index_number
+printf("%d", mike.index_number);
+
+struct Student students[100];				// An array of 100 students
+struct Student *p = students;				// A pointer to the array of students
+*(p).index_number;					// Accessing an index_number from the pointer
+p->index_number;					// A simpler way to do the same thing!
+
+___________________________
 Now that we have the basics out of the way, let's get to know the different libraries which are supported in C.
 ________________________________________________________________________________________________________________________________
 Library <stdio.h>:
@@ -202,5 +223,4 @@ strtok(STRING, "CHARACTERS");		// Cuts the string up into substrings between the
 	
 sprintf(STRING, "TEXT", VARIABLES)	// Like a normal printf, but puts the TEXT into the STRING instead of on the screen
 sscanf(STRING, "%FORMAT", &VARIABLE)	// Like a normal scanf, but grabs variables from the STRING instead of prompting
-
 ________________________________________________________________________________________________________________________________
