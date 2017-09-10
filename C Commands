@@ -66,7 +66,20 @@ sizeof(int)		returns 4
 sizeof(float)		returns 4
 sizeof(double)		returns 8
 
--Functions:
+Pointers can help us solve tricky problems by using indirection:
+int a=5;				// Integer called 'a' with the value of 5
+int* pa = &a;				// Pointer to an integer called 'pa' which points to the address of 'a'
+*pa+=2;					// We dereference the pointer, effectively using 'a' and adding 2 to it, making a=7
+
+const char* b;				// A const pointer, meaning we can't change what address it points to
+char* const c;				// A pointer to a const, meaning we can't change the value of the thing it points to
+const char* const d;			// We can't change the value it points to, or the address it points to either
+int (*p)(int) = func;			// Pointer to a function called 'func' with the prototype: int func(int)
+int n=*p(5)				// The same as typing: int n=func(5);
+
+A function's name is also a pointer to that function.
+___________________________
+Functions:
 
 Functions in C are written like so:
 FUNCTION_TYPE FUNCTION_NAME (PARAMETER_1, PARAMETER_2...){
@@ -147,6 +160,9 @@ exit(INTEGER)				// Exits the program from any function with exit code INTEGER
 int rand()				// Returns a random number from 0 to 2^31 - 1, needs a seed to be random
 					// For a random number between [a, b), use:	int x = a + rand()%b;
 srand(INTEGER)				// Uses INTEGER as a seed for the random selection, such as 'time(NULL)'
+VARIABLE=malloc(INTEGER*sizeof(TYPE))	// Used to dynamically allocate enough memory for INTEGER variables of TYPE
+free(VARIABLE)				// Frees the dynamically allocated memory of VARIABLE
+qsort(ARRAY, SIZE, sizeof(TYPE), FUNC)	// Used to apply the function FUNC(needs to take in two const void* to sort the ARRAY
 ________________________________________________________________________________________________________________________________
 Library <time.h>:
 
@@ -155,11 +171,7 @@ ________________________________________________________________________________
 Library <string.h>:
 
 strlen(C-STRING)			// Returns the length of the string passed as the argument
-strcpy(DESTINATION, SOURCE)		// Copies one C-string to the other, deleting all previously stored data in the process
-strcpy(DESTINATION, SOURCE, LENGTH)	// Replaces only LENGTH characters, meaning we can edit the middle of a string
 strcmp(STRING_1, STRING_2)		// Returns 0 if the strings are equal, >0 if the first is ahead and <0 otherwise
-strcat(STRING_1, STRING_2)		// Concantenates (merges) the two strings into the first one
-
 strchr(STRING, CHAR)			// Returns the pointer to the first instance of CHAR in STRING
 // Can be used to find all examples of one char by using a while loop with:
 	char* POINT_STRING = STRING;
@@ -169,5 +181,26 @@ strchr(STRING, CHAR)			// Returns the pointer to the first instance of CHAR in S
 	}
 	
 strstr(SOURCE, TARGET)			// Returns a pointer to where TARGET is found inside of the SOURCE
+
+strcpy(DESTINATION, SOURCE)		// Copies one C-string to the other, deleting all previously stored data in the process
+strcpy(DESTINATION, SOURCE, LENGTH)	// Replaces only LENGTH characters, meaning we can edit the middle of a string
+strcat(STRING_1, STRING_2)		// Concantenates (merges) the two strings into the first one
+
+Warning: since 'strcat' and 'strcpy' can potentially crash your program from buffer overflow, you should use these instead:
+char STRING_1[100], STRING_2[100];
+STRING_1[99]='\0'
+strncat(STRING_1, STRING_2, 99-strlen(STRING_1))
+strncpy(STRING_1, STRING_2, 100);
+strtok(STRING, "CHARACTERS");		// Cuts the string up into substrings between the passed CHARACTERS
+	char text[100];
+	char* p;
+	p = strtok(tekst, " .,");
+	while (p != NULL){
+		printf("Word: %s\n", p);
+		p = strtok(NULL, " .,");	// We pass NULL as the first argument to tell it we're still using CHARACTERS
+	}					// strtok destroys the original string by putting \0 at CHARACTERS !!!
+	
+sprintf(STRING, "TEXT", VARIABLES)	// Like a normal printf, but puts the TEXT into the STRING instead of on the screen
+sscanf(STRING, "%FORMAT", &VARIABLE)	// Like a normal scanf, but grabs variables from the STRING instead of prompting
 
 ________________________________________________________________________________________________________________________________
