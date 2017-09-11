@@ -115,7 +115,46 @@ struct Student students[100];				// An array of 100 students
 struct Student *p = students;				// A pointer to the array of students
 *(p).index_number;					// Accessing an index_number from the pointer
 p->index_number;					// A simpler way to do the same thing!
+___________________________
+Files:
 
+We can work with files by creating a pointer to a new or existing file. We do this like so:
+
+FILE* filename;				// Creates a pointer to a file called 'filename'
+filename=fopen(STRING, "USAGE")		// Opens an existing file called STRING or creates a new one, needs to be closed...
+// If opening the folder fails, fopen will return NULL, which we can use to check if the operation was a success
+// USAGE is how we'll use the file: 'r'-read, 'w'-write, 'a'-append, 'r+'-read-update, 'w+'-write-update, 'a+'-append-update
+// If we're working with binary files, add the letter 'b' to the end of every USAGE type ('rb', 'wb', 'ab' ...)
+
+If we just type in the file's name under STRING, it creates (or tries to open) a file in the same directory as our main.c file.
+To change the directory, simply pass a custom directory as the STRING parameter.
+When typing in directory names, you must use \\ for \, etc. Be mindful of the formatting of strings in C!
+As a part of the directory name '.' means we're using the current folder, and '..' is the folder ABOVE it in the hierarchy.
+
+fgetc(filename)				// Reads a single character from filename and returns it. Returns EOF if it's the end.
+fputc(CHAR, filename)			// Puts CHAR in the file 'filename' Doesn't work if the usage is 'r' for read-only
+fputs(STRING, filename)			// Puts STRING into the file called 'filename'
+fgets(STRING, LENGTH, filename)		// Grabs a string LENGTH long from the file 'filename' and puts it in STRING
+		// Reads at most X-1 characters from the first \n, which is also stored in the string and followed by \0
+		// Returns a pointer to the found STRING if the operation was a success, and NULL if it failed
+		
+fscanf(filename, "FORMATS", &VARIABLES)	// Reads from the file, returns the amount of read variables
+fprintf(filename, "TEXT", VARIABLES)	// Writes to the file, returns the amount of characters it put into the file
+
+feof(filename)				// Returns 1 if we're at the end of the file
+ferror(filename)			// Returns 1 if the last operation caused an error, good for checking for errors
+
+fseek(filename, VALUE, CUSTOM)		// Moves the cursor which is used to read from or write to the file
+// For CUSTOM, SEEK_SET is the beginning, SEEK_END is the end, so fseek(filename, 0, SEEK_SET) returns the cursor to the start
+ftell(filename)				// Returns the position of the cursor, usually as the number of bytes from the start
+	long position;
+	position=ftell(filename);						// Grab the current cursor position
+	/* We move the cursor here while doing something else */
+	fseek(filename, position, SEEK_SET);					// Return cursor to position
+
+// These are used for binary files
+fread(POINTER, sizeof(TYPE), LENGTH, filename)	// Reads LENGTH many variables of TYPE from 'filename' and puts them in POINTER
+fwrite(POINTER, sizeof(TYPE), LENGTH, filename) // Same principle, returns the amount of variables successfully written as INT
 ___________________________
 Now that we have the basics out of the way, let's get to know the different libraries which are supported in C.
 ________________________________________________________________________________________________________________________________
