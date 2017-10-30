@@ -5,7 +5,6 @@ New lines are made with the \\ symbol. Keep in mind that you can only use this i
 
 \wedge                                      % Logic AND symbol
 \vee                                        % Logic OR symbol
-\rightarrow                                 % Logic implication symbol
-\leftrightarrow                             % Logic equivalence symbol
+\Rightarrow                                 % Logic implication symbol
+\LeftRightarrow                             % Logic equivalence symbol
 \frac{}{}                                   % Fraction, the first 
-
