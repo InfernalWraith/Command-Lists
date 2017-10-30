@@ -1,0 +1,11 @@
+Comments are made using the percentage sign (%):
+% This is a comment
+
+New lines are made with the \\ symbol. Keep in mind that you can only use this if there is actual text in the line.
+
+\wedge                                      % Logic AND symbol
+\vee                                        % Logic OR symbol
+\rightarrow                                 % Logic implication symbol
+\leftrightarrow                             % Logic equivalence symbol
+\frac{}{}                                   % Fraction, the first 
+
