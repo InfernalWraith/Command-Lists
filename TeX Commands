@@ -8,3 +8,6 @@ New lines are made with the \\ symbol. Keep in mind that you can only use this i
 \Rightarrow                                 % Logic implication symbol
 \LeftRightarrow                             % Logic equivalence symbol
 \frac{}{}                                   % Fraction, the first 
+\equiv                                      % Equivalance, or congruence
+$2^{}$                                      % Exponents
+$2^x$                                       % Exponent in case it's a single-digit number
