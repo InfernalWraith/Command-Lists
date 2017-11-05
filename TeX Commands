@@ -7,7 +7,10 @@ New lines are made with the \\ symbol. Keep in mind that you can only use this i
 \vee                                        % Logic OR symbol
 \Rightarrow                                 % Logic implication symbol
 \LeftRightarrow                             % Logic equivalence symbol
-\frac{}{}                                   % Fraction, the first 
-\equiv                                      % Equivalance, or congruence
-$2^{}$                                      % Exponents
+\frac{}{}									% Fraction, the first brackets are for the base and the second for the exponent
+\equiv										% Equivalance, or congruence
+$a^{xyz}$									% Exponents, a to the power of xyz
+$x^y$										% Single-digit exponent
+$x_{xyz}$									% Indexing
 $2^x$                                       % Exponent in case it's a single-digit number
+\frac{x}{y}									% Fraction x/y
