@@ -1,0 +1,28 @@
+In C#, we can print stuff to the screen using the Write or WriteLine command:
+int myVariable = 100;
+int woo = 5;
+Console.WriteLine("Test variable: {0} {1}", myVariable);	// Prints out: "Test variable : 100 5"
+
+Input in C# is done using the ReadLine command, where the input must be stored as a string variable:
+string input;
+input = Console.ReadLine();
+
+After the user inputs the data, we need to parse it to the type of variable we will actually use.
+
+We use the Split method on a string to create an array of strings:
+string[] inputs = input.Split(',');
+
+After generating the array of inputs, we can, for example, parse those further into other types:
+int numbers[];
+for(int i=0; i<numberOfInputs; i++){
+	if(!Int32.TryParse(inputs[i], out numbers[i])){
+		Console.WriteLine("The input {0} isn't a number!", inputs[i]);
+		return false;
+	}
+}
+
+The Int32.TryParse(string, int) function returns true if the parsing was successful, and false if it wasn't.
+
+
+
+
