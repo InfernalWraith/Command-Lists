@@ -21,9 +21,22 @@ for(int i=0; i<numberOfInputs; i++){
 	}
 }
 
-As demonstrated here, the Int32.TryParse(string, int) function returns true if the parsing was successful, and false if it wasn't.
+As shown here, the Int32.TryParse(string, int) function returns true if the parsing was successful, and false if it wasn't.
 
 
 Console.WriteLine("Text {0} {1}", variable_0, variable 1);	// Prints text out
+Console.ReadLine();						// Reads a line and returns it as a string
 STRING.Split('CHAR');						// Splits a string into an array of strings separated by CHAR
+Int32.TryParse(string SOURCE, out int DESTINATION)		// Parses string into an int, returns false if it fails
 
+
+TYPE testVar = BOOL_FUNCTION ? RES_1 : RES_2			// Makes testVar=RES_1 if the condition is true, or RES_2 if false
+
+foreach(TYPE X in COLLECTION){ ... }				// For loop with one iteration for every member of the collection
+
+public TYPE testVar { get; set; }				// Creates a getter and setter for testVar in some class
+
+Interfaces are defined like classes. They are used to inherit from more than one abstract class (or, in this case, interface):
+interface Test{ ... }
+interface Test2 { ... }
+class myClass : Test, Test2 { ... }
