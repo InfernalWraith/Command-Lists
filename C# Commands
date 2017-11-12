@@ -21,8 +21,9 @@ for(int i=0; i<numberOfInputs; i++){
 	}
 }
 
-The Int32.TryParse(string, int) function returns true if the parsing was successful, and false if it wasn't.
+As demonstrated here, the Int32.TryParse(string, int) function returns true if the parsing was successful, and false if it wasn't.
 
 
-
+Console.WriteLine("Text {0} {1}", variable_0, variable 1);	// Prints text out
+STRING.Split('CHAR');						// Splits a string into an array of strings separated by CHAR
 
