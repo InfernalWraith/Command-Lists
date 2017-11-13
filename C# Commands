@@ -35,8 +35,82 @@ TYPE testVar = BOOL_FUNCTION ? RES_1 : RES_2			// Makes testVar=RES_1 if the con
 foreach(TYPE X in COLLECTION){ ... }				// For loop with one iteration for every member of the collection
 
 public TYPE testVar { get; set; }				// Creates a getter and setter for testVar in some class
-
-Interfaces are defined like classes. They are used to inherit from more than one abstract class (or, in this case, interface):
-interface Test{ ... }
+________________________________________________________________________________________________________________________________
+Interfaces are defined like classes. They are used to inherit from more than one abstract class (or, in this case, interface).
+This is useful because multiple inheritance isn't allowed in C#.
+interface Test{
+	someMethod(){ ... }
+}
 interface Test2 { ... }
-class myClass : Test, Test2 { ... }
+class myClass : Test, Test2 {
+	Test.someMethod(){ ... }
+}
+
+A common use of an interface is to create an interface for a class with the clone() method in it, which enables deep copying.
+The clone() method returns the Object it received.
+________________________________________________________________________________________________________________________________
+Delegates are references to functions. They define the function's return type and passed arguments.
+A delegate acts as a type - a value which any function with the same prototype(signature) can take on.
+This way, we can pass functions as parameters to other functions, enabling us to pass new code to already existing classes.
+
+Anonymous/Lambda functions are inline functions which have the list of parametres and the body of a function, but no name.
+They are used to pass a function as a parameter to another function.
+The left side of a "=>" sign is where we put the parameters of the lambda function, while the right is the return value.
+x => x*x;				// This function takes a parameter x and returns the square of x
+(x, y) => y - x;			// 
+
+We use lambda functions in conjunction with delegates:
+delegate int testDelegate(int i);
+...
+	testDelegate myDelegate = x => x*x;
+	int a = myDelegate(5)	// a = 25;
+________________________________________________________________________________________________________________________________
+Class Array<TYPE>:
+
+The Array class is used to display classic arrays in C#. It has a host of useful methods:
+Array.Clear()					// Returns all elements to their default value
+Array.CopyTo(Array, Int32)			// Copies all elements from source to argument, starting from the specified pos.
+GetValue(Int32)					// Returns an element of a one-dimensional array from the specified position
+IndexOf(Array, Object)				// Returns the index of the passed object in the passed array
+Reverse(Array)					// Reverses the order of the elements in the passed array
+SetValue(Object, Int32)				// Sets the specified element to the specified position
+Resize(Array, Int32)				// Resizes the array to the specified length
+Sort(Array)					// Sorts the array's elements using the IComparable implementation of elements
+
+The most used attributes of an Array are Length, Rank(Dimensions of the array) and IsReadOnly(if its read-only or not)...
+As an optional parameter of the Sort function, we can add a rule for sorting, meaning we pass it as a delegate:
+Comparison<TYPE>(public delegate int Comparison<TYPE> (TYPE x, TYPE y))
+________________________________________________________________________________________________________________________________
+Class List<TYPE>:
+
+Clear()						// Deletes all elements of the list
+Add()						// Adds an element to the end of the list
+AddRange(Array)					// Adds the collection to the end of the list
+Insert(Int32)					// Inserts a new element to the specified position
+InsertRange(Array, Int32)			// Inserts a collection of elements to the specified position
+Remove()					// Deletes an element form the list
+RemoveRange(Int32, Int32)			// Removes all elements from the first position to the second
+RemoveAt(Int32)					// Removes an element from the specified position
+Contains()					// Checks if the specified element exists in the list
+IndexOf						// Returns the index of the element, or -1 if it doesn't exist
+
+Elements of lists can be accessed with the indexing operator [ ]
+Arrays can be passed to a list constructor to create a list from the array.
+________________________________________________________________________________________________________________________________
+ArrayList is a special class which can store any type of element in the same collection.
+Keeping this in mind, you need to be careful when using it to verify the type of every file.
+
+Dictionary is a class which is esentually a collection of pairs, the first value serving as a key value.
+They are the equivalent of a Map in C++
+Dictionary<TYPE1, TYPE2> sampleDictionary = new Dictionary<TYPE1, TYPE2>();
+
+Its elements can be accessed like so:
+foreach(string x in sampleDictionary.Keys) Console.WriteLine(x);
+foreach(Int32 y in sampleDictionary.Values) Console.WriteLine(y);
+
+Or, using the generic class KeyValuePair (foreach(KeyValuePair<TYPE1, TYPE2> pair in dictionary))
+It's also possible to define a Dictionary where the key is a string and the value is another Dictionary.
+However, it's better to use a Tuple in this situation.
+Tuple is a generic collection of read-only data, where every element can be of any type.
+It's very useful for sending and receiving multiple bits of data through one parameter.
+A Tuple is limited to a maximum of 8 elements, but it's possible to expand it by defining one of the elements as another Tuple.
