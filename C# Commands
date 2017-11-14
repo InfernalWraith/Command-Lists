@@ -24,12 +24,13 @@ for(int i=0; i<numberOfInputs; i++){
 As shown here, the Int32.TryParse(string, int) function returns true if the parsing was successful, and false if it wasn't.
 
 
+________________________________________________________________________________________________________________________________
+Common and useful functions:
+
 Console.WriteLine("Text {0} {1}", variable_0, variable 1);	// Prints text out
 Console.ReadLine();						// Reads a line and returns it as a string
 STRING.Split('CHAR');						// Splits a string into an array of strings separated by CHAR
 Int32.TryParse(string SOURCE, out int DESTINATION)		// Parses string into an int, returns false if it fails
-
-
 TYPE testVar = BOOL_FUNCTION ? RES_1 : RES_2			// Makes testVar=RES_1 if the condition is true, or RES_2 if false
 
 foreach(TYPE X in COLLECTION){ ... }				// For loop with one iteration for every member of the collection
@@ -134,4 +135,7 @@ ________________________________________________________________________________
 The keyword 'partial' is used in a class definition to allow us to implement the class in more than one file.
 This is useful for large classes and it aids with code decomposition, or when more people are working on the same class.
 
-The keyword 'sealed' is used in a class definition to create something akin to a private class
+The keyword 'sealed' is used in a class definition to create something akin to a private class.
+A sealed class can only be accessed in the file it's defined in, meaning we can't even create an object of that class outside.
+________________________________________________________________________________________________________________________________
+
