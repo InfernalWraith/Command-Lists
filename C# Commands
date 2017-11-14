@@ -114,3 +114,18 @@ However, it's better to use a Tuple in this situation.
 Tuple is a generic collection of read-only data, where every element can be of any type.
 It's very useful for sending and receiving multiple bits of data through one parameter.
 A Tuple is limited to a maximum of 8 elements, but it's possible to expand it by defining one of the elements as another Tuple.
+________________________________________________________________________________________________________________________________
+The keywords 'checked' and 'unchecked' give context to a calculation, throwing an exception if an overflow occurs:
+int x = checked(1000000 * 10000000);
+
+The 'const' keyword is used to make variables constant:
+const int x = 10;
+
+The keywords 'continue' and 'break' are also present and used in loops.
+Aside from foreach, C# also supports the classic for, while, and do-while loops which are just like in C and C++
+
+________________________________________________________________________________________________________________________________
+Indexers are like functions but where the parameters are stored in [ ] brackets:
+TYPE1 this[TYPE2 x]{
+	get{ return someAttribute[x]; }
+	set { someAttribute[x] = value;
