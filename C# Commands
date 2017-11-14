@@ -129,3 +129,9 @@ Indexers are like functions but where the parameters are stored in [ ] brackets:
 TYPE1 this[TYPE2 x]{
 	get{ return someAttribute[x]; }
 	set { someAttribute[x] = value;
+
+________________________________________________________________________________________________________________________________
+The keyword 'partial' is used in a class definition to allow us to implement the class in more than one file.
+This is useful for large classes and it aids with code decomposition, or when more people are working on the same class.
+
+The keyword 'sealed' is used in a class definition to create something akin to a private class
