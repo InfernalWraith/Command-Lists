@@ -1,0 +1,252 @@
+SELECT *
+FROM table;
+
+COUNT()
+
+SELECT DISTINCT x	-- Selects the column, ommiting any duplicates
+FROM table;
+
+DESCRIBE table		-- Describes the chosen table, returning its columns and their respective types
+
+________________________________________________________________________________________________________________________________
+
+Comparison operators: <, >, =, != (or <>)
+
+BETWEEN x AND y				-- Checks if the value is in the interval
+WHERE x is BETWEEN 10 and 20
+
+IN (VALUE_LIST)				-- Checks if the value is in the list of values
+WHERE x IN (10, 20, 30, 40, 50)
+
+LIKE					-- Checks if the value is like the passed pattern
+WHERE x LIKE '_A%'			-- _ means there's one character there, while % represents any number of characters
+
+IS NULL					-- Checks if the value is NULL
+WHERE x IS NOT NULL			-- If x is not NULL
+________________________________________________________________________________________________________________________________
+Logic operators: AND, OR, NOT
+
+WHERE x = 10 AND y = 20			-- If x is 10 and y is 20
+WHERE x = 10 OR y = 20			-- If x is 10 or y is 20
+WHERE x > 10 AND x <> 20		-- If x is greater than 10 and x isn't 20
+WHERE x NOT IN (20, 30, 40, 50)		-- If x is not 20, 30, 40 or 50
+
+
+The comparison operators go first, then NOT, AND, OR are checked in that order, but brackets can be used to force priorities.
+________________________________________________________________________________________________________________________________
+Queries can be sorted by using the ORDER BY command:
+
+SELECT name, salary, hiredate, salary*12 annualsalary
+FROM employees
+ORDER BY hiredate;			-- The oldest employees are listed first
+
+ORDER BY hiredate DESC;			-- The most recently hired employees listed first
+ORDER BY annualsalary;			-- Sorts by the alias column
+ORDER BY salary, hiredate;		-- Sorts by salary first, and then by hiredate from results with the same salary
+________________________________________________________________________________________________________________________________
+When we join N tables together, we must have N-1 conditions in the WHERE clausule in order to correctly connect them.
+Otherwise, we get the cartesian product, meaning we get A*B rows, where A and B are the amount of rows in the tables.
+The command CROSS JOIN placed under the FROM command creates a cartesian product:
+
+SELECT name, salary
+FROM employees
+CROSS JOIN departments;			-- This is the same as FROM employees, departments
+
+
+The ON command can be used next to FROM in place of WHERE if we're joining two classes by all attributes with the same name
+This is called a NATURAL JOIN.
+If there is more than one column with the same name, we can use the keyword USING instead
+
+SELECT name, department_name
+FROM employees e, departments d
+	ON (e.department_id = d.department_id);
+
+SELECT department_id, department_name, manager_id, location_id
+FROM departments
+	NATURAL JOIN locations;
+	
+
+EQUIJOIN is joining by equality, using the WHERE command:
+
+SELECT name, department_name
+FROM employees e, department d
+WHERE e.department_id = d.department_id;
+
+
+Joining by inequalities are called NON EQUIJOINS:
+
+SELECT e.name, e.salary, s.max_salary, s.min_salary
+FROM employees e, jobs s
+WHERE e.salary BETWEEN s.min_salary AND s.max_salary
+
+
+Joining a table with itself is called a SELF JOIN
+
+SELECT worker.name || ' works for ' || manager.name
+FROM employees worker, employees manager
+WHERE worker.manager_id = manager.eployee_id
+
+
+OUTER JOIN joins two tables like INNER JOIN expanded with unjoined columns from the LEFT or RIGHT side of the table.
+FULL OUTER JOIN returns all results which are the result of INNER JOIN and all results of the LEFT and RIGHT join.
+________________________________________________________________________________________________________________________________
+Single-Row functions can be nested on any level.
+________________________________________________________________________________________________________________________________
+
+Functions for working with characters:
+
+Case conversion:
+LOWER('TESTstring')		-- Returns teststring
+UPPER('TESTstring')		-- Returns TESTSTRING
+INITCAP('TESTstring')		-- Returns Teststring
+
+Character Manipulation:
+CONCAT('Nice', 'Meme')		-- Returns NiceMeme
+SUBSTR('String', 1, 3)		-- Returns Str		REMINDER: The last parameter is how many characters we're selecting
+LENGTH('String')		-- Returns 6
+INSTR('String', 'r')		-- Returns 3
+LPAD(salary, 10, *)		-- Returns ******5000
+RPAD(salary, 10, *)		-- Returns 5000******
+TRIM('B' FROM 'Banana')		-- Returns anana
+________________________________________________________________________________________________________________________________
+Functions for working with numbers:
+
+ROUND(57.45678, 3)		-- Rounds to 57.457
+ROUND(57.45678, -1)		-- Rounds to 60
+
+TRUNC(57.45678, 3)		-- Truncates to 57.456
+TRUNC(57.45678, -1)		-- Truncates to 50
+
+MOD(20, 7)			-- Returns the remainder, in this case 6
+________________________________________________________________________________________________________________________________
+Dates are saved like CENTURY, YEAR, MONTH, DAY, HOUR, MINTE, SECOND
+The default return value for a date is DD-MON-YY
+SYSDATE returns the current date and time on the server hosting the database
+Subtracting two dates returns the amount of days between them, while adding them returns a new date (usually doesn't work)
+
+Functions for working with dates are:
+
+MONTHS_BETWEEN(date1, date2)		-- Returns the amount of months between the two dates
+ADD_MONTHS(date1, x)			-- Adds months
+NEXT_DAY(date1)				-- Goes to the next day of the given date
+LAST_DAY(date1)				-- Goes to the last day of the month
+
+ROUND(date1, x)				-- Rounds the date
+ROUND('01-SEP-95 22:12:34')		-- Returns 02-SEP-95
+
+TRUNC(date1, x)				-- Truncates the date
+TRUNC('01-SEP-95 22:12:34')		-- Returns 01-SEP-95
+________________________________________________________________________________________________________________________________
+Converting one type of data to the other goes like this:
+NUMBER --(TO_CHAR)-> CHARACTER --(TO_DATE)-> DATE
+
+And the other way around:
+DATE --(TO_CHAR)-> CHARACTER --(TO_NUMBER)-> NUMBER
+
+TO_CHAR('01.01.1998', 'dd.mm.yyyy')	-- Converts the char to a date
+
+Formatting dates:
+YYYY		-- Entire year in numbers
+YEAR		-- Year as a word
+MM		-- Two digits for a month
+MONTH		-- Month as a word
+DY		-- First three letters of the day of the week
+DAY		-- Full name of the day of the week
+DD		-- Two digits for the day of the month
+DDSPTH		-- Day of the month as a word
+HH24:MI:SS AM	-- 15:45:32 PM
+DD "of" MONTH	-- 12 of OCTOBER
+
+Formatting characters:
+9		-- Number
+0		-- Forces the display of zeroes
+$		-- $ prefix
+L		-- Uses floating point to indicate currency
+.		-- Decimal point
+,		-- Uses comma to seperate thousands (1,000 instead of 1000)
+________________________________________________________________________________________________________________________________
+The NVL function creates a placeholder value for values which are null:
+
+NVL(myValue, 0)
+NVL(myDate, '01-JAN-97')
+NVL(myJob, 'Nothing')
+________________________________________________________________________________________________________________________________
+The DECODE function is akin to an IF-ELSE block:
+
+SELECT job_id job, salary sal,
+				DECODE(job_id,
+				       'ANALYST', SAL*1.1,
+				       'CLERK', SAL*1.15,
+				       'MANAGER', SAL*1.20,
+				       SAL) REVISED_SALARY
+FROM employees;
+________________________________________________________________________________________________________________________________
+Group functions:
+
+SELECT [column,] group_function(column)
+FROM table
+[WHERE condition]		-- Conditions
+[GROUP BY column]		-- Grouping results
+[HAVING group_condition]	-- Used to create a restriction
+[ORDER BY column]		-- Ordering the results
+
+ALL columns which are outside of group functions must be in the GROUP BY statement
+
+
+AVG(column)		-- Takes the average value of the column
+AVG(NVL(column, value))	-- Returns the average of all elements, setting the NULL elements to a certain value
+
+COUNT(column)		-- Returns the amount of rows with a non-null value for the column
+COUNT(DISTINCT column)	-- Returns how many distinct elements there are in the column
+
+MAX(column)		-- Grabs the max element form the column
+MIN(column)		-- Grabs the min element from the column
+STDDEV
+SUM(column)		-- Sums the elements of the passed column into a single output
+VARIANCE
+
+The HAVING condition is useful for creating restrictions:
+
+SELECT job_id, SUM(salary) PAYROLL
+FROM employees
+WHERE job NOT LIKE 'SALES%'
+GROUP BY job_id
+HAVING SUM(salary)>5000
+ORDER BY SUM(salary)
+
+
+Group functions can also be nested:
+
+SELECT MAX(AVG(salary))
+FROM employees
+GROUP BY department_id;
+
+
+However, adding extra columns when nesting functions usually leads to errors even with the GROUP BY command
+________________________________________________________________________________________________________________________________
+Subqueries can be used to solve complex problems.
+For example: Select the employees whose salary is larger than the employee with the ID 102:
+
+SELECT name
+FROM employees
+WHERE salary > (SELECT salary
+		FROM employees
+		WHERE employee_id = 102);
+		
+
+The subquery must be enclosed in brackets, and placed to the RIGHT of the comparison operator.
+A subquery cannot have the ORDER BY command.
+When using subqueries, we should use single-row operators with a single subquery.
+In case of multiple operators, we can use multiple subqueries if we only use single-row subqueries.
+A subquery can be placed anywhere in the original query.
+
+Single-row subqueries return only one row, and use single-row comparison operators: =, >, >=, <, <=, != (or <>)
+Multiple-row subqueries return more than one row, and use multiple-row comparison operators: IN, ANY, ALL
+
+
+
+
+
+
+
+
