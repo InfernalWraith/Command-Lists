@@ -243,10 +243,25 @@ A subquery can be placed anywhere in the original query.
 Single-row subqueries return only one row, and use single-row comparison operators: =, >, >=, <, <=, != (or <>)
 Multiple-row subqueries return more than one row, and use multiple-row comparison operators: IN, ANY, ALL
 
+ANY is used when multiple ROWS are returned, while ALL is used when multiple COLUMNS are returned.
 
+We can also compare PAIRS instead of individual values:
+SELECT orderID, productID, quantity
+FROM items
+WHERE (productID, quantity) IN (SELECT productID, quantity
+				FROM items
+				WHERE orderID = 200)
+AND orderID <> 200;
+________________________________________________________________________________________________________________________________
+Set functions are used after the FROM command:
 
+UNION
+UNION ALL	-- Displays duplicates
+INTERSECT
+MINUS		-- If A has it and B doesn't
 
-
-
-
-
+When using SET operators, the columns in SELECT must have the same amount of elements and the same types.
+Brackets can be used to control the order of operations.
+The ORDER BY function can only be used at the end of the query.
+And the names of columns from the first SELECT command will be used as names of the resulting columns.
+The result is sorted in ascending order, except for the UNION ALL command
