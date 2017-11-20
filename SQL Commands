@@ -5,7 +5,6 @@ SELECT DISTINCT x	-- Selects the column, ommiting any duplicates
 FROM table;
 
 DESCRIBE table		-- Describes the chosen table, returning its columns and their respective types
-
 ________________________________________________________________________________________________________________________________
 
 Comparison operators: <, >, =, != (or <>)
@@ -262,4 +261,4 @@ When using SET operators, the columns in SELECT must have the same amount of ele
 Brackets can be used to control the order of operations.
 The ORDER BY function can only be used at the end of the query.
 And the names of columns from the first SELECT command will be used as names of the resulting columns.
-The result is sorted in ascending order, except for the UNION ALL command
+The result is sorted in ascending order, except for the UNION ALL command.
