@@ -1,7 +1,5 @@
 SELECT *
-FROM table;
-
-COUNT()
+FROM table;		-- Selects all elements from table
 
 SELECT DISTINCT x	-- Selects the column, ommiting any duplicates
 FROM table;
