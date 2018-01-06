@@ -198,7 +198,7 @@ COUNT(DISTINCT column)	-- Returns how many distinct elements there are in the co
 
 MAX(column)		-- Grabs the max element form the column
 MIN(column)		-- Grabs the min element from the column
-STDDEV
+STDDEV(column)		-- Returns the standard deviation of the column
 SUM(column)		-- Sums the elements of the passed column into a single output
 VARIANCE
 
@@ -219,7 +219,54 @@ FROM employees
 GROUP BY department_id;
 
 
-However, adding extra columns when nesting functions usually leads to errors even with the GROUP BY command
+However, adding extra columns when nesting functions usually leads to errors even with the GROUP BY command.
+
+The functions ROLLUP and CUBE are used to form sets of rows which contain additional rows with values of subtotals,
+where ROLLUP contains the "more important," and CUBE contains the "less important" grouped columns.
+These functions are used within the GROUP BY expression:
+
+SELECT department_id, job_id, SUM(salary)
+FROM employees
+WHERE department_id < 50
+GROUP BY ROLLUP(department_id, job_id);
+
+This code will generate a normal list, sorted by the department_id column, but will add an additional row which sums the total
+salary of the entire department for each unique instance of the department_id column.
+
+
+SELECT department_id, job_id, SUM(salary)
+FROM employees
+WHERE department_id < 50
+GROUP BY CUBE(department_id, job_id);
+
+This code will work almost exactly the same, except it will create additional rows which sum by the job_id
+instead of the department_id (it will sum by the "less important" column instead)
+We can also use both ROLLUP and CUBE in a single GROUP BY statement.
+
+The GROUPING function returns either a 0 or a 1, depending on whether the current row was grouped by the passed column or not:
+
+SELECT department_id, job_id, SUM(salary), GROUPING(department_id), GROUPING(job_id)
+FROM employees
+WHERE department_id < 50
+GROUP BY ROLLUP(department_id, job_id);
+
+With this we'll know if the current row was grouped by the dpt_id or the job_id (or both) when the ROLLUP function is used.
+
+If we're working with large amounts of data, we should use GROUPING SETS, which are an upgrade of the GROUP BY function.
+Using GROUPING SETS, we can define multiple groups of data in the same query.
+They only pass through the data once, and don't need to have the UNION function (it's used automatically)
+This means they simplify code and are less time-consuming.
+
+SELECT department_id, job_id, manager_id, AVG(salary)
+FROM employees
+WHERE department_id < 50
+GROUP BY GROUPING SETS ((department_id, job_id), (job_id, manager_id))
+
+
+Combined columns represent a set of columns which is treated as a single column: ROLLUP(a, (b, c), d)
+They are used in the GROUP BY function.
+
+Groups can also be combined like so: GROUP BY GROUPING SETS(a, b), GROUPING SETS(c, d)
 ________________________________________________________________________________________________________________________________
 Subqueries can be used to solve complex problems.
 For example: Select the employees whose salary is larger than the employee with the ID 102:
@@ -249,6 +296,16 @@ WHERE (productID, quantity) IN (SELECT productID, quantity
 				FROM items
 				WHERE orderID = 200)
 AND orderID <> 200;
+
+
+The operator EXISTS and NOT EXISTS can be very useful when it comes to using subqueries. It returns TRUE or FALSE.
+This means it can easily be used in the WHERE segment of the query:
+
+SELECT employee_id, first_name
+FROM employees e
+WHERE EXISTS(SELECT 'X'
+	     FROM employees
+	     WHERE manager_id = e.employee_id);
 ________________________________________________________________________________________________________________________________
 Set functions are used after the FROM command:
 
@@ -262,3 +319,237 @@ Brackets can be used to control the order of operations.
 The ORDER BY function can only be used at the end of the query.
 And the names of columns from the first SELECT command will be used as names of the resulting columns.
 The result is sorted in ascending order, except for the UNION ALL command.
+________________________________________________________________________________________________________________________________
+Privileges and User Access:
+
+A new user can be created using the CREATE USER function:
+CREATE USER testuser
+IDENTIFIED BY testpassword;
+
+
+The new user won't be able to do anything, so we need to grant him access to some commands:
+GRANT create table, create sequence, create view
+TO testuser;
+
+
+To save time and manage lots of users at once, we can create our own custom roles.
+These roles can have their own access level, and we can assign the role to any user we want later on:
+
+CREATE ROLE manager;
+
+GRANT create table, create view
+TO manager;
+
+GRANT manager to testuser;
+
+
+The database administrator (DBA) can create users and edit their passwords. To edit passwords, we use the ALTER USER command:
+ALTER USER testuser
+IDENTIFIED BY newpassword;
+
+
+The creator of an object has full access to that object, along with the ability to grant privileges to others over that object.
+GRANT select
+ON mytable
+TO user1, user2;
+
+GRANT update(first_name, last_name)
+ON mytable
+TO user1, manager;
+
+GRANT select, insert
+ON mytable
+TO user1
+WITH GRANT OPTION;		-- Now the user can grant privileges to other users as well!
+
+GRANT select
+ON mytable
+TO PUBLIC;			-- Now EVERYONE can use the command SELECT on mytable!
+
+
+As the administrator giveth, the administrator may also taketh away. This is done with the REVOKE command:
+REVOKE select, insert
+ON mytable
+FROM user1;
+
+Note: This will also remove any privileges the revoked user has given others with the WITH GRANT OPTION
+________________________________________________________________________________________________________________________________
+Working with Tables:
+
+We can create a table using the CREATE TABLE command.
+When creating a table, we should add certain constraints to the table itself as well as its columns:
+CREATE TABLE testtable (
+	column1		NUMBER(5,0),
+	column2		VARCHAR2(20)	UNIQUE, NOT NULL,
+	column3		DATE,
+	
+	CONSTRAINT tt_c1_pk PRIMARY KEY (column1),
+	CONSTRAINT tt_c3_fk FOREIGN KEY (column3) REFERENCES employees(hire_date),
+	CONSTRAINT tt_c1_chkval CHECK (column1 BETWEEN 10000 AND 99999)
+);
+
+If we forget to add a certain constraint, we can do so with the ALTER TABLE command:
+ALTER TABLE testtable
+ADD CONSTRAINT c3_nn NOT NULL(column3);
+
+We can also disable constraints, or fully remove them:
+ALTER TABLE testtable
+DISABLE CONSTRAINT tt_c1_chkval;
+
+ALTER TABLE testtable
+DROP CONSTRAINT tt_c1_pk;
+
+ALTER TABLE testtable
+ENABLE CONSTRAINT tt_c1_chkval;
+
+
+All constraints can be viewed by checking the USER_CONSTRAINTS and USER_CONS_COLUMNS tables.
+
+As time goes on, we can update the table using the UPDATE command:
+UPDATE testtable t
+SET column1 = (SELECT first_name
+	       FROM employees e
+	       WHERE t.column1 = e.employee_id);
+	       
+
+We can also delete things from the table:
+DELETE FROM employees e
+WHERE employee_id = (SELECT employee_id
+		     FROM emp_history
+		     WHERE employee_id = e.employee_id);
+
+
+The WITH command is used when a query is used multiple times in a complex query. It imporeves performance.
+WITH dept_costs AS (
+	SELECT  d.department_name, SUM(e.salary) AS dept_total
+	FROM    employees e, departments d
+	WHERE   e.department_id = d.department_id
+	GROUP BY d.department_name), avg_cost AS (SELECT SUM(dept_total)/COUNT(*) AS dept_avg
+				     		  FROM   dept_costs)
+	SELECT *
+	FROM   dept_costs
+	WHERE  dept_total > (SELECT dept_avg
+		             FROM avg_cost)
+	ORDER BY department_name;
+________________________________________________________________________________________________________________________________
+Views:
+
+Views are used to restrict access to data, to simpily complex queries.
+CREATE VIEW testview		-- Also works as CREATE OR REPLACE testview
+AS SELECT employee_id EMPLOYEE NUMBER, last_name NAME, job_id
+FROM employees
+WHERE department_id = 90;
+
+
+Complex views usually contain group functions and data from multiple tables.
+DML operations can only be used with simple views, not complex ones.
+It's impossible to delete items if a view contains group functions, GROUP BY command, the keyword DISTINCT, or a pseudo-column.
+It's impossible to update items if a view contains any of the above, columns defined with queries, or a ROWNUM pseudo-column.
+It's impossible to add new rows if the view contains any of the above, or if there are NOT NULL columns in the base table
+outside of the view.
+
+We can also ensure that any updates follow the given constrains using the WITH CHECK OPTION command:
+CREATE OR REPLACE VIEW testview
+AS SELECT *
+FROM employees
+WHERE department_id = 20
+WITH CHECK OPTION CONSTRAINT tt_chk;
+
+
+A view can also be made read-only using the WITH READ ONLY command:
+CREATE OR REPLACE VIEW testview
+AS SELECT *
+FROM employees
+WHERE department_id = 20
+WITH READ ONLY;
+
+
+Views are deleted like so:
+DROP VIEW testview;
+
+
+Inline views are subqueries with an alias which can be used in an SQL command.
+
+ROWNUM can be used to list the top or bottom rows depending on how we rank them
+SELECT ROWNUM as Rank, Name, Pay
+FROM (SELECT last_Name Name, salary Pay
+      FROM employees
+      ORDER BY salary DESC)
+WHERE ROWNUM <= 3;
+________________________________________________________________________________________________________________________________
+Sequences:
+
+Sequences are automatically generated unique numbers. They're objects which are shareable between users.
+They are usually used to generate the primary key of the table.
+
+CREATE SEQUENCE testseq
+INCREMENT BY 1
+START WITH 1000
+MAXVALUE 9999
+NOCACHE
+NOCYCLE
+
+SELECT sequence_name, min_value, max_value, increment_by, last_number
+FROM user_sequences;
+
+
+NEXTVAL returns the next number in a sequence, incrementing it in the process.
+CURRVAL returns the last generated value of a sequence.
+
+INSERT INTO department(department_id, department_name, location_name)
+VALUES (testseq.NEXTVAL, 'Hello', 'There');
+
+
+And to check the current number of the sequence:
+SELECT testseq.CURRVAL
+FROM dual;
+
+We can check for the next value of a sequence by querying the USER_SEQUENCES table, especially for NOCACHE sequences.
+
+Sequences can be altered with the ALTER SEQUENCE command, and deleted with the DROP SEQUENCE command.
+________________________________________________________________________________________________________________________________
+Indexes and synonyms:
+
+Indexes are used to speed up queries by using pointers, thus reducing I/O operations.
+They are database objects which aren't dependant on the table for which they were made.
+Created indexes are automatically updated by the database.
+
+Indexes are created automatically when we use the PRIMARY KEY or UNIQUE constraints, or manually:
+CREATE INDEX testindex
+ON mytable(last_name)
+
+
+Indexes are best used if there's a column (or multiple columns) which is used often in the WHERE or JOIN commands.
+They are also used if a column has a wide range of values, or contains a large amount of NULL values.
+Also used for when a table has huge amounts of data, but its queries only return 2-4% of the data at one time.
+
+Indexes shouldn't be used if the table is small, if its columns are rarely used in the WHERE command or if it's updated often.
+
+Indexes can be viewed in the USER_INDEXES or the USER_IND_COLUMNS views.
+
+Function-based indexes are made using columns of a table, constants, or functions:
+CREATE TABLE test(coll NUMBER);
+CREATE INDEX testindex ON test(coll, coll+10);
+SELECT coll+10 FROM test;
+
+
+Indexes can be deleted using: DROP INDEX testindex;
+
+
+Synonyms are just different names for same objects.
+They simplify access and are used to avoid writing the entire structure of the database for each queried object:
+CREATE SYNONYM testsyn
+FOR myobject;
+
+
+They are deleted by using the DROP SYNONYM command: DROP SYNONYM testsyn;
+________________________________________________________________________________________________________________________________
+
+
+________________________________________________________________________________________________________________________________
+
+
+________________________________________________________________________________________________________________________________
+
+
+________________________________________________________________________________________________________________________________
