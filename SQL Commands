@@ -544,12 +544,87 @@ FOR myobject;
 
 They are deleted by using the DROP SYNONYM command: DROP SYNONYM testsyn;
 ________________________________________________________________________________________________________________________________
+Functions:
+
+Functions in SQL are created like so:
+CREATE [OR REPLACE] FUNCTION function_name
+	(argument1 [mode1] datatype1,
+	argument2 [mode2] datatype2,argument2 [mode2] datatype2,
+	. . .)
+RETURN datatype
+IS|AS
+PL/SQL Block;
 
 
+CREATE FUCTION is used to create a function, which we then place into the .sql file and compile it in SQL*Plus:
+CREATE OR REPLACE FUNCTION get_sal
+(v_id  IN emp.empno%TYPE)
+RETURN NUMBER
+IS
+	v_salary emp.sal%TYPE :=0;
+BEGIN
+	SELECT sal
+	INTO v_salary
+	FROM emp         
+	WHERE empno = v_id;
+	RETURN (v_salary);
+END get_sal;
+/
+
+
+After we create the function and save it as a .sql file, we can call it like so:
+START get_salary.sql
+VARIABLE g_salary number
+EXECUTE :g_salary := get_sal(7934)
+PRINT g_salary
+
+
+Functions can be called:
+- In the SELECT command (assuming it doesn't contain COMMIT, ROLLBACK, SAVEPOINT or other DML commands)
+- As a condition in the WHERE or HAVING command
+- In the CONNECT BY, START WITH, ORDER BY and GROUP BY commands
+- In the VALUES part of the INSERT command
+- In the SET part of the UPDATE command
 ________________________________________________________________________________________________________________________________
+Triggers:
+
+Triggers are blocks of code which run implicitly once the event they're tied to happens.
+A trigger can be a database trigger or an application trigger.
+A trigger is used to centralize global operations or execute connected actions.
+
+The trigger consists of:
+Trigger timing:
+	-Tables: BEFORE and AFTER
+	-Views: INSTEAD OF
+Trigger event: INSERT, UPDATE, DELETE
+Table/View name
+Trigger type: Row/Expression
+WHEN command
+Trigger body:
+	- DECLARE
+	- BEGIN
+	- EXCEPTION
+	- END
 
 
-________________________________________________________________________________________________________________________________
+Trigger sample:
+CREATE OR REPLACE TRIGGER osiguraj_emp
+BEFORE INSERT ON emp
+BEGIN
+IF (TO_CHAR (sysdate,'DY') IN ('SAT','SUN')) OR (TO_CHAR(sysdate,'HH24') NOT BETWEEN '08' AND '18')
+	THEN RAISE_APPLICATION_ERROR (-20500, 'You can insert a new row only during work days and after-hours!.');
+END IF;
+END;
+/
 
 
+Triggers can also be altered, and enabled/disabled en-masse:
+ALTER TRIGGER testtrigger ENABLE | DISABLE
+ALTER TABLE testtable ENABLE | DISABLE ALL TRIGGERS
+ALTER TRIGGER testtrigger COMPILE
+DROP TRIGGER testtrigger
+
+
+Triggers are implemented for the purposes of security, monitoring, data integrity, referential integrity, table replication,
+event logging and data calculation.
 ________________________________________________________________________________________________________________________________
