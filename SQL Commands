@@ -441,6 +441,16 @@ ENABLE CONSTRAINT tt_c1_chkval;
 
 All constraints can be viewed by checking the USER_CONSTRAINTS and USER_CONS_COLUMNS tables.
 
+After creating a table, we can add comments to the table and its columns like so:
+COMMENT ON TABLE mytable IS 'This is a sample comment';
+COMMENT ON COLUMN mytable.column1 IS 'This is another comment!';
+
+
+Comments can be viewed by using:
+SELECT * FROM user_tab_comments;
+SELECT * FROM user_col_comments;
+
+
 As time goes on, we can update the table using the UPDATE command:
 UPDATE testtable t
 SET column1 = (SELECT first_name
@@ -467,6 +477,11 @@ WITH dept_costs AS (
 	WHERE  dept_total > (SELECT dept_avg
 		             FROM avg_cost)
 	ORDER BY department_name;
+
+
+Columns can also be set as unused:
+ALTER TABLE mytable
+SET UNUSED (column1, column2);
 ________________________________________________________________________________________________________________________________
 Views:
 
