@@ -320,6 +320,42 @@ The ORDER BY function can only be used at the end of the query.
 And the names of columns from the first SELECT command will be used as names of the resulting columns.
 The result is sorted in ascending order, except for the UNION ALL command.
 ________________________________________________________________________________________________________________________________
+Hierarchy:
+
+Top-Down and Bottom-Up selects are made possible by forming a hierarchy.
+This can be done for example with employees and their managers, then the managers of the managers and so on...
+Top-Down example:
+SELECT last_name||' reports to '||
+PRIOR last_name "Top Down"
+FROM employees
+START WITH last_name = 'King'
+CONNECT BY PRIOR employee_id = manager_id;
+
+
+Bottom-Up example:
+SELECT employee_id, last_name, job_id, manager_id
+FROM employees
+START WITH  employee_id = 105
+CONNECT BY PRIOR manager_id = employee_id;
+
+As we can see, the difference in Top-Down and Bottom-Up is in the order of the columns in the CONNECT BY PRIOR clause:
+CONNECT BY PRIOR column1 = column2
+-- Top-Down: column1 = parent, column2 = child
+-- Bottom-Up: column1 = child, column2 = parent
+
+We can also display the structure visually using the LPAD function:
+SELECT LPAD(last_name, LENGTH(last_name)+(LEVEL*4)-4,' ') AS org_chart
+FROM employees
+START WITH last_name='King' 
+CONNECT BY PRIOR employee_id=manager_id;
+
+
+We can also avoid entire branches of the hierarchy tree:
+SELECT LPAD(last_name, LENGTH(last_name)+(LEVEL*4)-4,' ') AS org_chart
+FROM employees
+START WITH last_name='King' 
+CONNECT BY PRIOR employee_id=manager_id AND last_name!='Higgins';	-- Higgins and his underlings won't be displayed
+________________________________________________________________________________________________________________________________
 Privileges and User Access:
 
 A new user can be created using the CREATE USER function:
