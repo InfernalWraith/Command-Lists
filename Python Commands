@@ -1,7 +1,7 @@
 # Note: Words typed out exclusively in uppercase are examples of what type of parameter is used for a certain syntax
 # Notes and comments will have the (#) character in front of them, and different commands will be separated with two empty lines
 
-# Mathematical Operators
+Mathematical Operators
 x + y     Addition
 x - y     Subtraction
 x * y     Multiplication
@@ -10,7 +10,7 @@ x ** y    Exponent {x to the power of y}
 x % y     Remainder of division  {9 % 4 = 1}
 
 
-# Comparison
+Comparison
 x > y     Has the value 'True' only if x is greater than y
 x >= y    Has the value 'True' only if x is greater or equal than y
 x <= y    Has the value 'True' only if x is less or equal than y
@@ -19,7 +19,9 @@ x == y    Has the value 'True' only if x and y are equal
 x != y    Has the value 'True' only if x and y are not equal
 
 ____________________________________________________________________________________________________________________________
-# General Information
+General Information
+
+
 Unlike in other languages such as C or C++, variables are automatically assigned a type upon initialization
 For example, we can declare both a string and an integer the same way:
 my_string = "Hello"
@@ -39,7 +41,7 @@ not True                  For negation, we use 'not'
 The order of evaluating these operations is as follows: First comes NOT, then comes AND, and OR comes last.
 
 ____________________________________________________________________________________________________________________________
-# BASIC COMMANDS
+Basic Commands
 
 
 print "INSERT TEXT"
@@ -99,7 +101,7 @@ import X
 #Imports the libary X, but its functions must be used like so: x.FUNCTIONSAMPLE
 
 ____________________________________________________________________________________________________________________________
-# STRINGS
+Strings
 
 
 len(VARIABLE)
@@ -147,7 +149,7 @@ print "My favorite number is " str(47)
 STRING[x, y]
 
 ____________________________________________________________________________________________________________________________
-# DATE AND TIME
+Date and time
 
 
 datetime.now()
@@ -162,7 +164,7 @@ print VARIABLE.year; print VARIABLE.month; print VARIABLE.day
 
 
 ____________________________________________________________________________________________________________________________
-# FUNCTIONS
+Functions
 
 
 def FUNCTION_NAME(ARGUMENT1, ARGUMENT2):
