@@ -11,13 +11,12 @@ x % y     Remainder of division  {9 % 4 = 1}
 
 
 Comparison
-x > y     Has the value 'True' only if x is greater than y
-x >= y    Has the value 'True' only if x is greater or equal than y
-x <= y    Has the value 'True' only if x is less or equal than y
-x < y     Has the value 'True' only if x is less than y
-x == y    Has the value 'True' only if x and y are equal
-x != y    Has the value 'True' only if x and y are not equal
-
+x > y     x is greater than y
+x < y     x is less than y
+x >= y    x is greater or equal than y
+x <= y    x is less or equal than y
+x == y    Equal
+x != y    Not equal
 ____________________________________________________________________________________________________________________________
 General Information
 
@@ -34,12 +33,11 @@ false_variable = False
 Comments in Python are made using the # character for single line commends, or """ for multi line comments.
 
 We can also use logical operators of conjunction, disjunction and negation like so:
-True and False            For conjunction, we use 'and'
-True or False             For disjunction, we use 'or'
-not True                  For negation, we use 'not'
+x and y           For conjunction, we use 'and'
+x or y            For disjunction, we use 'or'
+not x                  For negation, we use 'not'
 
 The order of evaluating these operations is as follows: First comes NOT, then comes AND, and OR comes last.
-
 ____________________________________________________________________________________________________________________________
 Basic Commands
 
@@ -66,12 +64,12 @@ VARIABLE = x
 #Assigns the value x to the variable VARIABLE
 
 
-float(NUMBER)
-#Converts an integer into a real number
+float(INTEGER)
+#Converts an integer into a floating point number
 
 
 int(NUMBER)
-#Converts a real number into an integer by cutting off the decimal part
+#Converts a floating point number into an integer by cutting off the decimal part
 
 
 if CONDITION :
@@ -94,12 +92,13 @@ VARIABLE=raw_input('MESSAGE')
 int(VARIABLE)
 #Attempts to turn a string(variable) into a number
 
+
 from X import Y
 #Imports things from library X into the local namespace, making the functions easier to write but causing potential conflicts
 
+
 import X
 #Imports the libary X, but its functions must be used like so: x.FUNCTIONSAMPLE
-
 ____________________________________________________________________________________________________________________________
 Strings
 
@@ -160,9 +159,6 @@ datetime.now()
 VARIABLE = datetime.now()
 print VARIABLE.year; print VARIABLE.month; print VARIABLE.day
 #Prints the current year, month, or day
-
-
-
 ____________________________________________________________________________________________________________________________
 Functions
 
@@ -191,7 +187,6 @@ def FUNCTION_NAME(ARGUMENT1, ARGUMENT2):
 **Then the line " greeting('ba'), 'Haris' will print out "Zdravo Haris" "
 
 #We can also call functions inside of themselves
-
 ____________________________________________________________________________________________________________________________
 # LOOPS
 
