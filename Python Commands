@@ -35,7 +35,7 @@ Comments in Python are made using the # character for single line commends, or "
 We can also use logical operators of conjunction, disjunction and negation like so:
 x and y           For conjunction, we use 'and'
 x or y            For disjunction, we use 'or'
-not x                  For negation, we use 'not'
+not x             For negation, we use 'not'
 
 The order of evaluating these operations is as follows: First comes NOT, then comes AND, and OR comes last.
 ____________________________________________________________________________________________________________________________
@@ -48,12 +48,16 @@ print "INSERT TEXT"
 #We can use string formatting to add variables to our text block that's being printed out like so:
 SAMPLE_STRING="example"
 RESULT=2
-print "This is an %s. 1+1 equals %d." % (SAMPLE_STRING, RESULT)
-#This prints out: "This is an example. 1+1 equals 2."
+print "This is an %s. 1+1 equals %d." % (SAMPLE_STRING, RESULT)     #This is an example. 1+1 equals 2.
+
+
+print '%05d' % (VARIABLE)
+#Prints the variable, adding zeroes if the variable has less than the amount of digits specified after the '%' symbol (padding)
+#For example, for VARIABLE = 34, it will print out '00034'
+
 
 #As of Python 2.6, we can avoid having to use specific formatting modifiers by using the more advanced "format" command:
-print "Testing, testing, {test}".format(test="one, two, three!")
-#This prints out: "Testing, testing, one, two, three!"
+print "Testing, testing, {test}".format(test="one, two, three!")    #Testing, testing, one, two, three!
 
 
 print VARIABLE
@@ -152,13 +156,15 @@ Date and time
 
 
 datetime.now()
-#Gets the current date and time
+#Returns the current date and time
 #Must have a "from datetime import datetime" line before it, meaning we must import the "datetime" library in order to use it
 
 
-VARIABLE = datetime.now()
-print VARIABLE.year; print VARIABLE.month; print VARIABLE.day
-#Prints the current year, month, or day
+The datetime class has the following attributes:
+DATE = datetime.now()
+DAY = DATE.day
+MONTH = DATE.month
+YEAR = DATE.year
 ____________________________________________________________________________________________________________________________
 Functions
 
