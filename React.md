@@ -11,6 +11,40 @@ When a link is entered into a web browser, then the browser sends a request to t
 Using `import` instead of `require` to load in JS modules only specifies what kind of method is used to share the code between different JS files. ES2015 modules use `import`, whereas CommonJS modules use `require`.
 
 ___
+## JSX
+JSX syntax differs from HTML in a few ways.
+#
+    <div style="border: 1px solid red;"></div>          // HTML
+    <div style={{ border: '1px solid red' }}></div>     // JSX
+	<button style="background-color: blue; color: white;">Submit</button>		// HTML
+	<button style={{ backgroundColor: 'blue'; color: 'white' }}>Submit</button>	// JSX
+Properties inside tags are done differently, where JS variables in curly brackets are used in place of multiple entries inside double quotation marks. The first set of curly brackets indicates that a JS variable will be referenced, while the second set (inside the first) denotes a JS *object*. Note that compound attribute names like `'background-color'` are changed to camelcase (`'backgroundColor'`).
+
+#
+	<label for="inputEmail">Email: </label>
+The convention is to use double quotes for JSX properties and single quotes everywhere else.
+
+#
+	<label class="fancyLabel" for ='inputEmail'>Sample text</label>				// HTML
+	<label className="fancyLabel" htmlFor ='inputEmail'>Sample text</label>		// JSX
+When assigning a class to a tag for styling later on, `className` is used instead of `class`. The same applies to the `for` keyword used in the <label> tag, which is converted to `htmlFor`. Although they often result in code which generally works fine, JS keywords should be avoided and their substitutes should be used instead.
+
+#
+    const App = () => {
+    	return (
+    		<button style={{ backgroundColor: 'blue', color:'white' }}>
+    			{txt}
+    		</button>
+    	);
+    }
+
+    txt = 12345
+    txt = 'TestMessage'		// Works
+    txt = ['Test', 'Message']	// Works
+    txt = { msg: 'TestMessage' }	// Doesn't work
+JSX can show a lot of things like variables and things returned from functions, but it can't show objects where text is expected. However, it **can** show object properties, so `txt.msg` would work just fine whereas `txt` on its own would cause an error.
+
+___
 ## Components
 A *React component* is a JS **function** or **class** that *returns some JSX* (which turns into HTML that is shown to the user) and *handles feedback from the user* (using event handlers). **JSX** is basically a set of instructions which tells React what to display on the screen. Before JSX is rendered in the browser, it first needs to be converted into regular JS code. Each tag in JSX is examined by checking if it's a *DOM* element (for example, a `<div>`). If so, the element is rendered. If it's a component, then the component function is called and all the JSX it returns is also inspected.
 
@@ -25,6 +59,13 @@ Creating a reusable, configurable component is done in a few steps:
 3) Create a file with the same name as the chosen component name (`Comment.js`)
 4) Place the selected JSX into the file and make it configurable by using the **props** system
 5) The finished component should then have an `export default COMPONENTNAME`, in this case it would be `export default Comment`, after which it should be imported elsewhere with `import Comment from 'COMPONENT_PATH'` (with the appropriate component path)
+
+#
+    ReactDOM.render(<App />, document.getElementById("root"));
+The `ReactDOM.render()` function accepts two arguments:
+1) The React component which is to be rendered (`<App />` in the example above)
+2) The location inside the `index.html` file where the HTML from the component we selected will be placed into (`document.getElementById("root")` in the example above)
+
 
 ### Props
 When nesting components, the component which holds other components inside it is called the **parent component**, and the components inside it are its **children** (or **child components**). The **props** system (short for **properties**) is then used to pass data from a parent component to a child component, where the goal is to customize or configure the child component. It's all about having a parent customize how a child looks or behaves.
@@ -71,9 +112,9 @@ A better way to set default values for props is to create a special object, whic
     }
 If a component is passed as a prop, it's referenced by using `{props.children}`.
 
-___
 
-## Class Components
+
+### Class Components
 Props inside **class components** are used as part of `this`, so `this.props` instead of just `props`.
 
 With the help of the **hooks system**, **function components** can have the same functionality as the **class components**, using hooks in place of the **Lifecycle Method system** to run code at specific points in time and using hooks to access the **state system** and update content on the screen. Functional components are good for simple content, while class components are good for just about everything else.
@@ -163,6 +204,39 @@ Another thing to note is that it's better to use **controlled components** than 
 
 Callbacks can be used to transfer data from a child component to a parent component. This can be done by passing a method from a parent component to a child component, who then calls it on certain events.
 
+
+___
+### Asynchronous requests
+#
+    // The '.then' way
+    onSearchSubmit(searchTerm) {
+        axios.get('https://api.unsplash.com/search/photos', {
+            params: { query: searchTerm },
+            headers: {
+                Authorization: API_KEY
+            }
+        }).then((res) => {
+            console.log(res.data.results)
+        });
+    }
+Requests can be made using the `axios` library, with the `axios.get` function for **GET** requests. The function returns a `Promise` object, which has a function called `then` we can use to run some code after the response is received.
+
+#
+    // The 'await' way
+    async onSearchSubmit(searchTerm) {
+        const res = await axios.get('https://api.unsplash.com/search/photos', {
+            params: { query: searchTerm },
+            headers: {
+                Authorization: API_KEY
+            }
+        });
+        
+        console.log(res.data.results)
+    }
+Another way to do this is by marking the request function as asynchronous, using the `async` keyword in front of the function name, then creating a variable which will hold the response, and assigning the `await axios.get()` statement to it.
+
+
+___
 ### Tips
 #   
     const seasonConfig = {
@@ -270,86 +344,81 @@ Forms refresh the page by default when they're submitted. This can be prevented 
             // Some code...
         </form>
     }
-`this` in JS references a concrete instance of a class it's called from. When the callback in the above example is made, the `this` inside of the callback function becomes `undefined`, because the callback function implementation is taken from the instance and used on its own, thus losing the link needed to use `this`. One of the ways to fix this problem is by binding the callback function, then overwriting the current version of the function with the one that always has `this` bound to it. Another way to fix the problem is by turning the function into an arrow function, because arrow functions automatically bind the value of `this` for all the code inside the function.
+`this` in JS references a concrete instance of a class it's called from. When the callback in the above example is made, the `this` inside of the callback function becomes `undefined`, because the callback function implementation is taken from the instance and used on its own, thus losing the link needed to use `this`. One of the ways to fix this problem is by binding the callback function, then overwriting the current version of the function with the one that always has `this` bound to it. Another way to fix the problem is by turning the function into an arrow function, because arrow functions automatically bind the value of `this` for all the code inside the function. This makes it a good idea to always write callback functions as arrow functions, just to be safe.
 
 Variables in `state` which we know are going to be arrays or objects should be initialized as empty arrays or objects, so that we don't get error messages when we call methods specific to those data types (such as `length`).
 
 Arrow functions which are also `async` need to have the `async` keyword after the `=` sign, and before the parentheses which hold the parameters. <br>
 For example `async myFun (params) {` becomes `myFun = async (params) => {`.
-___
 
 #
-    ReactDOM.render(<App />, document.getElementById("root"));
-The `ReactDOM.render()` function accepts two arguments:
-1) The React component which is to be rendered (`<App />` in the example above)
-2) The location inside the `index.html` file where the HTML from the component we selected will be placed into (`document.getElementById("root")` in the example above)
-
-___
-### JSX
-JSX syntax differs from HTML in a few ways.
-#
-    <div style="border: 1px solid red;"></div>          // HTML
-    <div style={{ border: '1px solid red' }}></div>     // JSX
-	<button style="background-color: blue; color: white;">Submit</button>		// HTML
-	<button style={{ backgroundColor: 'blue'; color: 'white' }}>Submit</button>	// JSX
-Properties inside tags are done differently, where JS variables in curly brackets are used in place of multiple entries inside double quotation marks. The first set of curly brackets indicates that a JS variable will be referenced, while the second set (inside the first) denotes a JS *object*. Note that compound attribute names like `'background-color'` are changed to camelcase (`'backgroundColor'`).
-
-#
-	<label for="inputEmail">Email: </label>
-The convention is to use double quotes for JSX properties and single quotes everywhere else.
-
-___
+    // Let's say we want to take the 'numbers' array, multiplied by 10
+    // We also want that to be a new array, without changing the original
+    const numbers = [0, 1, 2, 3, 4]
+    
+    // numbers.map(function(num) {}) also works
+    numbers.map((num) => {
+        return num * 10;
+    });
+    
+    // Compact version, looks even nicer!
+    numbers.map(num => num * 10);
+    
+The `.map` method works on arrays and is passed a function which is applied to each element of an array, then used to generate a new array without mutating the original.
 
 #
-	<label class="fancyLabel" for ='inputEmail'>Sample text</label>				// HTML
-	<label className="fancyLabel" htmlFor ='inputEmail'>Sample text</label>		// JSX
-When assigning a class to a tag for styling later on, `className` is used instead of `class`. The same applies to the `for` keyword used in the <label> tag, which is converted to `htmlFor`. Although they often result in code which generally works fine, JS keywords should be avoided and their substitutes should be used instead.
-
-___
+    // Works but gives off a warning that the 'key' prop is missing
+    const images = props.images.map((image) => {
+        return <img src={image.urls.regular} />
+    });
+    
+    // No warning, has the 'key' prop
+    const images = props.images.map((image) => {
+        return <img key={image.id} src={image.urls.regular} />
+    });
+    
+    // Destructured and easy on the eyes, doesn't repeat 'image.' several times
+    const images = props.images.map(({ id, urls }) => {
+        return <img key={id} src={urls.regular} />
+    });
+If rendering items **from a list**, each element should have a `key` prop in order to allow React to see which elements are already in the DOM, so that they don't have to be rerendered if we're only putting in additional elements. Note that the `key` property should be given to the root tag that's being returned. A `key` should be a value which is consistent and unchanging between rerenders (such as the `id` property often coupled with data).
 
 #
-    const App = () => {
-    	return (
-    		<button style={{ backgroundColor: 'blue', color:'white' }}>
-    			{txt}
-    		</button>
-    	);
+    
+    constructor(props) {
+        super(props);
+        // Crete ref and assign it to a component instance variable
+        this.imageRef = React.createRef();
     }
 
-    txt = 12345
-    txt = 'TestMessage'		// Works
-    txt = ['Test', 'Message']	// Works
-    txt = { msg: 'TestMessage' }	// Doesn't work
-JSX can show a lot of things like variables and things returned from functions, but it can't show objects where text is expected. However, it **can** show object properties, so `txt.msg` would work just fine whereas `txt` on its own would cause an error.
-
-### Asynchronous requests
-#
-    // The '.then' way
-    onSearchSubmit(searchTerm) {
-        axios.get('https://api.unsplash.com/search/photos', {
-            params: { query: searchTerm },
-            headers: {
-                Authorization: API_KEY
-            }
-        }).then((res) => {
-            console.log(res.data.results)
-        });
+    componentDidMount() {
+        // Use the ref
+        console.log(this.imageRef);
     }
-Requests can be made using the `axios` library, with the `axios.get` function for **GET** requests. The function returns a `Promise` object, which has a function called `then` we can use to run some code after the response is received.
 
-#
-    // The 'await' way
-    async onSearchSubmit(searchTerm) {
-        const res = await axios.get('https://api.unsplash.com/search/photos', {
-            params: { query: searchTerm },
-            headers: {
-                Authorization: API_KEY
-            }
-        });
-        
-        console.log(res.data.results)
+    render() {
+        return(
+            // Pass the ref to JSX element as a prop
+            <img ref={this.imageRef} src={this.props.image.urls.regular} />
+        );
     }
-Another way to do this is by marking the request function as asynchronous, using the `async` keyword in front of the function name, then creating a variable which will hold the response, and assigning the `await axios.get()` statement to it.
+React Refs are a system which gives us direct access to a single DOM element that is rendered by a component, and they're used in place of the standard JS `document.querySelector(some_tag)`. Since all JSX elements - even the ones which look like standard HTML elements such as `<img>` - aren't HTML, but are eventually converted to real HTML, we thus have no way to reference them aside from using refs. They're created in the constructor, assigned to instance variables, then passed to a particular JSX element as props. They can be assigned to the `state` of a component, but since refs don't change over time, it shouldn't be done.
+    
+    // Won't work, image isn't loaded from the remote source yet
+    componentDidMount() {
+        console.log(this.imageRef.current.clientHeight);
+    }
+    
+    // Works - It waits for the image to load before calling the function
+    componentDidMount() {
+        this.imageRef.current.addEventListener('load', this.setSpans);
+    }
+
+    setSpans = () => {
+        const spans = Math.ceil(this.imageRef.current.clientHeight / 10);
+        this.setState({ spans });
+    }
+However, refs on things which are loaded from elsewhere (such as the images in the previous example) won't work properly, since they'll be called on objects whose content arrives after a certain delay. A way to properly use these refs is by adding an event listener which waits for them to load properly.
 
 
 
