@@ -235,7 +235,90 @@ Requests can be made using the `axios` library, with the `axios.get` function fo
     }
 Another way to do this is by marking the request function as asynchronous, using the `async` keyword in front of the function name, then creating a variable which will hold the response, and assigning the `await axios.get()` statement to it.
 
+## Hooks
+In React, the **Hooks system** is all about giving functional elements a lot of additional functionality. Hooks are all about providing tools to write reusable code, instead of more classic techniques like *inheritance*. The **hooks system** provides some inbuilt functions, such as:
+1) `useState` - Allows the use of `state` in a functional component
+2) `useEffect` - Allows the use of something similar to lifecycle methods
+3) `useRef` - Allows the creation of a `ref` in a function component
+4) `useContext` - 
+5) `useReducer` - 
+6) `useCallback` - 
+7) `useMemo` - 
+8) `useImperativeHandle` - 
+9) `useLayoutEffect` - 
+10) `useDebugValue` - 
+These inbuilt hooks can also be used to write custom hooks - pieces of code which do one very repeatable task.
+#   
+    // State variable |                     Default value  |
+    //               \/                                   \/
+    const[exampleVariable, setExampleVariable] = useState(null);
+    //                                    /\
+    // Function to change this variable   |
+    
+    // This the class component equivalent
+    state = { exampleVariable: null };
+    setExampleVariable = (value) => { this.setState({ exampleVariable: value })
+    
+`state` inside functional elements can be set up by using the `useState` hook. As can be seen from the example, each `state` variable in functional components created using `useState` needs to be declared (using its own `useState`) or changed (using its own setter function) seperately, unlike class components where we can initialize or change multiple `state` variables in a single line (or with a single `this.setState` call).
 
+#   
+    // Second argument is an empty array
+    // Trigger on first render
+    useEffect(() => {
+        console.log('Event trigger!');
+    }, []);
+    
+    // No second argument
+    // Trigger on first render and every rerender
+    useEffect(() => {
+        console.log('Event trigger!');
+    });
+    
+    // Second argument is an array with a variable
+    // Trigger on first render
+    // Trigger on every rerender IF data has changed since last render
+    useEffect(() => {
+        console.log('Event trigger!');
+    }, [someVariable]);
+`useEffect` allows function components to use something similar to lifecycle methods. The first argument passed to it is the function which needs to be triggered. The second argument defines in which of the three scenarios will the function be called:
+1) When the component is rendered for the first time
+2) When it first renders and whenever it rerenders
+3) When it first renders and (whenever it rerenders AND some piece of data changes)
+
+#   
+    // Doesn't work, gives an error
+    useEffect(async () => {
+        await axios.get(SOMETHING);
+    });
+    
+    // 1) Make a helper function, then call it
+    useEffect(() => {
+        const search = async () => {
+            await axios.get(SOMETHING);
+        };
+        
+        search();
+    });
+    
+    // Compact way of the example above
+    // 2) Define a function and immediately invoke it
+    useEffect(() => {
+        (async () => {
+            await axios.get(SOMETHING);
+        })();
+    });
+    
+    // 3) Make use of Promises
+    useEffect(async () => {
+        axios.get(SOMETHING)
+            .then((res) => {
+                console.log(res.data);
+            });
+    });
+**Functions passed to `useEffect` can't be `async`.** There are three solutions to this:
+1) Creating a helper function inside of `useEffect` which is `async`, then call it inside `useEffect`
+2) Define a function without a name inside of `useEffect` and immediately invoke it
+3) 
 ___
 ### Tips
 #   
@@ -364,7 +447,11 @@ For example `async myFun (params) {` becomes `myFun = async (params) => {`.
     // Compact version, looks even nicer!
     numbers.map(num => num * 10);
     
-The `.map` method works on arrays and is passed a function which is applied to each element of an array, then used to generate a new array without mutating the original.
+    // Using index as the second argument
+    numbers.map((num, index) => {
+        return num * 10 * index;
+    });
+The `.map` method works on arrays and is passed a function which is applied to each element of an array, then used to generate a new array without mutating the original. The first argument that `map` returns is the currently selected element from the collection, while the second (optional) argument is the index of the element.
 
 #
     // Works but gives off a warning that the 'key' prop is missing
@@ -383,8 +470,7 @@ The `.map` method works on arrays and is passed a function which is applied to e
     });
 If rendering items **from a list**, each element should have a `key` prop in order to allow React to see which elements are already in the DOM, so that they don't have to be rerendered if we're only putting in additional elements. Note that the `key` property should be given to the root tag that's being returned. A `key` should be a value which is consistent and unchanging between rerenders (such as the `id` property often coupled with data).
 
-#
-    
+### Refs
     constructor(props) {
         super(props);
         // Crete ref and assign it to a component instance variable
@@ -419,6 +505,16 @@ React Refs are a system which gives us direct access to a single DOM element tha
         this.setState({ spans });
     }
 However, refs on things which are loaded from elsewhere (such as the images in the previous example) won't work properly, since they'll be called on objects whose content arrives after a certain delay. A way to properly use these refs is by adding an event listener which waits for them to load properly.
+
+#   
+
+Sometimes we want to render multiple things which are already enveloped by a `<div>` inside the parent component, and we might not want to have the extra `<div>` enveloping the elements rendered inside the child element as well (like when borders are applied to `<div>` elements, to avoid double borders being drawn).
+
+    <React.Fragment key={someKey}>
+        // Other JSX elements
+    </React.Fragment>
+`React.Fragment` can be used in place of a `<div>` in this scenario. Note that the `key` special prop can also be applied to these placeholders, in order to avoid warnings related to missing keys later on.
+
 
 
 
