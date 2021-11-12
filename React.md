@@ -10,6 +10,14 @@ When a link is entered into a web browser, then the browser sends a request to t
 
 Using `import` instead of `require` to load in JS modules only specifies what kind of method is used to share the code between different JS files. ES2015 modules use `import`, whereas CommonJS modules use `require`.
 
+The React way of returning multiple items from a function is to return them as an array, whereas the common JS way is to return them inside an object. Either way works.
+
+A VM isn't needed for the deployment of a React application because it isn't executing any code on any server, but hosting plain static files (unlike the *Node JS API*, for example). This means it costs dramatically less to deploy a React application compared to applications which execute code, and thus need VMs.
+
+To deploy with Vercel, first install the Vercel CLI using `npm install -g vercel`. After that, `cd` into the project directory, then do `vercel login`. Next, type `vercel` into the command line, and just press Enter to accept the default values since they work just fine for `create-react-app` projects. The app will then be deployed online. After making changes to the app, it can be redeployed with the `vercel --prod` command.
+
+To deploy with Netlity, all work is done on their website. You must create a GitHub repo for the project, push the project onto the repo, then link your GitHub profile with Netlify. After that select **New site from Git**, select the repository you want to use, and you're done. The deployment URL is random initially, but can be changed in the settings afterwards. Netlify syncs with the GitHub repository, so the project is automatically deployed again after every push. Vercel can also be set up to track a GitHub repo.
+
 ___
 ## JSX
 JSX syntax differs from HTML in a few ways.
@@ -280,12 +288,14 @@ These inbuilt hooks can also be used to write custom hooks - pieces of code whic
     useEffect(() => {
         console.log('Event trigger!');
     }, [someVariable]);
-`useEffect` allows function components to use something similar to lifecycle methods. The first argument passed to it is the function which needs to be triggered. The second argument defines in which of the three scenarios will the function be called:
+`useEffect` allows function components to use something similar to lifecycle methods. The first argument passed to it is the function which needs to be triggered. The second argument is the **dependency array**, which defines in which of the three scenarios will the function be called:
 1) When the component is rendered for the first time
 2) When it first renders and whenever it rerenders
 3) When it first renders and (whenever it rerenders AND some piece of data changes)
 
-#   
+React will show a warning whenever a prop or state variable that isn't referenced in the `useEffect` dependency array is referenced inside `useEffect`.
+
+   
     // Doesn't work, gives an error
     useEffect(async () => {
         await axios.get(SOMETHING);
@@ -318,7 +328,121 @@ These inbuilt hooks can also be used to write custom hooks - pieces of code whic
 **Functions passed to `useEffect` can't be `async`.** There are three solutions to this:
 1) Creating a helper function inside of `useEffect` which is `async`, then call it inside `useEffect`
 2) Define a function without a name inside of `useEffect` and immediately invoke it
-3) 
+3) Using promises with `axios.get().then()`
+
+#
+    useEffect(() => {
+        console.log("Main Call!");
+        
+        return () => console.log ("Cleanup Call!");
+    });
+    
+    // The console logs will trigger as follows
+    // First render -----  Main Call!
+    // Second render ----- Cleanup Call!
+    // Second render ----- Main Call!
+When `useEffect` is created and a function is passed as the first argument, the only thing we're allowed to return from it is another function (called the **cleanup function**). The returned cleanup function is then called BEFORE the main function passed to `useEffect` every time after the first render. 
+
+   
+    useEffect(() => {
+        // onBodyClick contains a ref 'myRef' to a component element
+        // myRef will become undefined when the component isn't rendered
+        const onBodyClick = (event) => {
+            if (myRef.current.contains(event.target)) return;
+            setOpen(false);
+        }
+
+        document.body.addEventListener("click", onBodyClick, { capture: true } );
+        
+        // Remove the 'onBodyClick' event listener from the 'click' event
+        // This stops the undefined myRef from crashing the app when component is unloaded
+        return () => {
+            document.body.removeEventListener('click', onBodyClick);
+        };
+    }, []);
+The cleanup function will also be invoked once the component stops being shown, which can be useful in cases where we want to do cleanup for the entire component.
+
+#   
+    // Example component
+    const App = () => {
+        return ( // 'App' sees it as the parent component
+            <div> // I see it as the parent element
+                <ExampleComponent> // I see it as the parent component
+                    <ExampleElement /> // I create the event
+                </ExampleDisplay>
+            </div>
+        );
+    }
+    
+    // Event listener which will pick up everything
+    // (every event will bubble up to the HTML body)
+    document.body.addEventListener('click', () => console.log('Click!'));
+Events in react **bubble up**, which is to say that they will propagate from the component where they're created through its parent components, and eventually into the HTML body. Manual event listeners can thus be set up to watch for events which bubble up. However, all event listeners created using `addEventListener` get called first, and the React event listeners get called AFTER them. The order inside those two categories is still from the most child element towards the most parent element. It's possible to cancel event bubbling, but it's considered bad practice as it can break other parts of the code.
+  
+Manual event listeners added with `addEventListener` are usually only called one time, so an empty array is usually passed as the second argument to the `useEffect` function. The callback is also usually defined as a seperate helper function inside `useEffect`, so that it can easily be cleaned up with the `removeEventListener`.
+
+Custom hooks are the best way to create reusable code in a React project (besides components). They're created by extracting hook-related code out of a function component, and they always make use of at least one primitive (inbuilt) hook internally. Each custom hook should have **one** purpose, and they're great for tasks like data-fetching. The process of creating reusable hooks is hard to define, but could go something like this:
+1) Identify each line of code in a component related to a single purpose
+2) Identify the inputs to that code
+3) Identify the outputs of that code
+4) Extract the code into a seperate function, receiving the inputs as arguments and returning the outputs
+
+### Refs
+    constructor(props) {
+        super(props);
+        // Crete ref and assign it to a component instance variable
+        this.imageRef = React.createRef();
+    }
+
+    componentDidMount() {
+        // Use the ref
+        console.log(this.imageRef);
+    }
+
+    render() {
+        return(
+            // Pass the ref to JSX element as a prop
+            <img ref={this.imageRef} src={this.props.image.urls.regular} />
+        );
+    }
+React Refs are a system which gives us direct access to a single DOM element that is rendered by a component, and they're used in place of the standard JS `document.querySelector(some_tag)`. Since all JSX elements - even the ones which look like standard HTML elements such as `<img>` - aren't HTML, but are eventually converted to real HTML, we thus have no way to reference them aside from using refs. They're created in the constructor, assigned to instance variables, then passed to a particular JSX element as props. They can be assigned to the `state` of a component, but since refs don't change over time, it shouldn't be done.
+    
+    // Won't work, image isn't loaded from the remote source yet
+    componentDidMount() {
+        console.log(this.imageRef.current.clientHeight);
+    }
+    
+    // Works - It waits for the image to load before calling the function
+    componentDidMount() {
+        this.imageRef.current.addEventListener('load', this.setSpans);
+    }
+
+    setSpans = () => {
+        const spans = Math.ceil(this.imageRef.current.clientHeight / 10);
+        this.setState({ spans });
+    }
+However, refs on things which are loaded from elsewhere (such as the images in the previous example) won't work properly, since they'll be called on objects whose content arrives after a certain delay. A way to properly use these refs is by adding an event listener which waits for them to load properly.
+
+#   
+    const exampleRef = useRef();
+
+    useEffect(() => {
+        document.body.addEventListener("click", (event) => {
+            // Stop if event originated from this component
+            // event.target returns the element from which the event originates
+            if (exampleRef.current.contains(event.target)) return;
+            // Some code if the element isn't contained in the ref element
+        }, { capture: true } );
+    }, []);
+
+    return (
+        <div ref={exampleRef} className="ui form">
+            <div className="field">
+                // More elements
+            </div>
+        </div>
+    );
+Refs can be created with hooks using the `useRef` hook function. The `.contains` method is shared for all DOM elements, and allows us to see if an element is contained within another.
 ___
 ### Tips
 #   
@@ -470,42 +594,6 @@ The `.map` method works on arrays and is passed a function which is applied to e
     });
 If rendering items **from a list**, each element should have a `key` prop in order to allow React to see which elements are already in the DOM, so that they don't have to be rerendered if we're only putting in additional elements. Note that the `key` property should be given to the root tag that's being returned. A `key` should be a value which is consistent and unchanging between rerenders (such as the `id` property often coupled with data).
 
-### Refs
-    constructor(props) {
-        super(props);
-        // Crete ref and assign it to a component instance variable
-        this.imageRef = React.createRef();
-    }
-
-    componentDidMount() {
-        // Use the ref
-        console.log(this.imageRef);
-    }
-
-    render() {
-        return(
-            // Pass the ref to JSX element as a prop
-            <img ref={this.imageRef} src={this.props.image.urls.regular} />
-        );
-    }
-React Refs are a system which gives us direct access to a single DOM element that is rendered by a component, and they're used in place of the standard JS `document.querySelector(some_tag)`. Since all JSX elements - even the ones which look like standard HTML elements such as `<img>` - aren't HTML, but are eventually converted to real HTML, we thus have no way to reference them aside from using refs. They're created in the constructor, assigned to instance variables, then passed to a particular JSX element as props. They can be assigned to the `state` of a component, but since refs don't change over time, it shouldn't be done.
-    
-    // Won't work, image isn't loaded from the remote source yet
-    componentDidMount() {
-        console.log(this.imageRef.current.clientHeight);
-    }
-    
-    // Works - It waits for the image to load before calling the function
-    componentDidMount() {
-        this.imageRef.current.addEventListener('load', this.setSpans);
-    }
-
-    setSpans = () => {
-        const spans = Math.ceil(this.imageRef.current.clientHeight / 10);
-        this.setState({ spans });
-    }
-However, refs on things which are loaded from elsewhere (such as the images in the previous example) won't work properly, since they'll be called on objects whose content arrives after a certain delay. A way to properly use these refs is by adding an event listener which waits for them to load properly.
-
 #   
 
 Sometimes we want to render multiple things which are already enveloped by a `<div>` inside the parent component, and we might not want to have the extra `<div>` enveloping the elements rendered inside the child element as well (like when borders are applied to `<div>` elements, to avoid double borders being drawn).
@@ -515,8 +603,10 @@ Sometimes we want to render multiple things which are already enveloped by a `<d
     </React.Fragment>
 `React.Fragment` can be used in place of a `<div>` in this scenario. Note that the `key` special prop can also be applied to these placeholders, in order to avoid warnings related to missing keys later on.
 
-
-
+#
+    // Print "Hello!" after 10 seconds
+    setTimeout(() => console.log("Hello!"), 10000)
+The `setTimeout` function accepts two arguments. The first argument is the function which is called once the timer expires, and the second argument is the duration of time. `setTimeout` also returns an identifier, which can be used by the `clearTimeout` function to prevent the timeout function from activating.
 
 
 
