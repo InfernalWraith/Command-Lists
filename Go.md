@@ -116,7 +116,7 @@ bs := make([]byte, 10000)
 
 Iterating over a list of items can be done using `for` loops.
 
-```    
+```go
 // i - Counter/Index
 // card - Name which will be used to reference each element
 // cards - Collection of elements whose elements we're iterating over
