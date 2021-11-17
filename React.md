@@ -26,7 +26,7 @@ JSX syntax differs from HTML in a few ways. Properties inside tags are done diff
 <div style="border: 1px solid red;"></div>          // HTML
 <div style={{ border: '1px solid red' }}></div>     // JSX
 <button style="background-color: blue; color: white;">Submit</button>		// HTML
-<button style={{ backgroundColor: 'blue'; color: 'white' }}>Submit</button>	// JSX
+<button style={{ backgroundColor: 'blue', color: 'white' }}>Submit</button>	// JSX
 ```
 
 
@@ -39,7 +39,7 @@ The convention is to use double quotes for JSX properties and single quotes ever
 
 When assigning a class to a tag for styling later on, `className` is used instead of `class`. The same applies to the `for` keyword used in the <label> tag, which is converted to `htmlFor`. Although they often result in code which generally works fine, JS keywords should be avoided and their substitutes should be used instead.
 
-```
+```javascript
 <label class="myLabel" for='inputEmail'>Sample text</label>	    // HTML
 <label className="myLabel" htmlFor='inputEmail'>Sample text</label> // JSX
 ```
