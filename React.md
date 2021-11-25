@@ -16,7 +16,7 @@ A VM isn't needed for the deployment of a **React** application because it isn't
 
 To deploy with Vercel, first install the Vercel CLI using `npm install -g vercel`. After that, `cd` into the project directory, then do `vercel login`. Next, type `vercel` into the command line, and just press Enter to accept the default values since they work just fine for `create-react-app` projects. The app will then be deployed online. After making changes to the app, it can be redeployed with the `vercel --prod` command.
 
-To deploy with Netlity, all work is done on their website. You must create a GitHub repo for the project, push the project onto the repo, then link your GitHub profile with Netlify. After that select **New site from Git**, select the repository you want to use, and you're done. The deployment URL is random initially, but can be changed in the settings afterwards. Netlify syncs with the GitHub repository, so the project is automatically deployed again after every push. Vercel can also be set up to track a GitHub repo.
+To deploy with Netlify, all work is done on their website. You must create a GitHub repo for the project, push the project onto the repo, then link your GitHub profile with Netlify. After that select **New site from Git**, select the repository you want to use, and you're done. The deployment URL is random initially, but can be changed in the settings afterwards. Netlify syncs with the GitHub repository, so the project is automatically deployed again after every push. Vercel can also be set up to track a GitHub repo.
 
 ___
 ## JSX
@@ -534,7 +534,7 @@ return (
 ___
 
 ## Tips
-If a component has ternary statements which are repeated multiple times, it's good to replace them with a configuration structure. The example above shows how, by using the structure, it was possible to avoid multiple ternary statements which had the same condition but returned different things.
+If a component has conditional statements (using the ternary operator) which are repeated multiple times, it's good to replace them with a configuration structure. The example above shows how, by using the structure, it was possible to avoid multiple ternary statements which had the same condition but returned different things.
 
 ```javascript 
 const seasonConfig = {
@@ -562,7 +562,7 @@ const SeasonDisplay = props => {
     // Single-line solution made possible by the configuration structure
     const { text, iconName } = seasonConfig[season];
     
-    // Ugly approach with multiple ternary statements
+    // Bad approach with multiple ternary statements
     const text = season === 'winter' ? 'Frosty!' : 'Blazing hot!'
     const iconName = season === 'winter' ? 'snowflake' : 'sun'
 
@@ -748,7 +748,7 @@ const removeName = (someArray, someName) => {
 ___
 
 ## Redux
-Redux is a `state` management library. With Redux, rather than maintaining state inside a component, it's extracted into the Redux library. It makes creating complex applications easier, and it's not explicitly designed to work with **React**, and is thus used in other libraries, and there are ports of it for other languages as well.
+**Redux** is a `state` management library. With **Redux**, rather than maintaining state inside a component, it's extracted into the Redux library. It makes creating complex applications easier, and it's not explicitly designed to work with **React**, and is thus used in other libraries, and there are ports of it for other languages as well. 
 
 The **Redux cycle** consists of the following steps, listed in the order in which they are used: `Action Creator`->`Action`->`Dispatch`->`Reducers`->`State`.
 * An `Action Creator` is a function that creates or returns a plain JS object - an `Action`.
@@ -869,3 +869,162 @@ console.log(store.getState());
 
 
 The **Redux** `state` can't be modified without dispatching an action (things like `store.state.accounting` don't work).
+
+### Working with React-Redux
+The library which lets **React** and **Redux** work together is called `React-Redux`, and **Redux** can be set up for a `create-react-app` project with the following command:
+
+```
+npm install --save redux react-redux
+```
+
+`React-Redux` provides two components: `Provider` and `Connect`. Instances of them can be created and props can be passed to them to configure how the application will behave. The `Provider` is rendered at the top of the application hierarchy, even above the `<App>` component, and it provides information to other components in the app. After that, every component that needs to access the data inside the **store** should be made to communicate with the `Provider` using the `Connect` component. The communication between `Provider` and `Connect` is done not through the props system, but through the **context system**.
+
+In short: create a `Provider`, pass it a reference to our **Redux store**, then wrap any component that needs to interact with the store with a `Connect`.
+
+The following boilerplate code can be found in just about any **Redux** application.
+
+```javascript
+// /src/index.js
+import React from 'react';
+import ReactDOM from 'react-dom';
+import { Provider } from 'react-redux';
+import { createStore } from 'redux';
+
+import App from './components/App';
+import reducers from './reducers';
+
+ReactDOM.render(
+    //                                |   Creating a store with reducers
+    // Putting App inside Provider   \/
+    <Provider store={createStore(reducers)}>
+        <App />
+    </Provider>, 
+    document.querySelector('#root')
+);
+```
+
+Reducers are created as usual, then grouped up with the `combineReducers` function and exported.
+
+```javascript
+// /src/reducers/index.js
+import { combineReducers } from "redux";
+
+const songsReducer = () => {
+    // This just returns a hardcoded list of songs, bad use of reducers
+    return [
+        { title: 'Resurrection Code', duration: '4:37' },
+        { title: 'Starfire', duration: '5:01' },
+        { title: 'Ready Steady Go', duration: '3:25' }
+    ];
+};
+
+const selectedSongReducer = (selectedSong=null, action) => {
+    if (action.type === 'SONG_SELECTED') {
+        return action.payload;
+    }
+
+    return selectedSong;
+}
+
+export default combineReducers({
+    songs: songsReducer,
+    selectedSong: selectedSongReducer
+});
+```
+
+
+When we want a component to make use of `Connect`, we need to modify its `export` statement. The `connect` function returns a function which takes our component as a parameter, the result of which is exported.
+
+```javascript
+import { connect } from 'react-redux';
+// Component implementation...
+export default connect()(ExampleComponent);
+```
+
+
+By convention, a function called `mapStateToProps` is defined for each component which accesses **Redux** state, and serves to get data from the **Redux** store into the component. As an argument, it takes in all the data inside the **Redux** store, then returns the data from it relevant to that component as an object property. This function is then passed to the `connect` function as an argument. Any action creators we want to use are likewise passed to the `connect` function, but inside an object.
+
+```javascript
+import React from 'react';
+import { connect } from 'react-redux';
+import { selectSong } from '../actions';
+
+class SongList extends React.Component {
+    // Component logic
+}
+
+const mapStateToProps = (state) => {
+    // this.props now returns { songs: state.songs }
+    return { songs: state.songs };
+}
+
+// Need to add the mapStateToProps function as an argument to 'connect'
+//                           \/              \/ Add action creator as well
+export default connect(mapStateToProps, { selectSong })(SongList);
+
+```
+
+
+This is how components are always connected with the **Redux** store - `connect` is imported, it is called and the component is passed as an argument to the function it returns. We always define the `mapStateToProps` function, it always gets an argument of `state`, and we always return an object that's going to show up as the `props` of our component.
+
+When we pass the action creators in the object passed as an argument to the `connect` function, it does a special operation on all the functions inside that object and puts them in a new JS function, which we call with the current component as the argument (the second set of parentheses with the component name inside them). The `dispatch` function is automatically called on all the actions which are returned.
+
+___
+
+A **middleware** is a plain JS function which is called with every action that's dispatched. It has the ability to **STOP**, **MODIFY** or otherwise change actions. A lot of open source middleware exists, and their most common use is for dealing with `async` actions.
+
+`redux-thunk` is middleware which helps us make requests in a **Redux** application. Actions must be plain objects, and can't use standard `async`-`await` keywords which, when converted to ES15 with Babel, turn them into a `Promise`. If `async`-`await` aren't used, then it takes too long for the data to get to the app, and we don't have any fetched data by the time our action gets to a reducer. Action creators which make requests to external sources are called **asynchronous action creators**. They return data after a certain amount of time and they require middleware (like `redux-thunk`) to work.
+
+General data loading with **Redux** goes as follows:
+* A component is rendered onto the screen
+* Component's `componentDidMount` lifecycle method gets called
+* An action creator is called from `componentDidMount`
+* Action creator runs code to make an API request
+* API responds with data
+* Action creator returns an action with the fetched data in the `payload` property
+* One of the reducers sees the action, returns the data from the `payload`
+* Because a new *state* object is generated, **Redux** and **React-Redux** cause the **React** app to be rerendered
+
+Components are generally responsible for fetching data they need by calling an action creator, as seen in the first three steps. Then, action creators take on the responsibility for making API requests, as seen in the following three steps (this is where **Redux-Thunk** comes into play). Lastly, the data is fetched into the component by generating a new state in the **Redux** store, then getting it in the component through `mapStateToProps`.
+
+When adding `redux-thunk` to the application, the boilerplate in `/src/index.js` changes in the line where the `createStore` function is called:
+
+```javascript
+import React from 'react';
+import ReactDOM from 'react-dom';
+import { Provider } from 'react-redux';
+import { applyMiddleware, createStore } from 'redux';
+import thunk from 'redux-thunk';
+
+import App from './components/App';
+import reducers from './reducers';
+
+const store = createStore(reducers, applyMiddleware(thunk));
+
+ReactDOM.render(
+    <Provider store={store}>
+        <App />
+    </Provider>,
+    document.querySelector('#root')
+);
+```
+
+Usually, action creators **must** return action objects, while with `redux-thunk` they can return action objects OR functions. That's the only change that `redux-thunk` makes to the application. If an action object is returned, it still must have a `type`, and it can optionally have a `payload`. If a function is returned, it gets called with the `dispatch` and `getState` functions as arguments, which lets the function change and read/access any data it wants. After the function has been invoked with `dispatch`, we wait for the request to finish and then **manually** dispatch the action.
+
+When returning functions from an action creator, nothing should be returned from that inner function. Instead, `dispatch` should be called with the action we would otherwise return.
+
+```javascript
+export const fetchPosts = () => {
+    return async (dispatch, getState) => {
+        const res = await jsonPlaceholder.get('/posts');
+        dispatch({ type: 'FETCH_POSTS', payload: res });
+    }
+}
+
+// Shortened version
+export const fetchPosts = () => async dispatch => {
+    const res = await jsonPlaceholder.get('/posts');
+    dispatch({ type: 'FETCH_POSTS', payload: res });
+}
+```
+
