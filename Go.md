@@ -2,9 +2,9 @@
 ## Basics
 Official docs can be found at https://pkg.go.dev/std
 
-A Go package can be thought of as a project or a workspace. It's a collection of common source code files. A package can have many related files inside of it, with each file ending in the `.go` file extension. Each file in the package needs to have the statement `package PACKAGE_NAME` at the top (so `package examplePackage` for a package called `examplePackage`).
+Every Go program is comprised of one or more Go packages. A Go package can be thought of as a project or a workspace. It's a collection of common source code files. A package can have many related files inside of it, with each file ending in the `.go` file extension. Each file in the package needs to have the statement `package PACKAGE_NAME` at the top (so `package examplePackage` for a package called `examplePackage`).
 
-There are two types of packages: **executable** and **reusable**. **Executable** packages create an executable file once built. Reusable packages are like code dependencies or libraries, they contain reusable logic and helper functions which help us reuse code on future projects. The name of the package determines if a package is executable or reusable - a package is named `main` to make it an executable package, while any other name results in reusable packages. An executable package **must** have a function inside it called `main`, which runs automatically once the program is executed.
+There are two types of packages: **executable** and **reusable**. **Executable** packages create an executable file once built. Reusable packages are like code dependencies or libraries, they contain reusable logic and helper functions which allow us to reuse code on future projects. The name of the package determines if a package is executable or reusable - a package is named `main` to make it an executable package, while any other name results in reusable packages. An executable package **must** have a function inside it called `main`, which runs automatically once the program is executed.
 
 Packages can be imported using the `import "examplePackage"` command. When importing multiple packages, parentheses should be opened after the `import` keyword and each package should go on a new line:
 
@@ -28,13 +28,13 @@ Here are some essential console commands when working with Go:
 - `go test` - Runs any tests associated with the current project
 
 ## Variables and functions
-Variables in Go are static types. The type can be explicitly defined, or it can be automatically inferred from the value assigned during initialization. Another way to initialize a variable is by using the `:=` operator, which is somewhat shorter than the alternatives. The `:=` operator can only be used when a variable is initialized, it can't be used later on to assign a new value to it (the standard `=` is used then).
+Variables in Go have static types. The type can be explicitly defined, or it can be automatically inferred from the value assigned during initialization. Another way to initialize a variable is by using the `:=` operator, which is somewhat shorter than the alternatives. The `:=` operator can only be used when a variable is initialized, it can't be used later on to assign a new value to it (the standard `=` is used then).
 
 ```go    
 // All these ways to initialize are equivalent
-var text string = "This is some text"
-var text = "This is some text"
-text := "This is some text"
+var text1 string = "This is some text"
+var text2 = "This is some text"
+text3 := "This is some text"
 ```
 
 
@@ -141,7 +141,7 @@ for i:=0; i < len(cards); i++ {
 ```
 
 
-Slices are accessed using the `[]` operator, like in a lot of other languages (`mySlice[0]` for the 1st element, `mySlice[5]` for the 6th, etc). Like in Python, a part of the slice can be selected by using the `[start_index:end_index]` operator, where the start is included but the end index isn't. If we want the selection to go from the beginning to the end, we can simply leave out the first or second argument of `[:]`, respectively. The length of a slice can be returned by using `len(mySlice)`.
+Slices are accessed using the `[]` operator, like in a lot of other languages (`mySlice[0]` for the 1st element, `mySlice[5]` for the 6th, etc). Like in Python, a part of the slice can be selected by using the `[start_index:end_index]` operator, where the start is included but the end index isn't. If we want the selection to go from the beginning of the slice or to its end, we can simply leave out the first or second argument of `[:]`, respectively. The length of a slice can be returned by using `len(mySlice)`.
 
 ```go    
 //    Index          0        1         2       3
@@ -179,7 +179,7 @@ type deck []string
 ```
 
 
-Receiver functions are similar to methods in object oriented programming languages, in the sense that they're called on an object of a certain type (`variable.receiverFunction()`). They differ from regular functions by having parentheses between the `func` keyword and the function name, in which an argument which defines what the type of the variable it's called on will be (so `func (d deck) someFunc()` will be called on a `deck` type variable). The convention with receiver function arguments is for them to be 1-3 letters short, and to be an abbreviation of the actual thing they're supposed to be.
+Receiver functions are similar to methods in object oriented programming languages, in the sense that they're called on an object of a certain type (`variable.receiverFunction()`). They differ from regular functions by having parentheses between the `func` keyword and the function name, which contain an argument that defines the type of variable the function will be called on (so `func (d deck) someFunc()` will be called on a `deck` type variable). The convention with receiver function arguments is for them to be 1-3 letters short, and to be an abbreviation of the actual thing they're supposed to be.
 
 ```go    
 // Adds a receiver function called 'print' to all 'deck' variables
@@ -261,7 +261,7 @@ After tests are created, they can be run with `go test`. Keep in mind that Go do
 ___
 
 ## Structs
-A `struct` in Go is a collection of properties that have a common purpose (such as defining a complex object). Structs are similar to those in *C*, objects in *JS* or dictionaries in *Python*. They're created like so:
+A `struct` in **Go** is a collection of properties that have a common purpose (such as defining a complex object). Structs are similar to those in **C**, or objects in **JS**. They're created like so:
 
 ```go    
 type person struct {
@@ -324,7 +324,7 @@ jim.print()
 ```
 
 
-Go passes by value, not by reference, so when passing a variable to a function, all changes are made on a copy of it made specifically for usage inside the function. To be able to change the value we're calling the receiver function on, we need to pass an address to it, which is obtained using the `&` unary operator (for a variable `jim`, the address is obtained by using `&jim`). Note that if we're calling functions in the same line where we apply the `&` operator (like `&jim.someFunc()`), we need to surround the operator and the variable it's called on in parentheses (so `(&jim).someFunc()`), otherwise the `&` is applied to the result of the function. After we've passed the pointer using `&`, we need to dereference the pointer using the `*` operator (like `(*jim).firstName = "jim"`). When the `*` symbol is in front of a **type**, however, then it isn't dereferencing it, but rather saying that the type is a pointer to that type (`*person` says the type is a **pointer** *to a variable of the type* **person**). In short: 
+Go passes by value, not by reference, so when passing a variable to a function, all changes are made on a copy of it made specifically for usage inside the function. To be able to change the value we're calling the receiver function on, we need to pass an address to it, which is obtained using the `&` operator (for a variable `jim`, the address is obtained by using `&jim`). Note that if we're calling functions in the same line where we apply the `&` operator (like `&jim.someFunc()`), we need to surround the operator and the variable it's called on in parentheses (so `(&jim).someFunc()`), otherwise the `&` is applied to the result of the function. After we've passed the pointer using `&`, we need to dereference the pointer using the `*` operator (like `(*jim).firstName = "jim"`). When the `*` symbol is in front of a **type**, however, then it isn't dereferencing it, but rather saying that the type is a pointer to that type (`*person` says the type is a **pointer** *to a variable of the type* **person**). In short: 
 
 * We turn **address** into **value** with **\*address**
 * We turn **value** into **address** with **&value**
@@ -374,7 +374,7 @@ This doesn't only apply to `slice` variables, but also to other types. These **r
 ___
 
 ## Maps
-Maps, like dictionaries in other languages, are collections **key-value pairs**. Both the keys and the values are statically typed - the keys and values can be different types, but each key must be of the same type as other keys, and each value in the map must also be of the same type as other values. Elements can be removed using the `delete` function.
+Maps, like dictionaries in other languages, are collections **key-value pairs**. Both the keys and the values are statically typed - the keys and values can be different types, but each key must be of the same type as the other keys, and each value in the map must also be of the same type as the other values. Elements can be removed using the `delete` function.
 
 ```go    
 numbers := map[int]string{
