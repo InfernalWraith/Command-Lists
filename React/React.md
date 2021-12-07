@@ -711,7 +711,7 @@ Sometimes we want to render multiple things which are already enveloped by a `<d
 
 `React.Fragment` can be used in place of a `<div>` in this scenario. Note that the `key` special prop can also be applied to these placeholders, in order to avoid warnings related to missing keys later on.
 
-```
+```javascript
 <React.Fragment key={someKey}>
     // Other JSX elements
 </React.Fragment>
@@ -742,6 +742,124 @@ Elements can be filtered out of an array by using the `array.filter(filterFuncti
 const removeName = (someArray, someName) => {
     return someArray.filter(name => name !== someName);
 }
+```
+
+
+___
+
+### The `Lodash` library
+The `Lodash` library has many useful features, one of which is **memoizing** functions. Memoized versions of functions behave the exact same way as the originals, except that they only return one value per unique argument - repeated calls with the same argument don't invoke the function, but instead only return the result of the first call with that same argument. We can use this when working with functions which do API calls to only make one API request per ID, for instance (like when we're getting user data for a comment chain, where one user will probably have left many comments). `Lodash` is usually imported to an underscore variable (`_`).
+```javascript
+import _ from 'lodash';
+
+function exampleRequest(id) {
+    fetch(id);
+}
+
+const memoizedExampleRequest = _.memoize(exampleRequest);
+
+// All function calls will make a request - 5 calls
+exampleRequest(1);  // Call
+exampleRequest(1);  // Call
+exampleRequest(2);  // Call
+exampleRequest(2);  // Call
+exampleRequest(3);  // Call
+
+// Only one function call will be made per unique argument - 3 calls
+memoizedExampleRequest(1);  // Call
+memoizedExampleRequest(1);
+memoizedExampleRequest(2);  // Call
+memoizedExampleRequest(2);
+memoizedExampleRequest(3);  // Call
+```
+
+
+Another useful feature that `lodash` offers is the `chain` function, which lets us execute multiple functions with a given parameter one after another.
+```javascript
+export const fetchPostsAndUsers = () => async (dispatch, getState) => {
+    await dispatch(fetchPosts());
+    
+    // These two lines are one way of doing it (without 'chain')
+    const userIds = _.uniq(_.map(getState().posts, 'userId'));
+    userIds.forEach(id => dispatch(fetchUser(id)));
+    
+    // This is how to do it with 'chain'
+    _.chain(getState().posts)
+        .map('userId')
+        .uniq()
+        .forEach(id => dispatch(fetchUser(id)))
+        .value();  // <-- This executes the chained statements
+}
+```
+
+
+___
+### Google OAuth
+**Google OAuth** can be used to easily authenticate a user. To use **Google OAuth**, you must first add it as a script in the `index.html` file's `<header>`, similar to how the **Semantic-UI** is added.
+```javascript
+<script src="https://apis.google.com/js/api.js"></script>
+```
+
+
+The **OAuth** is then available for the application after making a new application on your Google Developer dashboard (available at [console.cloud.google.com](https://console.cloud.google.com/)) and setting up the *OAuth Consent Screen* and *Credentials*. You need to define the application URL (http://localhost:3000 for testing), the gmails of the users who will be able to test the app, as well as the scope of the user's information that your app will be getting (the email address alone is enough for just authentication, while the Google userId that's also provided helps with having unique IDs for users).
+```javascript
+import React from 'react';
+
+class GoogleAuth extends React.Component {
+    state = { isSignedIn: null };
+
+    componentDidMount() {
+        window.gapi.load('client:auth2', () => {
+            window.gapi.client.init({
+            // You get this from 'console.cloud.google.com/apis/credentials'
+            // OAuth 2.0 Client IDs, configure the OAuth Consent Screen first
+                clientId: 'YOUR_ID.apps.googleusercontent.com',
+                scope: 'email'
+            }).then(() => {
+                this.auth = window.gapi.auth2.getAuthInstance();
+                this.setState({ isSignedIn: this.auth.isSignedIn.get() });
+                this.auth.isSignedIn.listen(this.onAuthChange);
+            });
+        });
+    }
+
+    onAuthChange = () => {
+        this.setState({ isSignedIn: this.auth.isSignedIn.get() });
+    }
+
+    onSignInClick = () => { this.auth.signIn() }
+    onSignOutClick = () => { this.auth.signOut() }
+
+    renderAuthButton() {
+        if (this.state.isSignedIn === null) {
+            return null;
+        } else if (this.state.isSignedIn) {
+            return (
+                <button className="ui red google button" onClick={this.onSignOutClick}>
+                    <i className="google icon" />
+                    Sign Out
+                </button>
+            );
+        } else {
+            return (
+                <button className="ui red google button" onClick={this.onSignInClick}>
+                    <i className="google icon" />
+                    Sign In with Google
+                </button>
+            );
+        }
+    }
+
+    render() {
+        return (
+            <div>
+                {this.renderAuthButton()}
+            </div>
+        );
+    }
+}
+
+export default GoogleAuth;
 ```
 
 
@@ -797,7 +915,7 @@ const createClaim = (name, amount) => {
 
 The `dispatch` function is implemented as part of **Redux**, so we don't have to concern ourselves with writing it.
 
-When using `Reducers`, we should **ALWAYS** return a new array/object instead of modifying an old one. Modifying existing data structures should be avoided as much as possible. Edge cases such as the reducers called for the first time, where the existing values or data structures don't exist (and are thus `undefined`), should be handled by assigning the parameters default values.
+When using **reducers**, we should **ALWAYS** return a new array/object instead of modifying an old one. Modifying existing data structures should be avoided as much as possible. Edge cases such as the reducers called for the first time, where the existing values or data structures don't exist (and are thus `undefined`), should be handled by assigning the parameters default values. Each reducer is automatically called for the first time when the application starts to provide an initial `state` value, and that's why they should be able to return a default value. The first argument of reducers is often called `state` (not in the example below, just for clarity), and its value is the last thing that we returned from the reducer.
 
 ```javascript
 // If the reducer is called for the  |  1st time (claimsList = undefined)
@@ -835,7 +953,32 @@ const policies = (policiesList = [], action) => {
 }
 ```
 
-  
+
+A good alternative to if/else statements which would ensure all our cases are covered would be to use the `switch` statement.
+```javascript
+const accounting = (money = 1000, action) => {
+    switch(action.type) {
+        case 'CREATE_CLAIM':
+            return money - action.payload.amount;
+        case 'CREATE_POLICY':
+            return money + action.payload.amount;
+        default:
+            return money
+    }
+}
+```
+
+
+The rules of `Reducers` are as follows:
+* A `Reducer` must return **any** value besides `undefined`.
+* It must produce `state`, and it has to do so by using just the `state` before it was called and the `action` object that has been dispatched and passed to it
+* A reducer should be **pure** - it should **only** return values generated from the previous state and the `action` object to do its job (reaching out of the reducer and returning a **DOM** element or the result of an **API** call conflicts with this principle)
+* It must not mutate its input `state` argument - if the same `state` is returned instead of a new array/object/value, then **Redux** won't notify the application that anything has changed, which means the content on the screen won't update (which probably isn't what we want)
+
+Here's a comparison of good and bad approaches to safely update `state` in reducers.
+![Reducer state update comparison](./images/reducerStateUpdate.png "Reducer state update comparison")
+
+
 Once the `Action Creators` and `Reducers` have been created, they can then be used to create a `Redux` app.
 
 ```javascript
@@ -965,7 +1108,15 @@ export default connect(mapStateToProps, { selectSong })(SongList);
 ```
 
 
-This is how components are always connected with the **Redux** store - `connect` is imported, it is called and the component is passed as an argument to the function it returns. We always define the `mapStateToProps` function, it always gets an argument of `state`, and we always return an object that's going to show up as the `props` of our component.
+This is how components are always connected with the **Redux** store - `connect` is imported, it is called and the component is passed as an argument to the function it returns. We always define the `mapStateToProps` function, it always gets an argument of `state`, and we always return an object that's going to show up as the `props` of our component. Sometimes it's also a good idea to put the component logic in the `mapStateToProps` function, because some people put that function and the `connect` function in a separate file, thus making the core component potentially more reusable.
+```javascript
+// If we wanted to display a certain user, we could have the logic here
+// instead of the 'render' method inside the component
+const mapStateToProps = (state, ownProps) => {
+    return { user: state.users.find((user) => user.id === ownProps.userId) };
+}
+```
+
 
 When we pass the action creators in the object passed as an argument to the `connect` function, it does a special operation on all the functions inside that object and puts them in a new JS function, which we call with the current component as the argument (the second set of parentheses with the component name inside them). The `dispatch` function is automatically called on all the actions which are returned.
 
@@ -999,6 +1150,7 @@ import thunk from 'redux-thunk';
 import App from './components/App';
 import reducers from './reducers';
 
+// Over here!
 const store = createStore(reducers, applyMiddleware(thunk));
 
 ReactDOM.render(
@@ -1009,7 +1161,7 @@ ReactDOM.render(
 );
 ```
 
-Usually, action creators **must** return action objects, while with `redux-thunk` they can return action objects OR functions. That's the only change that `redux-thunk` makes to the application. If an action object is returned, it still must have a `type`, and it can optionally have a `payload`. If a function is returned, it gets called with the `dispatch` and `getState` functions as arguments, which lets the function change and read/access any data it wants. After the function has been invoked with `dispatch`, we wait for the request to finish and then **manually** dispatch the action.
+Usually, action creators **must** return action objects, while with `redux-thunk` they can return action objects OR functions. That's the only change that `redux-thunk` makes to the application. If an action object is returned, it still must have a `type`, and it can optionally have a `payload`. If a function is returned, it gets called with the `dispatch` and `getState` functions as arguments, which lets the function change and read/access any data it wants. After the function has been invoked with `dispatch`, we wait for the request to finish and then **manually** dispatch the action. Any time that we expect to make a request within an action creator, we're always going to make use of something like `redux-thunk`.
 
 When returning functions from an action creator, nothing should be returned from that inner function. Instead, `dispatch` should be called with the action we would otherwise return.
 
@@ -1021,10 +1173,131 @@ export const fetchPosts = () => {
     }
 }
 
-// Shortened version
+// Shortened version, 'getState' is still here but not used
 export const fetchPosts = () => async dispatch => {
     const res = await jsonPlaceholder.get('/posts');
     dispatch({ type: 'FETCH_POSTS', payload: res });
 }
 ```
 
+
+Similarly, when calling action creators within other action creators, they should be called as an argument to the `dispatch` function.
+```javascript
+export const fetchPostsAndUsers = () => async (dispatch, getState) => {
+    //       \/ Dispatch     \/ Action creator call
+    await dispatch(fetchPosts());
+    const userIds = _.uniq(_.map(getState().posts, 'userId'));
+    userIds.forEach(id => dispatch(fetchUser(id)));
+}
+```
+
+
+___
+## Using Redux DevTools to inspect the store
+An extension called **Redux DevTools** for Chrome or Firefox can be used to help with debugging and seeing what's happening inside the **Redux** store. After installing the extension, debugging must be enabled in the app by adding a few things into the main `index.js` file.
+```javascript
+import React from 'react';
+import ReactDOM from 'react-dom';
+import { Provider } from 'react-redux';
+import { createStore, applyMiddleware, compose } from 'redux';
+// We need these two        /\           /\
+
+import App from './components/App';
+import reducers from './reducers';
+
+// We add the 'composeEnhancers' variable and add it to the store
+const composeEnhancers = windows.__REDUX_DEVTOOLS_EXTENSION_COMPOSE__ || compose;
+const store = createStore(
+    reducers,
+    composeEnhancers(applyMiddleware())
+);
+
+ReactDOM.render(
+    <Provider store={store}>
+        <App />
+    </Provider>,
+    document.querySelector('#root')
+);
+```
+After this is done, the application can be debugged by clicking on the extension icon in the browser, after navigating to the URL where the web app is hosted. If the app was configured properly, the **Redux DevTools** extension icon should change color to indicate that it's active, after which clicking on it brings up the debugging panel.
+<p align="center">
+  <img src="./images/reduxDevTools.png" alt="Redux DevTools" title="Redux DevTools" />
+</p>
+
+1) There are three buttons in the bottom left corner of the panel: clicking the one in the middle will pop out the debugging panel as a separate window.
+2) Clicking on the **Jump** button in the action list will allow you to set the state of your application to what it was at the selected action
+3) Several things can be viewed - The action that initiated the state change, the new state, as well as the difference between the new state and the old state
+
+If we navigate to our application, then add `?debug_session=<SOME_STRING>`, we can save all data in **Redux Store** between page refreshes. By naming the session, we can save a certain state that interests us and go back to it later, or quickly test the application behavior with multiple saved states. Make sure to remove this extra query parameter after you've finished debugging your app, so that **Redux DevTools** stops saving the state.
+
+___
+## Routing with `react-router-dom`
+Routing in **React** can be made easy by using the `react-router-dom` library. Paths are matched here by comparing them using substring - if the path in the browser contains a path defined in a `Route` component (essentially `URLPath.contains(path)`), then the associated component is displayed on the screen. This means that multiple components can be displayed on the screen at once. For example `/pageone` would display the routes `/`, `/page`, as well as `/pageone`. This behavior can be avoided by adding the `exact` keyword to a `Route`, which makes it so that the compared paths must be an exact match in order for the component associated with that path to be displayed (`URLPath === path`).
+```javascript
+import { BrowserRouter, Route } from 'react-router-dom';
+
+const PageOne = () => {
+    return <div>Page One Loaded</div>;
+}
+
+const PageTwo = () => {
+    return <div>Page Two Loaded</div>;
+}
+
+const App = () => {
+    return (
+        <div>
+            <BrowserRouter>
+                <div>
+                    <Route path="/" exact component={PageOne} />
+                    <Route path="/pagetwo" component={PageTwo} />
+                </div>
+            </BrowserRouter>
+        </div>
+    );
+}
+```
+
+
+The problem with the classic way to navigate between pages (using `<a>` tags) is that upon clicking one, the browser will make an outside request to a server for the given URL and get a new `index.html` file (which is essentially the same one, since we're working with **React**). The browser will then **dump the old HTML file it was showing**, which includes all the **React** and **Redux** state data. 
+
+Instead of doing that, we should use the `<Link>` tag, to which we pass the prop `to`, which has the value of the path we want to associate with that navigation component. When using the `<Link>` tag, it will still internally generate a `<a>` tag, but the `react-router` will automatically prevent the browser from navigating to the new page and refetching the `index.html` file. The URL still changes, the `History` variable sees the updated URL and sends it to `<BrowserRouter>`, which communicates the URL to `<Route>` components, which then rerender in order to show a new set of components that are linked to the new path.
+```javascript
+const PageOne = () => {
+    return (
+        <div>
+            <div>Page One Loaded</div>
+            <a href="/pagetwo">Navigation Link</a>         // Bad!
+            <Link to="/pagetwo">Navigation Link</Link>     // Good!
+        </div>
+    );
+}
+
+```
+
+
+Traditional servers return a `404` when they receive a request for a path they don't recognize, whereas the `create-react-app` dev server returns the `index.html` file, which is crucial because practically the entire **React** web app is stored in **Javascript** - the clientside. This includes the routes themselves, meaning the server doesn't know what to return, thus giving back `index.html` where the navigation is resolved instead of the classic `404` error. This means we need to configure a server to behave in this fashion (single page app) if we want our deployed **React** app to work properly.
+
+There are several different `Router` types:
+* `BrowserRouter` - Uses everything after the top level domain (TLD - .com, .net) or port as the path - localhost:3000`/pagetwo`. Requires the aforementioned server setup.
+* `HashRouter` - Uses everything after a `#` as the path - localhost:3000`/#/pagetwo`. Always makes a request to localhost:3000 instead of a specific path to the server (meaning we don't have to do any special configuration when it comes to the server, it'll always return `index.html`), and uses the part after the hash to do things at the clientside.
+* `MemoryRouter` - Doesn't use the URL to track navigation - localhost:3000/.
+
+To make a component always visible on screen, place it in the same component as the router of your choice (such as `BrowserRouter`). Keep in mind that any elements containing `Link` tags for navigation must be placed inside of a router, whereas you can put any other elements outside of it.
+```javascript
+const App = () => {
+    // The <Header /> contains <Link> tags, which is why it's in the router
+    // It is always displayed, regardless of the path
+    return (
+        <div className="ui container">
+            <BrowserRouter>
+                <div>
+                    <Header /> 
+                    <Route path="/" exact component={StreamList} />
+                    <Route path="/streams/new" exact component={StreamCreate} />
+                </div>
+            </BrowserRouter>
+        </div>
+    );
+}
+```
