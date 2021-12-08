@@ -1230,6 +1230,7 @@ After this is done, the application can be debugged by clicking on the extension
 
 If we navigate to our application, then add `?debug_session=<SOME_STRING>`, we can save all data in **Redux Store** between page refreshes. By naming the session, we can save a certain state that interests us and go back to it later, or quickly test the application behavior with multiple saved states. Make sure to remove this extra query parameter after you've finished debugging your app, so that **Redux DevTools** stops saving the state.
 
+
 ___
 ## Routing with `react-router-dom`
 Routing in **React** can be made easy by using the `react-router-dom` library. Paths are matched here by comparing them using substring - if the path in the browser contains a path defined in a `Route` component (essentially `URLPath.contains(path)`), then the associated component is displayed on the screen. This means that multiple components can be displayed on the screen at once. For example `/pageone` would display the routes `/`, `/page`, as well as `/pageone`. This behavior can be avoided by adding the `exact` keyword to a `Route`, which makes it so that the compared paths must be an exact match in order for the component associated with that path to be displayed (`URLPath === path`).
@@ -1301,3 +1302,183 @@ const App = () => {
     );
 }
 ```
+
+
+___
+## Handling inputs with `redux-form`
+Working with forms and inputs when using **Redux** involves a lot of repetitive work in the form of making action creators to send data to the **Redux Store**, and `mapStateToProps` functions to get the data from it. **Redux Form** does does this automatically, thus saving time and making code easier to follow.
+
+To use `redux-form`, it must be imported and assigned to a key `form` in the file where the `combineReducers` function is called. Assigning the imported `reducer` to a key other than `form` will result in an error.
+```javascript
+import { combineReducers } from "redux";
+import { reducer as formReducer } from 'redux-form';
+import authReducer from "./authReducer";
+
+export default combineReducers({
+    auth: authReducer,
+//    \/   This has to be called 'form' !!!
+    form: formReducer
+});
+```
+
+
+The `reduxForm` function is very similar to the `connect` **Redux** function, even the way it's used is similar, aside from the fact that it takes only one configuration object as an argument. After connecting this, we can add `console.log(this.props)` to the render method to see all the props that are added by `reduxForm`.
+
+```javascript
+import React from 'react';
+import { reduxForm } from 'redux-form';
+
+class StreamCreate extends React.Component {
+    render() {
+        return (
+            // Some code
+        );
+    }
+}
+
+// Almost identical to 'connect' from 'react-redux'
+export default reduxForm({
+    form: 'streamCreate'
+})(StreamCreate);
+```
+
+
+Various input fields can be added by using the `Field` component from `react-redux`. These components have the predefined properties of `name` and `component`. The `name` prop is passed some string that is the name of the property that this `Field` will manage. The `component` prop takes in a function which displays whatever the `Field` is supposed to display. This function will automatically be passed an argument which contains some information about that `Field`. For instance, if we named the argument `formProps`, then `formProps.input` would contain common functions and variables we'd use when dealing with inputs (`onChange`, `value`, `onFocus`, `onBlur`, `onDragStart`, `onDrop`). The `formProps` argument would also contain other custom properties we'd give to our `Field`, such as `label` in the example below. 
+```javascript
+import { reduxForm, Field } from 'redux-form';
+
+class StreamCreate extends React.Component {
+    // The 'formProps' argument is automatically passed to the function
+    // It contains onChange, value, onFocus, onBlur, onDragStart, onDrop
+    // Can destructure the argument as ({ input, label }) for easier access
+    renderInput(formProps) {
+        return (
+            <div className="field">
+            {/* 'label' doesn't exist by default but we passed it as a
+                 prop to the Field, which is why we can access it */}
+                <label>{formProps.label}</label>
+            {/* Add all key-value pairs of formProps.input as props */}
+                <input {...formProps.input} />
+            </div>
+        );
+    }
+
+    render() {
+        return (
+            <form className="ui form">
+{/* Name of the property that  ||      || What is displayed
+  this input Field will manage \/      \/  in this field           */}
+                <Field name="title" component={this.renderInput} label="Stream title" />
+                <Field name="description" component={this.renderInput} label="Stream description" />
+                <button className="ui button primary">Submit</button>
+            </form>
+        );
+    }
+}
+```
+
+
+Wiring up `reduxForm` to our component will also give it some other properties (which can be viewed by logging out `this.props`), among which the `handleSubmit` function should be passed to the `onSubmit` property of our `form`. This function handles some basic things like preventing form submissions from refreshing the page (`event.preventDefault()`) so we don't have to. All we have to do in our custom `onFormSubmit` function is accept the values from the `Field` components (instead of the `event` itself), then pass our function to the `handleSubmit` function.
+```javascript
+class StreamCreate extends React.Component {
+    // We only take in the values inside the Field inputs, not the 'event'
+    onSubmit(formValues) {
+        console.log(formValues);
+    }
+
+    render() {
+        return (
+        // 'handleSubmit' is from redux-form, to which we pass our 'onSubmit'
+            <form 
+                className="ui form"
+                onSubmit={this.props.handleSubmit(this.onSubmit)}
+            >
+                {/* Same as before */}
+            </form>
+        );
+    }
+}
+```
+
+
+Whenever the form is rendered, and whenever any interaction with the form takes place, `redux-form` is going to call the `validate` function, which we have to define and add to the `reduxForm` configuration object. This function will be called with all the current values in the form. If the inputs are valid, the `validate` function should return an empty object, whereas an incorrect input should make it return an object where the keys are the names of the fields, and the values are the error messages. In case of an error, each `Field` is rerendered with the error message from the `errors` object, where the connection between the `Field` components and the `validate` function is in the `name` property of the `Field` being equal to one of the keys in the `errors` object. The error for the field can then be accessed inside its render function by using the `formProps.meta.error` property.
+```javascript
+class StreamCreate extends React.Component {
+    renderInput(formProps) {
+        return (
+            <div className="field">
+                <label>{formProps.label}</label>
+                <input {...formProps.input} autoComplete="off" />
+                {/* Displays the error, if one is present */}
+                <div>{formProps.meta.error}</div>
+            </div>
+        );
+    }
+    
+    // The rest of the component is unchanged
+}
+
+// We need to define the 'validate' function and return the 'errors' object
+const validate = (formValues) => {
+    const errors = {};
+
+    if (!formValues.title) errors.title = "You must enter a stream title";
+    if (!formValues.description) errors.description = "You must enter a stream description";
+
+    return errors;
+}
+
+export default reduxForm({
+    form: 'streamCreate',
+// Connect the validate function to the component
+    validate
+})(StreamCreate);
+```
+
+
+Since it wouldn't make sense for the errors to show up before a user has even had a chance to enter something into the input fields, we can make the errors show only after the user has interacted with the input `Field` components by clicking on them.
+```javascript
+class StreamCreate extends React.Component {
+    // Only show the error if the input field was clicked out of
+    renderError({ error, touched }) {
+        if (touched && error) {
+            return (
+                <div className="ui error message">
+                    <div className="header">{error}</div>
+                </div>
+            );
+        }
+    }
+    
+    // Turned into an arrow function to avoid errors when passing to
+    // external 'Field' components (just like in earlier chapters)
+    renderInput = (formProps) => {
+        // If there's an error, display the input field as red (optional)
+        const errorClass = `field 
+        ${formProps.meta.error && formProps.meta.touched 
+            ? 'error'
+            : ''}`
+            
+        return (
+            <div className={errorClass}>
+                <label>{formProps.label}</label>
+                <input {...formProps.input} />
+        {/* Used to only show errors after the user has clicked on input */}
+                <div>{this.renderError(formProps.meta)}</div>
+            </div>
+        );
+    }
+    
+    render() {
+        return (
+            // className 'error' so semantic-ui doesn't hide the errors by default
+            <form className="ui form error" onSubmit={this.props.handleSubmit(this.onSubmit)}>
+                { /* Same as before */ }
+            </form>
+        );
+    }
+}
+```
+
+
+
