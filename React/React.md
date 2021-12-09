@@ -749,6 +749,7 @@ ___
 
 ### The `Lodash` library
 The `Lodash` library has many useful features, one of which is **memoizing** functions. Memoized versions of functions behave the exact same way as the originals, except that they only return one value per unique argument - repeated calls with the same argument don't invoke the function, but instead only return the result of the first call with that same argument. We can use this when working with functions which do API calls to only make one API request per ID, for instance (like when we're getting user data for a comment chain, where one user will probably have left many comments). `Lodash` is usually imported to an underscore variable (`_`).
+
 ```javascript
 import _ from 'lodash';
 
@@ -775,6 +776,7 @@ memoizedExampleRequest(3);  // Call
 
 
 Another useful feature that `lodash` offers is the `chain` function, which lets us execute multiple functions with a given parameter one after another.
+
 ```javascript
 export const fetchPostsAndUsers = () => async (dispatch, getState) => {
     await dispatch(fetchPosts());
@@ -796,12 +798,14 @@ export const fetchPostsAndUsers = () => async (dispatch, getState) => {
 ___
 ### Google OAuth
 **Google OAuth** can be used to easily authenticate a user. To use **Google OAuth**, you must first add it as a script in the `index.html` file's `<header>`, similar to how the **Semantic-UI** is added.
+
 ```javascript
 <script src="https://apis.google.com/js/api.js"></script>
 ```
 
 
 The **OAuth** is then available for the application after making a new application on your Google Developer dashboard (available at [console.cloud.google.com](https://console.cloud.google.com/)) and setting up the *OAuth Consent Screen* and *Credentials*. You need to define the application URL (http://localhost:3000 for testing), the gmails of the users who will be able to test the app, as well as the scope of the user's information that your app will be getting (the email address alone is enough for just authentication, while the Google userId that's also provided helps with having unique IDs for users).
+
 ```javascript
 import React from 'react';
 
@@ -861,6 +865,27 @@ class GoogleAuth extends React.Component {
 
 export default GoogleAuth;
 ```
+
+
+
+___
+### Object key interpolation syntax
+If we have dynamic object keys (for example the element IDs), we can access them using the key interpolation syntax, which is similar to how arrays are indexed - using the brackets `[ ]`.
+
+```javascript
+// This is one approach to create a new object with one edited key - 3 lines
+const newState = { ...state };
+// Accessing a property using key interpolation
+newState[action.payload.id] = action.payload;
+return newState
+
+// ES2015 - One line that does the same thing as the 3 above
+return { ...state, [action.payload.id]: action.payload };
+```
+
+
+With **ES2015**, we can also access the property and create a new object in the same line, which is particularly useful when writing **Redux** reducers with multiple cases (also covered in this document).
+
 
 
 ___
@@ -955,6 +980,7 @@ const policies = (policiesList = [], action) => {
 
 
 A good alternative to if/else statements which would ensure all our cases are covered would be to use the `switch` statement.
+
 ```javascript
 const accounting = (money = 1000, action) => {
     switch(action.type) {
@@ -967,6 +993,29 @@ const accounting = (money = 1000, action) => {
     }
 }
 ```
+
+When dealing with reducers which deal with multiple actions and edit existing state elements instead of adding new ones, using a combination of object key interpolation syntax and **ES2015** can help make the code we write shorter and more legible.
+
+```javascript
+const streamReducer = (state={}, action) => {
+    switch (action.type) {
+        case 'EDIT_STREAM':
+            // This is one approach - 3 lines
+            const newState = { ...state};
+            newState[action.payload.id] = action.payload;
+            return newState
+
+            // One line that does the same thing as the 3 above
+            return { ...state, [action.payload.id]: action.payload };
+        default:
+            return state;
+    }
+}
+```
+
+
+Arrays can be easily converted to objects with the **Lodash** `mapKeys` function. It takes in two arguments - an array of objects and a property which is present in each of those objects, the value of which will be used to generate the keys for the objects in the array. If we want to do the opposite (put all values of an object into an array), we can do that using `Object.values(SOME_OBJECT)`, which is a predefined **JS** function. Just like working with objects is preferable for reducers where we change things, working with arrays is better in components where we render things.
+![mapkeys() function example](./images/lodashMapKeys.png "mapkeys() function example on an object called 'streams'")
 
 
 The rules of `Reducers` are as follows:
@@ -1046,6 +1095,7 @@ ReactDOM.render(
 );
 ```
 
+
 Reducers are created as usual, then grouped up with the `combineReducers` function and exported.
 
 ```javascript
@@ -1109,6 +1159,7 @@ export default connect(mapStateToProps, { selectSong })(SongList);
 
 
 This is how components are always connected with the **Redux** store - `connect` is imported, it is called and the component is passed as an argument to the function it returns. We always define the `mapStateToProps` function, it always gets an argument of `state`, and we always return an object that's going to show up as the `props` of our component. Sometimes it's also a good idea to put the component logic in the `mapStateToProps` function, because some people put that function and the `connect` function in a separate file, thus making the core component potentially more reusable.
+
 ```javascript
 // If we wanted to display a certain user, we could have the logic here
 // instead of the 'render' method inside the component
@@ -1182,6 +1233,7 @@ export const fetchPosts = () => async dispatch => {
 
 
 Similarly, when calling action creators within other action creators, they should be called as an argument to the `dispatch` function.
+
 ```javascript
 export const fetchPostsAndUsers = () => async (dispatch, getState) => {
     //       \/ Dispatch     \/ Action creator call
@@ -1195,6 +1247,7 @@ export const fetchPostsAndUsers = () => async (dispatch, getState) => {
 ___
 ## Using Redux DevTools to inspect the store
 An extension called **Redux DevTools** for Chrome or Firefox can be used to help with debugging and seeing what's happening inside the **Redux** store. After installing the extension, debugging must be enabled in the app by adding a few things into the main `index.js` file.
+
 ```javascript
 import React from 'react';
 import ReactDOM from 'react-dom';
@@ -1219,6 +1272,8 @@ ReactDOM.render(
     document.querySelector('#root')
 );
 ```
+
+
 After this is done, the application can be debugged by clicking on the extension icon in the browser, after navigating to the URL where the web app is hosted. If the app was configured properly, the **Redux DevTools** extension icon should change color to indicate that it's active, after which clicking on it brings up the debugging panel.
 <p align="center">
   <img src="./images/reduxDevTools.png" alt="Redux DevTools" title="Redux DevTools" />
@@ -1231,9 +1286,11 @@ After this is done, the application can be debugged by clicking on the extension
 If we navigate to our application, then add `?debug_session=<SOME_STRING>`, we can save all data in **Redux Store** between page refreshes. By naming the session, we can save a certain state that interests us and go back to it later, or quickly test the application behavior with multiple saved states. Make sure to remove this extra query parameter after you've finished debugging your app, so that **Redux DevTools** stops saving the state.
 
 
+
 ___
 ## Routing with `react-router-dom`
 Routing in **React** can be made easy by using the `react-router-dom` library. Paths are matched here by comparing them using substring - if the path in the browser contains a path defined in a `Route` component (essentially `URLPath.contains(path)`), then the associated component is displayed on the screen. This means that multiple components can be displayed on the screen at once. For example `/pageone` would display the routes `/`, `/page`, as well as `/pageone`. This behavior can be avoided by adding the `exact` keyword to a `Route`, which makes it so that the compared paths must be an exact match in order for the component associated with that path to be displayed (`URLPath === path`).
+
 ```javascript
 import { BrowserRouter, Route } from 'react-router-dom';
 
@@ -1263,6 +1320,7 @@ const App = () => {
 The problem with the classic way to navigate between pages (using `<a>` tags) is that upon clicking one, the browser will make an outside request to a server for the given URL and get a new `index.html` file (which is essentially the same one, since we're working with **React**). The browser will then **dump the old HTML file it was showing**, which includes all the **React** and **Redux** state data. 
 
 Instead of doing that, we should use the `<Link>` tag, to which we pass the prop `to`, which has the value of the path we want to associate with that navigation component. When using the `<Link>` tag, it will still internally generate a `<a>` tag, but the `react-router` will automatically prevent the browser from navigating to the new page and refetching the `index.html` file. The URL still changes, the `History` variable sees the updated URL and sends it to `<BrowserRouter>`, which communicates the URL to `<Route>` components, which then rerender in order to show a new set of components that are linked to the new path.
+
 ```javascript
 const PageOne = () => {
     return (
@@ -1285,6 +1343,7 @@ There are several different `Router` types:
 * `MemoryRouter` - Doesn't use the URL to track navigation - localhost:3000/.
 
 To make a component always visible on screen, place it in the same component as the router of your choice (such as `BrowserRouter`). Keep in mind that any elements containing `Link` tags for navigation must be placed inside of a router, whereas you can put any other elements outside of it.
+
 ```javascript
 const App = () => {
     // The <Header /> contains <Link> tags, which is why it's in the router
@@ -1304,11 +1363,13 @@ const App = () => {
 ```
 
 
+
 ___
 ## Handling inputs with `redux-form`
 Working with forms and inputs when using **Redux** involves a lot of repetitive work in the form of making action creators to send data to the **Redux Store**, and `mapStateToProps` functions to get the data from it. **Redux Form** does does this automatically, thus saving time and making code easier to follow.
 
 To use `redux-form`, it must be imported and assigned to a key `form` in the file where the `combineReducers` function is called. Assigning the imported `reducer` to a key other than `form` will result in an error.
+
 ```javascript
 import { combineReducers } from "redux";
 import { reducer as formReducer } from 'redux-form';
@@ -1343,7 +1404,21 @@ export default reduxForm({
 ```
 
 
+To use `connect` at the same time as `reduxForm`, we can simply pass the entire reduxForm function call to the `connect` function's second argument, or we can assign the `reduxForm` call to a variable, then pass that variable for more legible code.
+
+```javascript
+import { createStream } from '../../actions';
+
+const formWrapped = reduxForm({
+    form: 'streamCreate'
+})(StreamCreate);
+
+export default connect(null, { createStream })(formWrapped);
+```
+
+
 Various input fields can be added by using the `Field` component from `react-redux`. These components have the predefined properties of `name` and `component`. The `name` prop is passed some string that is the name of the property that this `Field` will manage. The `component` prop takes in a function which displays whatever the `Field` is supposed to display. This function will automatically be passed an argument which contains some information about that `Field`. For instance, if we named the argument `formProps`, then `formProps.input` would contain common functions and variables we'd use when dealing with inputs (`onChange`, `value`, `onFocus`, `onBlur`, `onDragStart`, `onDrop`). The `formProps` argument would also contain other custom properties we'd give to our `Field`, such as `label` in the example below. 
+
 ```javascript
 import { reduxForm, Field } from 'redux-form';
 
@@ -1379,6 +1454,7 @@ class StreamCreate extends React.Component {
 
 
 Wiring up `reduxForm` to our component will also give it some other properties (which can be viewed by logging out `this.props`), among which the `handleSubmit` function should be passed to the `onSubmit` property of our `form`. This function handles some basic things like preventing form submissions from refreshing the page (`event.preventDefault()`) so we don't have to. All we have to do in our custom `onFormSubmit` function is accept the values from the `Field` components (instead of the `event` itself), then pass our function to the `handleSubmit` function.
+
 ```javascript
 class StreamCreate extends React.Component {
     // We only take in the values inside the Field inputs, not the 'event'
@@ -1402,6 +1478,7 @@ class StreamCreate extends React.Component {
 
 
 Whenever the form is rendered, and whenever any interaction with the form takes place, `redux-form` is going to call the `validate` function, which we have to define and add to the `reduxForm` configuration object. This function will be called with all the current values in the form. If the inputs are valid, the `validate` function should return an empty object, whereas an incorrect input should make it return an object where the keys are the names of the fields, and the values are the error messages. In case of an error, each `Field` is rerendered with the error message from the `errors` object, where the connection between the `Field` components and the `validate` function is in the `name` property of the `Field` being equal to one of the keys in the `errors` object. The error for the field can then be accessed inside its render function by using the `formProps.meta.error` property.
+
 ```javascript
 class StreamCreate extends React.Component {
     renderInput(formProps) {
@@ -1437,6 +1514,7 @@ export default reduxForm({
 
 
 Since it wouldn't make sense for the errors to show up before a user has even had a chance to enter something into the input fields, we can make the errors show only after the user has interacted with the input `Field` components by clicking on them.
+
 ```javascript
 class StreamCreate extends React.Component {
     // Only show the error if the input field was clicked out of
@@ -1480,5 +1558,10 @@ class StreamCreate extends React.Component {
 }
 ```
 
+
+
+___
+### REST-based React apps
+REST conventions are a standardized system for designing APIs.
 
 
