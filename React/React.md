@@ -889,6 +889,19 @@ With **ES2015**, we can also access the property and create a new object in the 
 
 
 ___
+### REST PUT behavior
+REST conventions are a standardized system for designing APIs. REST methods are:
+* `GET` - Returns some data from the server, used to load information
+* `POST` - Sends some data to the server, used to store information
+* `PUT` - Updates **ALL** properties of a record - if an existing property isn't received in the update, it's deleted (for some APIs, for others it's not, varies on a case-by-case basis)
+* `PATCH` - Updates **SOME** properties of a record - only those we send in the request
+* `DELETE` - Deletes a record from the server
+
+One should take care to check how the API they're sending `PUT` requests to behaves. Some perform like `PATCH` and replace only the properties that were sent, others remove all properties missing from the request altogether.
+
+
+
+___
 
 ## Redux
 **Redux** is a `state` management library. With **Redux**, rather than maintaining state inside a component, it's extracted into the Redux library. It makes creating complex applications easier, and it's not explicitly designed to work with **React**, and is thus used in other libraries, and there are ports of it for other languages as well. 
@@ -1335,24 +1348,24 @@ const PageOne = () => {
 ```
 
 
-Traditional servers return a `404` when they receive a request for a path they don't recognize, whereas the `create-react-app` dev server returns the `index.html` file, which is crucial because practically the entire **React** web app is stored in **Javascript** - the clientside. This includes the routes themselves, meaning the server doesn't know what to return, thus giving back `index.html` where the navigation is resolved instead of the classic `404` error. This means we need to configure a server to behave in this fashion (single page app) if we want our deployed **React** app to work properly.
+Traditional servers return a `404` when they receive a request for a path they don't recognize, whereas the `create-react-app` dev server returns the `index.html` file, which is crucial because practically the entire **React** web app is stored in **Javascript** - the client side. This includes the routes themselves, meaning the server doesn't know what to return, thus giving back `index.html` where the navigation is resolved instead of the classic `404` error. This means we need to configure a server to behave in this fashion (single page app) if we want our deployed **React** app to work properly.
 
 There are several different `Router` types:
 * `BrowserRouter` - Uses everything after the top level domain (TLD - .com, .net) or port as the path - localhost:3000`/pagetwo`. Requires the aforementioned server setup.
-* `HashRouter` - Uses everything after a `#` as the path - localhost:3000`/#/pagetwo`. Always makes a request to localhost:3000 instead of a specific path to the server (meaning we don't have to do any special configuration when it comes to the server, it'll always return `index.html`), and uses the part after the hash to do things at the clientside.
+* `HashRouter` - Uses everything after a `#` as the path - localhost:3000`/#/pagetwo`. Always makes a request to localhost:3000 instead of a specific path to the server (meaning we don't have to do any special configuration when it comes to the server, it'll always return `index.html`), and uses the part after the hash to do things at the client side.
 * `MemoryRouter` - Doesn't use the URL to track navigation - localhost:3000/.
 
 To make a component always visible on screen, place it in the same component as the router of your choice (such as `BrowserRouter`). Keep in mind that any elements containing `Link` tags for navigation must be placed inside of a router, whereas you can put any other elements outside of it.
 
 ```javascript
 const App = () => {
-    // The <Header /> contains <Link> tags, which is why it's in the router
+    // The <Example /> contains <Link> tags, which is why it's in the router
     // It is always displayed, regardless of the path
     return (
         <div className="ui container">
             <BrowserRouter>
                 <div>
-                    <Header /> 
+                    <Example /> 
                     <Route path="/" exact component={StreamList} />
                     <Route path="/streams/new" exact component={StreamCreate} />
                 </div>
@@ -1361,6 +1374,111 @@ const App = () => {
     );
 }
 ```
+
+
+**Intentional navigation** is when the user clicks on a `Link` component to navigate elsewhere, whereas **Programmatic navigation** is when we run code to forcible navigate the user through our app. When doing programmatic navigation alongside API calls, we should navigate the user only **after** the API response arrives, so the user can be properly informed in case an error comes up. 
+
+Programmatic navigation is done using the `history` object created by the `BrowserRouter`, which doesn't just keep track of the address bar in the browser. The `BrowserRouter` creates the `history` object, then it passes it as a prop down to any component it renders, allowing components to easily trigger navigation. While it's possible to access the `history` object inside action creators by passing it as an argument, it would still mean having to write our action creators to take in the `history` object as an argument, as well as having to pass that argument inside all of our components which use those action creators. An alternative solution is for us to create our own `history` object inside a dedicated file, importing the file and easily accessing the object wherever we want to.
+
+```javascript
+// The 'history.js' file
+import { createBrowserHistory } from 'history'; 
+export default createBrowserHistory();
+```
+
+
+When using a custom `history` object, one should keep in mind that the routers of a special type (such as `BrowserRouter`) have their own `history` object and won't accept the custom one. We instead need to use a plain `Router`, and pass it our custom `history` object as a prop called `history`.
+
+```javascript
+import React from 'react';
+import { Router, Route } from 'react-router-dom';
+import history from '../history';
+
+const App = () => {
+    return (
+        <div className="ui container">
+            { /* Passing the history object */ }
+            <Router history={history}>
+                <div>
+                    {/* Some routes */}
+                </div>
+            </Router>
+        </div>
+    );
+}
+
+export default App;
+```
+
+
+After we have set up the `history` object and connected it to the `Router`, we can perform the navigation by importing the `history` object and using the `history.push` function, with the desired path as the argument.
+```javascript
+import history from '../history';
+import streams from '../apis/streams';
+
+export const createStream = formValues => async (dispatch, getState) => {
+    const { userId } = getState().auth;
+    const res = await streams.post('/streams', { ...formValues, userId });
+    dispatch({ type: 'CREATE_STREAM', payload: res.data });
+    // Navigate back to root path
+    history.push('/');
+}
+```
+
+
+Besides `history`, `Router` also sends the `location` and `match` objects as props to the component it renders. The `match` component's `params` property is an object that contains all the parameters our URL has. Parameters in the URL are defined by placing a semicolon `:` in front of what the parameter's name will be.
+```javascript
+// The route               \/ The URL parameter
+<Route path="/streams/edit/:someParam" exact component={StreamEdit} />
+
+// If we go to '/streams/edit/52', the 'match.params' will look like this
+params: {
+    someParam: 52
+}
+
+// We can also set up multiple params
+<Route path="/streams/edit/:someParam/:otherThing" exact component={StreamEdit} />
+
+// Going to '/streams/edit/52/35' makes the 'match.params' look like this
+params: {
+    someParam: 52,
+    otherThing: 35
+}
+```
+
+
+When using URL parameters, it's possible to encounter a scenario where a single URL will be able to satisfy multiple `Route` conditions, seeing as how `react-router` operates in a greedy manner by default, meaning it will try to show all the `Route` components which it matches. This can be avoided by wrapping all the `Route` components in a `Switch`, which makes it so only the first `Route` that matches the URL will be shown.
+```javascript
+import React from 'react';
+import { Router, Route, Switch } from 'react-router-dom';
+
+import StreamCreate from './streams/StreamCreate';
+import StreamList from './streams/StreamList';
+import StreamShow from './streams/StreamShow';
+import Header from './Header';
+import history from '../history';
+
+const App = () => {
+    return (
+        <div className="ui container">
+            <Router history={history}>
+                <div>
+                    <Header />
+                    <Switch>
+                        <Route path="/" exact component={StreamList} />
+                        { /* These two would match on the same things! */ }
+                        <Route path="/streams/new" exact component={StreamCreate} />
+                        <Route path="/streams/:id" exact component={StreamShow} />
+                    </Switch>
+                </div>
+            </Router>
+        </div>
+    );
+}
+```
+
+
+When working with `react-router`, each component needs to be designed to work in isolation, meaning it should fetch its own data and not rely on the user visiting other components and them preparing the data. The user could manually type in the link, or bookmark it, thus creating the need for each component to be able to function on its own.
 
 
 
@@ -1453,7 +1571,42 @@ class StreamCreate extends React.Component {
 ```
 
 
-Wiring up `reduxForm` to our component will also give it some other properties (which can be viewed by logging out `this.props`), among which the `handleSubmit` function should be passed to the `onSubmit` property of our `form`. This function handles some basic things like preventing form submissions from refreshing the page (`event.preventDefault()`) so we don't have to. All we have to do in our custom `onFormSubmit` function is accept the values from the `Field` components (instead of the `event` itself), then pass our function to the `handleSubmit` function.
+Once we wrap a component inside `reduxForm`, we can then pass some special props, one of which is called `initialValues` to the `reduxForm`, which will then pass them to our component. We pass an object to `initialValues`, the keys of which need to be the same as the `name` properties of the `Field` components whose default values we want to set.
+```javascript
+// Setting the initial values for the 'title' and 'description' fields
+return (
+    <div>
+        <h3>Edit a Stream</h3>
+        <StreamForm 
+            onSubmit={this.onSubmit}
+            { /* Object keys must be the same as Field names! */ }
+            initialValues={{ 
+                title: this.props.stream.title,
+                description: this.props.stream.description
+            }}
+        />
+    </div>
+);
+```
+
+
+Using the `pick` function from the `Lodash` library is a good way to quickly create a new object from an existing one that contains only the keys (and their values) that we list as arguments.
+```javascript
+initialValues={{ 
+    title: this.props.stream.title,
+    description: this.props.stream.description,
+    message: this.props.stream.message
+}}
+
+// Lodash can help us make code compact
+// Especially when dealing with multiple properties
+initialValues={
+    _.pick(this.props.stream, 'title', 'description', 'message')
+}
+```
+
+
+Wiring up `reduxForm` to our component will also give it some other properties by default (which can be viewed by logging out `this.props`), among which the `handleSubmit` function should be passed to the `onSubmit` property of our `form`. This function handles some basic things like preventing form submissions from refreshing the page (`event.preventDefault()`) so we don't have to. All we have to do in our custom `onFormSubmit` function is accept the values from the `Field` components (instead of the `event` itself), then pass our function to the `handleSubmit` function.
 
 ```javascript
 class StreamCreate extends React.Component {
@@ -1559,9 +1712,48 @@ class StreamCreate extends React.Component {
 ```
 
 
+For migrating from **Redux Form** to **React Final Form**, go to [this link](https://final-form.org/docs/react-final-form/migration/redux-form).
+
+
 
 ___
-### REST-based React apps
-REST conventions are a standardized system for designing APIs.
+### React Portals
+A **Portal** allows us to render some element not as a direct child, but as a child of some other element (most often the `body`). A good example of where this could be used is when creating a **Modal** - something that covers up the rest of the page until the user performs some action (such as accepting cookies, subscribing to a newsletter or something similar). Another general use-case for portals is rendering components into **HTML** that wasn't generated by our **React** application (such as when introducing **React** into a server side rendered application).
 
+Portals can be created using the `ReactDOM.createPortal` function, where the first argument is the JSX we want to return, and the second argument is the DOM element we want to put the JSX into. Because the content of the DOM element we select is overwritten completely, it's best to create a new `<div>` element right next to the `root` div element, then give it some ID so that we can access it and place the JSX inside it.
+```javascript
+// 'Modal.js'
+import React from 'react';
+import ReactDOM from 'react-dom';
+import history from '../history';
+
+const Modal = props => {
+    return ReactDOM.createPortal(
+        <div 
+            className="ui dimmer modals visible active"
+            onClick={() => history.push('/')}
+        >
+            {/* Prevent click event from bubbling up and redirecting */}
+            <div 
+                className="ui standard modal visible active"
+                onClick={(e) => e.stopPropagation()}
+            >
+                <div className="header">{props.title}</div>
+                <div className="content">{props.content}</div>
+                <div className="actions">{props.actions}</div>
+            </div>
+        </div>,
+        document.querySelector('#modal')
+    );
+};
+
+export default Modal;
+
+
+// 'index.html'
+<body>
+    <div id="root"></div>
+    <div id="modal"></div>
+</body>
+```
 
