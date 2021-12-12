@@ -1757,3 +1757,196 @@ export default Modal;
 </body>
 ```
 
+
+
+___
+## React Context System
+The **props system** gets data from a parent component to a **direct** child component, whereas the **context system** gets data from a parent component to **any** nested child component. The context system works by having a source of data (a default value or a parent component `Provider`) pass data to a context object (where the default value can be defined), which then passes the data to a nested child (`this.context` or `Consumer`) which imports the context object.
+
+Since the context system is part of **React**, creating a context object is very simple.
+```javascript
+// '/src/contexts/LanguageContext.js'
+import React from 'react';
+// Default value is passed as the parameter
+export default React.createContext('english');
+```
+
+
+After the context object has been created, we then need to import it into a class component where we want to use it. The import will then be assigned to a special class property called `contextType`, which is `static` (to denote that it's a fixed class property). The entire process is just importing the context and assigning it to a property, that's all there is to it. The context can then be accessed with `this.context`.
+```javascript
+import React from 'react';
+import LanguageContext from '../contexts/LanguageContext';
+
+class Button extends React.Component {
+    static contextType = LanguageContext;
+
+    render() {
+        //            \/ Using context to choose between languages
+        const text = this.context === 'english' 
+            ? 'Submit'
+            : 'Voorleggen';
+        return (
+            <button className="ui button primary">
+                {text}
+            </button>
+        );
+    }
+}
+
+export default Button;
+```
+
+
+In order to change the value of the context, we need to find the component in which the child components where we access the context are nested. We then wrap this component in a JSX element whose name is the same as our context, but with `.Provider` added to the end (so for a context object `SomeContext`, the wrapping tag would be `<SomeContext.Provider>`). This wrapping tag has a special property called `value` where we can set what the value of that context will be.
+```javascript
+import React from 'react';
+import UserCreate from './UserCreate';
+import LanguageContext from '../contexts/LanguageContext';
+
+class App extends React.Component {
+    state = { language: 'english' };
+
+    onLanguageChange = (language) => {
+        this.setState({ language });
+    }
+
+    render() {
+        return (
+            <div className="ui container">
+                <div>
+                    Select a language:
+                    <i 
+                        className='flag us'
+                        onClick={() => this.onLanguageChange('english')}
+                    />
+                    <i 
+                        className='flag nl'
+                        onClick={() => this.onLanguageChange('dutch')}
+                    />
+                </div>
+                
+            { /* Wrap 'UserCreate' because it holds the button we change */ }
+                <LanguageContext.Provider value={this.state.language}>
+                    <UserCreate />
+                </LanguageContext.Provider>
+            </div>
+        );
+    }
+}
+
+export default App;
+```
+
+
+Every time that an instance of a `Provider` is rendered, a new separate pipe of information is created. This means that we can create multiple channels of information by having several different `Providers` of the same context object, where each `Provider` can have its own separate context value.
+```javascript
+render() {
+    return (
+        <div className="ui container">
+            <div>
+                Select a language:
+                <i 
+                    className='flag us'
+                    onClick={() => this.onLanguageChange('english')}
+                />
+                <i 
+                    className='flag nl'
+                    onClick={() => this.onLanguageChange('dutch')}
+                />
+            </div>
+            
+{ /* Components nested within will change language in this.context */ }
+            <LanguageContext.Provider value={this.state.language}>
+                <UserCreate />
+            </LanguageContext.Provider>
+            
+{ /* Components nested within will ALWAYS have 'dutch' in this.context */ }
+            <LanguageContext.Provider value={'dutch'}>
+                <UserCreate />
+            </LanguageContext.Provider>
+            
+{ /* Components nested within will ALWAYS have the default value in this.context */ }
+            <UserCreate />
+        </div>
+    );
+}
+```
+
+
+When using a `Consumer`, we don't need to use `contextType`, because `contextType` is only used for `this.context`. Similarly to how `Provider` works by adding a JSX element whose name is the name of our context object, followed by `.Provider`, a `Consumer` works by appending `.Consumer` after the context object in the JSX tag. This tag is placed wherever we want to access the context, and it must contain a function which is automatically called by the `Consumer`. The function will be passed a value which is inside the context. 
+```javascript
+class Button extends React.Component {
+    renderSubmit(value) {
+        return value === 'english'
+                        ? 'Submit'
+                        : 'Voorleggen';
+    }
+
+    render() {
+        return (
+            <button className="ui button primary">
+                <LanguageContext.Consumer>
+                    {(value) => value === 'english'
+                                        ? 'Submit'
+                                        : 'Voorleggen'
+                    }
+                </LanguageContext.Consumer>
+
+                {/* Using a helper function also works */}
+                <LanguageContext.Consumer>
+                    {(value) => this.renderSubmit(value)}
+                </LanguageContext.Consumer>
+            </button>
+        );
+    }
+}
+```
+
+
+The advantage of using `Consumer` over `contextType` is that `Consumer` allows us to use information from multiple context objects in a single component.
+```javascript
+// App.js
+// Doesn't matter if ColorContext is inside or outside of LanguageContext
+<ColorContext.Provider value="red">
+    <LanguageContext.Provider value={this.state.language}>
+        <UserCreate />
+    </LanguageContext.Provider>
+</ColorContext.Provider>
+
+// Button.js
+class Button extends React.Component {
+    renderButton(color) {
+        return (
+            <button className={`ui button ${color}`}>
+                <LanguageContext.Consumer>
+                    {(value) => this.renderSubmit(value)}
+                </LanguageContext.Consumer>
+            </button>
+        );
+    }
+    
+    render() {
+        return (
+    // Wrapping <button>, everything inside of a Consumer must be a function
+            <ColorContext.Consumer>
+                {(color) => 
+                    <button className={`ui button ${color}`}>
+                        <LanguageContext.Consumer>
+                            {(value) => this.renderSubmit(value)}
+                        </LanguageContext.Consumer>
+                    </button>
+                }
+            </ColorContext.Consumer>
+            
+    // Alternate way using a helper function, cleaner
+            <ColorContext.Consumer>
+                {(color) => this.renderButton(color)}
+            </ColorContext.Consumer>
+        );
+    }
+}
+```
+
+
+
+
