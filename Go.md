@@ -1,9 +1,21 @@
 # Go
-## Basics
 Official docs can be found at https://pkg.go.dev/std
 
-Every Go program is comprised of one or more Go packages. A Go package can be thought of as a project or a workspace. It's a collection of common source code files. A package can have many related files inside of it, with each file ending in the `.go` file extension. Each file in the package needs to have the statement `package PACKAGE_NAME` at the top (so `package examplePackage` for a package called `examplePackage`).
+## Packages
+Every Go program is comprised of one or more Go packages. A package is a collection of source files in the same directory that are compiled together. A package can be made up of multiple files, with each file ending in the `.go` file extension. Each file in the package needs to have the statement `package PACKAGE_NAME` at the top (so `package examplepackage` for a file which is part of a package called `examplepackage`) and all the files in a package need to be in a single directory. 
 
+### Package naming
+The name of a package is part of its type and function names, which should be taken into account when naming functions (some functions which would otherwise seem ambiguous might not be when combined with the package name). Package names should be short and meaningful, and underscores should be avoided because they make the package names too long.
+```
+suffixarray    NOT    suffix_array
+```
+
+Overgeneralizing a package name should also be avoided.
+```
+io/ioutil      NOT    io/util
+```
+
+### Package types
 There are two types of packages: **executable** and **reusable**. **Executable** packages create an executable file once built. Reusable packages are like code dependencies or libraries, they contain reusable logic and helper functions which allow us to reuse code on future projects. The name of the package determines if a package is executable or reusable - a package is named `main` to make it an executable package, while any other name results in reusable packages. An executable package **must** have a function inside it called `main`, which runs automatically once the program is executed.
 
 Packages can be imported using the `import "examplePackage"` command. When importing multiple packages, parentheses should be opened after the `import` keyword and each package should go on a new line:
@@ -17,14 +29,14 @@ import (
 ```
 
 
-### Console commands
-Here are some essential console commands when working with Go:
+## CLI commands
+Here are some essential CLI commands when working with Go:
 - `go` - Lists available commands
-- `go build` - Compiles files
+- `go build` - Compiles packages and dependencies
 - `go run` - Compiles and executes files
-- `go fmt` - Formats all the code in each file in the current directory
-- `go install` - Compiles and "installs" a package
-- `go get` - Downloads the raw source code of someone else's package
+- `go fmt` - Formats all the code in each file in the current directory - This means you don't have to worry about code formatting, just make sure to invoke it for the changed files before pushing
+- `go install` - Compiles and installs a package and its dependencies
+- `go get` - Downloads the raw source code of someone else's package, as well as its dependencies
 - `go test` - Runs any tests associated with the current project
 
 ## Variables and functions
@@ -95,6 +107,36 @@ func main() {
     }
     
     sayHi()
+}
+```
+
+### Naming variables
+* Use `camelCase` instead of `snake_case`
+* Local variable names should be short, typically one or two characters
+    * `r`, not `bytesReader`
+    * `i`, not `loopIterator`
+* Global variables should have longer names
+* Don't repeat yourself:
+    * `bytes.Buffer`, not `bytes.ByteBuffer`
+    * `zip.Reader`, not `zip.ZipReader`
+    * `errors.New`, not `errors.NewError`
+
+### Documenting code
+Exported identifiers use comments in the preceding lines as documentation. These comments are extracted and presented in the terminal (with the `go doc` command) or browser (using the `godoc` tool). These comments should begin with the function/struct name so that they can be used alongside `grep` to search for keywords, based on which the search will yield the name of the functions/types which have something to do with the search term.
+```go
+// Package dbhandler provides the tools to handle db interactions
+package dbhandler
+
+// User contains fields for the User DB table
+type User struct {
+    Name           string
+    Email          string
+    DateRegistered string
+}
+
+// GetRandomNumbers returns a list of n random numbers in the interval [min,max]
+func GetRandomNumbers(n int, min int, max int) ([]int, error) {
+    // Function body...
 }
 ```
 
