@@ -18,6 +18,8 @@ To deploy with Vercel, first install the Vercel CLI using `npm install -g vercel
 
 To deploy with Netlify, all work is done on their website. You must create a GitHub repo for the project, push the project onto the repo, then link your GitHub profile with Netlify. After that select **New site from Git**, select the repository you want to use, and you're done. The deployment URL is random initially, but can be changed in the settings afterwards. Netlify syncs with the GitHub repository, so the project is automatically deployed again after every push. Vercel can also be set up to track a GitHub repo.
 
+
+
 ___
 ## JSX
 JSX syntax differs from HTML in a few ways. Properties inside tags are done differently, where JS variables in curly brackets are used in place of multiple entries inside double quotation marks. The first set of curly brackets indicates that a JS variable will be referenced, while the second set (inside the first) denotes a JS *object*. Note that compound attribute names like `'background-color'` are changed to camelcase (`'backgroundColor'`).
@@ -63,8 +65,8 @@ txt = { msg: 'TestMessage' }	// Doesn't work
 ```
 
 
-___
 
+___
 ## Components
 A *React component* is a JS **function** or **class** that *returns some JSX* (which turns into HTML that is shown to the user) and *handles feedback from the user* (using event handlers). **JSX** is basically a set of instructions which tells **React** what to display on the screen. Before JSX is rendered in the browser, it first needs to be converted into regular JS code. Each tag in JSX is examined by checking if it's a *DOM* element (for example, a `<div>`). If so, the element is rendered. If it's a component, then the component function is called and all the JSX it returns is also inspected.
 
@@ -88,8 +90,9 @@ The `ReactDOM.render()` function accepts two arguments:
 ReactDOM.render(<App />, document.getElementById("root"));
 ```
 
-___
 
+
+___
 ## Props
 When nesting components, the component which holds other components inside it is called the **parent component**, and the components inside it are its **children** (or **child components**). The **props** system (short for **properties**) is then used to pass data from a parent component to a child component, where the goal is to customize or configure the child component. It's all about having a parent customize how a child looks or behaves.
 
@@ -144,8 +147,8 @@ const CommentSection = props => {
 ```
 
 
-___
 
+___
 ## Class Components
 Props inside **class components** are used as part of `this`, so `this.props` instead of just `props`.
 
@@ -260,6 +263,7 @@ Callbacks can be used to transfer data from a child component to a parent compon
 ```
 
 
+
 ___
 ### Asynchronous requests
 Requests can be made using the `axios` library, with the `axios.get` function for **GET** requests. The function returns a `Promise` object, which has a function called `then` we can use to run some code after the response is received.
@@ -299,8 +303,9 @@ async onSearchSubmit(searchTerm) {
 Arrow functions which are also `async` need to have the `async` keyword after the `=` sign, and before the parentheses which hold the parameters. <br>
 For example `async myFun (params) {` becomes `const myFun = async (params) => {`.
 
-___
 
+
+___
 ## Hooks
 In **React**, the **Hooks system** is all about giving functional elements a lot of additional functionality. Hooks are all about providing tools to write reusable code, instead of more classic techniques like *inheritance*. The **hooks system** provides some inbuilt functions, such as:
 1) `useState` - Allows the use of `state` in a functional component
@@ -433,6 +438,7 @@ useEffect(() => {
 ```
 
 
+
 ___
 
 Events in **React** **bubble up**, which is to say that they will propagate from the component where they're created through its parent components, and eventually into the HTML body. Manual event listeners can thus be set up to watch for events which bubble up. However, all event listeners created using `addEventListener` get called first, and the **React** event listeners get called AFTER them. The order inside those two categories is still from the most child element towards the most parent element. It's possible to cancel event bubbling, but it's considered bad practice as it can break other parts of the code.
@@ -463,6 +469,9 @@ Custom hooks are the best way to create reusable code in a **React** project (be
 3) Identify the outputs of that code
 4) Extract the code into a separate function, receiving the inputs as arguments and returning the outputs
 
+
+
+___
 ### Refs
 **React** Refs are a system which gives us direct access to a single DOM element that is rendered by a component, and they're used in place of the standard JS `document.querySelector(some_tag)`. Since all JSX elements - even the ones which look like standard HTML elements such as `<img>` - aren't HTML, but are eventually converted to real HTML, we thus have no way to reference them aside from using refs. They're created in the constructor, assigned to instance variables, then passed to a particular JSX element as props. They can be assigned to the `state` of a component, but since refs don't change over time, it shouldn't be done.
 
@@ -531,378 +540,8 @@ return (
 ```
 
 
-___
-
-## Tips
-If a component has conditional statements (using the ternary operator) which are repeated multiple times, it's good to replace them with a configuration structure. The example above shows how, by using the structure, it was possible to avoid multiple ternary statements which had the same condition but returned different things.
-
-```javascript 
-const seasonConfig = {
-    summer: {
-        text: 'Blazing hot!',
-        iconName: 'sun'
-    },
-    winter: {
-        text: 'Frosty!',
-        iconName: 'snowflake'
-    }
-};
-
-const getSeason = (lat, month) => {
-    if (month>2 && month<9){
-        return lat > 0 ? 'summer' : 'winter';
-    } else {
-        return lat > 0 ? 'winter' : 'summer';
-    }
-}
-
-const SeasonDisplay = props => {
-    const season = getSeason(props.lat, new Date().getMonth());
-    
-    // Single-line solution made possible by the configuration structure
-    const { text, iconName } = seasonConfig[season];
-    
-    // Bad approach with multiple ternary statements
-    const text = season === 'winter' ? 'Frosty!' : 'Blazing hot!'
-    const iconName = season === 'winter' ? 'snowflake' : 'sun'
-
-    return (
-        <div>
-            <i className={`${iconName} icon`} />    // Variable interpolation
-            <h1>{text}</h1>
-        </div>
-    );
-}
-```
-
-
-Conditional statements in the `render` method should be avoided because they make it harder to add or change JSX elements. A better way to go about that is by creating a helper method which houses the conditional statements, then calling it inside the `render` method, thus allowing the returned content from that helper method to be easily interacted with by new elements.
-
-```javascript
-renderContent() {
-    // Would need to add 3 <div> elements here to cover all the cases
-    if (...) {  // Condition 1
-        // Return 1
-    }
-    
-    if (...) {  // Condition 2
-        // Return 2
-    }
-    
-    // Return 3
-}
-
-render() {
-    return (
-        // Only need to add one <div> here to cover all the cases
-        <div className="border red">
-            {this.renderContent()}
-        </div>
-    );
-}
-```
-
 
 ___
-
-### Prevent refresh on form submit
-Forms refresh the page by default when they're submitted. This can be prevented by using `event.preventDefault()`.
-
-```javascript
-onFormSubmit(event) {
-    // Prevent default form behavior, which refreshes the page
-    event.preventDefault();
-}
-
-render() {
-    <form onSubmit={this.onFormSubmit}>
-        // Some code...
-    </form>
-}
-```
-
-
-___
-
-### The `this` keyword
-`this` in JS references a concrete instance of a class it's called from. When the callback in the above example is made, the `this` inside of the callback function becomes `undefined`, because the callback function implementation is taken from the instance and used on its own, thus losing the link needed to use `this`. One of the ways to fix this problem is by binding the callback function, then overwriting the current version of the function with the one that always has `this` bound to it. Another way to fix the problem is by turning the function into an arrow function, because arrow functions automatically bind the value of `this` for all the code inside the function. This makes it a good idea to always write callback functions as arrow functions, just to be safe.
-
-```javascript
-exampleMethod(event) {
-    // This causes an error if one of the fixes isn't applied!
-    console.log(this.state);
-}
-
-// Fix #1: Bind 'this' to the function
-constructor() {
-    this.exampleMethod = this.exampleMethod.bind(this);
-}
-
-// Fix #2: Convert the function into an arrow function
-exampleMethod = (event) => {
-    // This causes an error if one of the fixes isn't applied!
-    console.log(this.state);
-}
-
-render() {
-    <form onSubmit={this.exampleMethod}>
-        // Some code...
-    </form>
-    
-    // Fix #3: Wrap the function call with an arrow function
-    // The function is invoked, not referenced
-    // Note the presence of the parentheses v
-    <form onSubmit={() => this.exampleMethod()}>
-        // Some code...
-    </form>
-}
-```
-
-
-___
-
-### Map
-The `.map` method works on arrays and is passed a function which is applied to each element of an array, then used to generate a new array without mutating the original. The first argument that `map` returns is the currently selected element from the collection, while the second (optional) argument is the index of the element.
-
-```javascript
-// Let's say we want to take the 'numbers' array, multiplied by 10
-// We also want that to be a new array, without changing the original
-const numbers = [0, 1, 2, 3, 4]
-
-// numbers.map(function(num) {}) also works
-numbers.map((num) => {
-    return num * 10;
-});
-
-// Compact version, looks even nicer!
-numbers.map(num => num * 10);
-
-// Using index as the second argument
-numbers.map((num, index) => {
-    return num * 10 * index;
-});
-```
-
-
-If rendering items **from a list** (such as when using `map`), each element should have a `key` prop in order to allow **React** to see which elements are already in the DOM, so that they don't have to be rerendered if we're only putting in additional elements. Note that the `key` property should be given to the root tag that's being returned. A `key` should be a value which is consistent and unchanging between rerenders (such as the `id` property often coupled with data).
-
-```javascript
-    // Works but gives off a warning that the 'key' prop is missing
-    const images = props.images.map((image) => {
-        return <img src={image.urls.regular} />
-    });
-    
-    // No warning, has the 'key' prop
-    const images = props.images.map((image) => {
-        return <img key={image.id} src={image.urls.regular} />
-    });
-    
-    // Destructured and easy on the eyes, doesn't repeat 'image.' several times
-    const images = props.images.map(({ id, urls }) => {
-        return <img key={id} src={urls.regular} />
-    });
-```
-
-
-___
-
-### `React.Fragment` as a placeholder enveloping element 
-Sometimes we want to render multiple things which are already enveloped by a `<div>` inside the parent component, and we might not want to have the extra `<div>` enveloping the elements rendered inside the child element as well (like when borders are applied to `<div>` elements, to avoid double borders being drawn).
-
-`React.Fragment` can be used in place of a `<div>` in this scenario. Note that the `key` special prop can also be applied to these placeholders, in order to avoid warnings related to missing keys later on.
-
-```javascript
-<React.Fragment key={someKey}>
-    // Other JSX elements
-</React.Fragment>
-```
-
-
-___
-
-### Timers with `setTimeout`
-The `setTimeout` function accepts two arguments. The first argument is the function which is called once the timer expires, and the second argument is the duration of time. `setTimeout` also returns an identifier, which can be used by the `clearTimeout` function to prevent the timeout function from activating.
-
-```javascript
-// Print "Hello!" after 10 seconds
-setTimeout(() => console.log("Hello!"), 10000)
-```
-
-
-___
-
-### Array shortcuts [ES2015]
-The ES2015 syntax for taking all elements from an array is to use `...` before the array name.
-`[...oldArray, newElement]` would return a new array containing all the elements from `oldArray`, as well as the new element `newElement`.
-
-Elements can be filtered out of an array by using the `array.filter(filterFunction)` method. It takes a function which returns `true` if an element should be kept in the resulting array, or `false` if it should be discarded. The original array isn't modified, but a new one is returned instead.
-
-```javascript
-// Remove a name from an array and return the new array
-const removeName = (someArray, someName) => {
-    return someArray.filter(name => name !== someName);
-}
-```
-
-
-___
-
-### The `Lodash` library
-The `Lodash` library has many useful features, one of which is **memoizing** functions. Memoized versions of functions behave the exact same way as the originals, except that they only return one value per unique argument - repeated calls with the same argument don't invoke the function, but instead only return the result of the first call with that same argument. We can use this when working with functions which do API calls to only make one API request per ID, for instance (like when we're getting user data for a comment chain, where one user will probably have left many comments). `Lodash` is usually imported to an underscore variable (`_`).
-
-```javascript
-import _ from 'lodash';
-
-function exampleRequest(id) {
-    fetch(id);
-}
-
-const memoizedExampleRequest = _.memoize(exampleRequest);
-
-// All function calls will make a request - 5 calls
-exampleRequest(1);  // Call
-exampleRequest(1);  // Call
-exampleRequest(2);  // Call
-exampleRequest(2);  // Call
-exampleRequest(3);  // Call
-
-// Only one function call will be made per unique argument - 3 calls
-memoizedExampleRequest(1);  // Call
-memoizedExampleRequest(1);
-memoizedExampleRequest(2);  // Call
-memoizedExampleRequest(2);
-memoizedExampleRequest(3);  // Call
-```
-
-
-Another useful feature that `lodash` offers is the `chain` function, which lets us execute multiple functions with a given parameter one after another.
-
-```javascript
-export const fetchPostsAndUsers = () => async (dispatch, getState) => {
-    await dispatch(fetchPosts());
-    
-    // These two lines are one way of doing it (without 'chain')
-    const userIds = _.uniq(_.map(getState().posts, 'userId'));
-    userIds.forEach(id => dispatch(fetchUser(id)));
-    
-    // This is how to do it with 'chain'
-    _.chain(getState().posts)
-        .map('userId')
-        .uniq()
-        .forEach(id => dispatch(fetchUser(id)))
-        .value();  // <-- This executes the chained statements
-}
-```
-
-
-___
-### Google OAuth
-**Google OAuth** can be used to easily authenticate a user. To use **Google OAuth**, you must first add it as a script in the `index.html` file's `<header>`, similar to how the **Semantic-UI** is added.
-
-```javascript
-<script src="https://apis.google.com/js/api.js"></script>
-```
-
-
-The **OAuth** is then available for the application after making a new application on your Google Developer dashboard (available at [console.cloud.google.com](https://console.cloud.google.com/)) and setting up the *OAuth Consent Screen* and *Credentials*. You need to define the application URL (http://localhost:3000 for testing), the gmails of the users who will be able to test the app, as well as the scope of the user's information that your app will be getting (the email address alone is enough for just authentication, while the Google userId that's also provided helps with having unique IDs for users).
-
-```javascript
-import React from 'react';
-
-class GoogleAuth extends React.Component {
-    state = { isSignedIn: null };
-
-    componentDidMount() {
-        window.gapi.load('client:auth2', () => {
-            window.gapi.client.init({
-            // You get this from 'console.cloud.google.com/apis/credentials'
-            // OAuth 2.0 Client IDs, configure the OAuth Consent Screen first
-                clientId: 'YOUR_ID.apps.googleusercontent.com',
-                scope: 'email'
-            }).then(() => {
-                this.auth = window.gapi.auth2.getAuthInstance();
-                this.setState({ isSignedIn: this.auth.isSignedIn.get() });
-                this.auth.isSignedIn.listen(this.onAuthChange);
-            });
-        });
-    }
-
-    onAuthChange = () => {
-        this.setState({ isSignedIn: this.auth.isSignedIn.get() });
-    }
-
-    onSignInClick = () => { this.auth.signIn() }
-    onSignOutClick = () => { this.auth.signOut() }
-
-    renderAuthButton() {
-        if (this.state.isSignedIn === null) {
-            return null;
-        } else if (this.state.isSignedIn) {
-            return (
-                <button className="ui red google button" onClick={this.onSignOutClick}>
-                    <i className="google icon" />
-                    Sign Out
-                </button>
-            );
-        } else {
-            return (
-                <button className="ui red google button" onClick={this.onSignInClick}>
-                    <i className="google icon" />
-                    Sign In with Google
-                </button>
-            );
-        }
-    }
-
-    render() {
-        return (
-            <div>
-                {this.renderAuthButton()}
-            </div>
-        );
-    }
-}
-
-export default GoogleAuth;
-```
-
-
-
-___
-### Object key interpolation syntax
-If we have dynamic object keys (for example the element IDs), we can access them using the key interpolation syntax, which is similar to how arrays are indexed - using the brackets `[ ]`.
-
-```javascript
-// This is one approach to create a new object with one edited key - 3 lines
-const newState = { ...state };
-// Accessing a property using key interpolation
-newState[action.payload.id] = action.payload;
-return newState
-
-// ES2015 - One line that does the same thing as the 3 above
-return { ...state, [action.payload.id]: action.payload };
-```
-
-
-With **ES2015**, we can also access the property and create a new object in the same line, which is particularly useful when writing **Redux** reducers with multiple cases (also covered in this document).
-
-
-
-___
-### REST PUT behavior
-REST conventions are a standardized system for designing APIs. REST methods are:
-* `GET` - Returns some data from the server, used to load information
-* `POST` - Sends some data to the server, used to store information
-* `PUT` - Updates **ALL** properties of a record - if an existing property isn't received in the update, it's deleted (for some APIs, for others it's not, varies on a case-by-case basis)
-* `PATCH` - Updates **SOME** properties of a record - only those we send in the request
-* `DELETE` - Deletes a record from the server
-
-One should take care to check how the API they're sending `PUT` requests to behaves. Some perform like `PATCH` and replace only the properties that were sent, others remove all properties missing from the request altogether.
-
-
-
-___
-
 ## Redux
 **Redux** is a `state` management library. With **Redux**, rather than maintaining state inside a component, it's extracted into the Redux library. It makes creating complex applications easier, and it's not explicitly designed to work with **React**, and is thus used in other libraries, and there are ports of it for other languages as well. 
 
@@ -1255,6 +894,7 @@ export const fetchPostsAndUsers = () => async (dispatch, getState) => {
     userIds.forEach(id => dispatch(fetchUser(id)));
 }
 ```
+
 
 
 ___
@@ -1949,4 +1589,370 @@ class Button extends React.Component {
 
 
 
+___
+## Tips
+If a component has conditional statements (using the ternary operator) which are repeated multiple times, it's good to replace them with a configuration structure. The example above shows how, by using the structure, it was possible to avoid multiple ternary statements which had the same condition but returned different things.
 
+```javascript 
+const seasonConfig = {
+    summer: {
+        text: 'Blazing hot!',
+        iconName: 'sun'
+    },
+    winter: {
+        text: 'Frosty!',
+        iconName: 'snowflake'
+    }
+};
+
+const getSeason = (lat, month) => {
+    if (month>2 && month<9){
+        return lat > 0 ? 'summer' : 'winter';
+    } else {
+        return lat > 0 ? 'winter' : 'summer';
+    }
+}
+
+const SeasonDisplay = props => {
+    const season = getSeason(props.lat, new Date().getMonth());
+    
+    // Single-line solution made possible by the configuration structure
+    const { text, iconName } = seasonConfig[season];
+    
+    // Bad approach with multiple ternary statements
+    const text = season === 'winter' ? 'Frosty!' : 'Blazing hot!'
+    const iconName = season === 'winter' ? 'snowflake' : 'sun'
+
+    return (
+        <div>
+            <i className={`${iconName} icon`} />    // Variable interpolation
+            <h1>{text}</h1>
+        </div>
+    );
+}
+```
+
+
+Conditional statements in the `render` method should be avoided because they make it harder to add or change JSX elements. A better way to go about that is by creating a helper method which houses the conditional statements, then calling it inside the `render` method, thus allowing the returned content from that helper method to be easily interacted with by new elements.
+
+```javascript
+renderContent() {
+    // Would need to add 3 <div> elements here to cover all the cases
+    if (...) {  // Condition 1
+        // Return 1
+    }
+    
+    if (...) {  // Condition 2
+        // Return 2
+    }
+    
+    // Return 3
+}
+
+render() {
+    return (
+        // Only need to add one <div> here to cover all the cases
+        <div className="border red">
+            {this.renderContent()}
+        </div>
+    );
+}
+```
+
+
+
+___
+### Prevent refresh on form submit
+Forms refresh the page by default when they're submitted. This can be prevented by using `event.preventDefault()`.
+
+```javascript
+onFormSubmit(event) {
+    // Prevent default form behavior, which refreshes the page
+    event.preventDefault();
+}
+
+render() {
+    <form onSubmit={this.onFormSubmit}>
+        // Some code...
+    </form>
+}
+```
+
+
+
+___
+### The `this` keyword
+`this` in JS references a concrete instance of a class it's called from. When the callback in the above example is made, the `this` inside of the callback function becomes `undefined`, because the callback function implementation is taken from the instance and used on its own, thus losing the link needed to use `this`. One of the ways to fix this problem is by binding the callback function, then overwriting the current version of the function with the one that always has `this` bound to it. Another way to fix the problem is by turning the function into an arrow function, because arrow functions automatically bind the value of `this` for all the code inside the function. This makes it a good idea to always write callback functions as arrow functions, just to be safe.
+
+```javascript
+exampleMethod(event) {
+    // This causes an error if one of the fixes isn't applied!
+    console.log(this.state);
+}
+
+// Fix #1: Bind 'this' to the function
+constructor() {
+    this.exampleMethod = this.exampleMethod.bind(this);
+}
+
+// Fix #2: Convert the function into an arrow function
+exampleMethod = (event) => {
+    // This causes an error if one of the fixes isn't applied!
+    console.log(this.state);
+}
+
+render() {
+    <form onSubmit={this.exampleMethod}>
+        // Some code...
+    </form>
+    
+    // Fix #3: Wrap the function call with an arrow function
+    // The function is invoked, not referenced
+    // Note the presence of the parentheses v
+    <form onSubmit={() => this.exampleMethod()}>
+        // Some code...
+    </form>
+}
+```
+
+
+
+___
+### Map
+The `.map` method works on arrays and is passed a function which is applied to each element of an array, then used to generate a new array without mutating the original. The first argument that `map` returns is the currently selected element from the collection, while the second (optional) argument is the index of the element.
+
+```javascript
+// Let's say we want to take the 'numbers' array, multiplied by 10
+// We also want that to be a new array, without changing the original
+const numbers = [0, 1, 2, 3, 4]
+
+// numbers.map(function(num) {}) also works
+numbers.map((num) => {
+    return num * 10;
+});
+
+// Compact version, looks even nicer!
+numbers.map(num => num * 10);
+
+// Using index as the second argument
+numbers.map((num, index) => {
+    return num * 10 * index;
+});
+```
+
+
+If rendering items **from a list** (such as when using `map`), each element should have a `key` prop in order to allow **React** to see which elements are already in the DOM, so that they don't have to be rerendered if we're only putting in additional elements. Note that the `key` property should be given to the root tag that's being returned. A `key` should be a value which is consistent and unchanging between rerenders (such as the `id` property often coupled with data).
+
+```javascript
+    // Works but gives off a warning that the 'key' prop is missing
+    const images = props.images.map((image) => {
+        return <img src={image.urls.regular} />
+    });
+    
+    // No warning, has the 'key' prop
+    const images = props.images.map((image) => {
+        return <img key={image.id} src={image.urls.regular} />
+    });
+    
+    // Destructured and easy on the eyes, doesn't repeat 'image.' several times
+    const images = props.images.map(({ id, urls }) => {
+        return <img key={id} src={urls.regular} />
+    });
+```
+
+
+
+___
+### `React.Fragment` as a placeholder enveloping element 
+Sometimes we want to render multiple things which are already enveloped by a `<div>` inside the parent component, and we might not want to have the extra `<div>` enveloping the elements rendered inside the child element as well (like when borders are applied to `<div>` elements, to avoid double borders being drawn).
+
+`React.Fragment` can be used in place of a `<div>` in this scenario. Note that the `key` special prop can also be applied to these placeholders, in order to avoid warnings related to missing keys later on.
+
+```javascript
+<React.Fragment key={someKey}>
+    // Other JSX elements
+</React.Fragment>
+```
+
+
+
+___
+### Timers with `setTimeout`
+The `setTimeout` function accepts two arguments. The first argument is the function which is called once the timer expires, and the second argument is the duration of time. `setTimeout` also returns an identifier, which can be used by the `clearTimeout` function to prevent the timeout function from activating.
+
+```javascript
+// Print "Hello!" after 10 seconds
+setTimeout(() => console.log("Hello!"), 10000)
+```
+
+
+
+___
+### Array shortcuts [ES2015]
+The ES2015 syntax for taking all elements from an array is to use `...` before the array name.
+`[...oldArray, newElement]` would return a new array containing all the elements from `oldArray`, as well as the new element `newElement`.
+
+Elements can be filtered out of an array by using the `array.filter(filterFunction)` method. It takes a function which returns `true` if an element should be kept in the resulting array, or `false` if it should be discarded. The original array isn't modified, but a new one is returned instead.
+
+```javascript
+// Remove a name from an array and return the new array
+const removeName = (someArray, someName) => {
+    return someArray.filter(name => name !== someName);
+}
+```
+
+
+
+___
+### The `Lodash` library
+The `Lodash` library has many useful features, one of which is **memoizing** functions. Memoized versions of functions behave the exact same way as the originals, except that they only return one value per unique argument - repeated calls with the same argument don't invoke the function, but instead only return the result of the first call with that same argument. We can use this when working with functions which do API calls to only make one API request per ID, for instance (like when we're getting user data for a comment chain, where one user will probably have left many comments). `Lodash` is usually imported to an underscore variable (`_`).
+
+```javascript
+import _ from 'lodash';
+
+function exampleRequest(id) {
+    fetch(id);
+}
+
+const memoizedExampleRequest = _.memoize(exampleRequest);
+
+// All function calls will make a request - 5 calls
+exampleRequest(1);  // Call
+exampleRequest(1);  // Call
+exampleRequest(2);  // Call
+exampleRequest(2);  // Call
+exampleRequest(3);  // Call
+
+// Only one function call will be made per unique argument - 3 calls
+memoizedExampleRequest(1);  // Call
+memoizedExampleRequest(1);
+memoizedExampleRequest(2);  // Call
+memoizedExampleRequest(2);
+memoizedExampleRequest(3);  // Call
+```
+
+
+Another useful feature that `lodash` offers is the `chain` function, which lets us execute multiple functions with a given parameter one after another.
+
+```javascript
+export const fetchPostsAndUsers = () => async (dispatch, getState) => {
+    await dispatch(fetchPosts());
+    
+    // These two lines are one way of doing it (without 'chain')
+    const userIds = _.uniq(_.map(getState().posts, 'userId'));
+    userIds.forEach(id => dispatch(fetchUser(id)));
+    
+    // This is how to do it with 'chain'
+    _.chain(getState().posts)
+        .map('userId')
+        .uniq()
+        .forEach(id => dispatch(fetchUser(id)))
+        .value();  // <-- This executes the chained statements
+}
+```
+
+
+
+___
+### Google OAuth
+**Google OAuth** can be used to easily authenticate a user. To use **Google OAuth**, you must first add it as a script in the `index.html` file's `<header>`, similar to how the **Semantic-UI** is added.
+
+```javascript
+<script src="https://apis.google.com/js/api.js"></script>
+```
+
+
+The **OAuth** is then available for the application after making a new application on your Google Developer dashboard (available at [console.cloud.google.com](https://console.cloud.google.com/)) and setting up the *OAuth Consent Screen* and *Credentials*. You need to define the application URL (http://localhost:3000 for testing), the gmails of the users who will be able to test the app, as well as the scope of the user's information that your app will be getting (the email address alone is enough for just authentication, while the Google userId that's also provided helps with having unique IDs for users).
+
+```javascript
+import React from 'react';
+
+class GoogleAuth extends React.Component {
+    state = { isSignedIn: null };
+
+    componentDidMount() {
+        window.gapi.load('client:auth2', () => {
+            window.gapi.client.init({
+            // You get this from 'console.cloud.google.com/apis/credentials'
+            // OAuth 2.0 Client IDs, configure the OAuth Consent Screen first
+                clientId: 'YOUR_ID.apps.googleusercontent.com',
+                scope: 'email'
+            }).then(() => {
+                this.auth = window.gapi.auth2.getAuthInstance();
+                this.setState({ isSignedIn: this.auth.isSignedIn.get() });
+                this.auth.isSignedIn.listen(this.onAuthChange);
+            });
+        });
+    }
+
+    onAuthChange = () => {
+        this.setState({ isSignedIn: this.auth.isSignedIn.get() });
+    }
+
+    onSignInClick = () => { this.auth.signIn() }
+    onSignOutClick = () => { this.auth.signOut() }
+
+    renderAuthButton() {
+        if (this.state.isSignedIn === null) {
+            return null;
+        } else if (this.state.isSignedIn) {
+            return (
+                <button className="ui red google button" onClick={this.onSignOutClick}>
+                    <i className="google icon" />
+                    Sign Out
+                </button>
+            );
+        } else {
+            return (
+                <button className="ui red google button" onClick={this.onSignInClick}>
+                    <i className="google icon" />
+                    Sign In with Google
+                </button>
+            );
+        }
+    }
+
+    render() {
+        return (
+            <div>
+                {this.renderAuthButton()}
+            </div>
+        );
+    }
+}
+
+export default GoogleAuth;
+```
+
+
+
+___
+### Object key interpolation syntax
+If we have dynamic object keys (for example the element IDs), we can access them using the key interpolation syntax, which is similar to how arrays are indexed - using the brackets `[ ]`.
+
+```javascript
+// This is one approach to create a new object with one edited key - 3 lines
+const newState = { ...state };
+// Accessing a property using key interpolation
+newState[action.payload.id] = action.payload;
+return newState
+
+// ES2015 - One line that does the same thing as the 3 above
+return { ...state, [action.payload.id]: action.payload };
+```
+
+
+With **ES2015**, we can also access the property and create a new object in the same line, which is particularly useful when writing **Redux** reducers with multiple cases (also covered in this document).
+
+
+
+___
+### REST PUT behavior
+REST conventions are a standardized system for designing APIs. REST methods are:
+* `GET` - Returns some data from the server, used to load information
+* `POST` - Sends some data to the server, used to store information
+* `PUT` - Updates **ALL** properties of a record - if an existing property isn't received in the update, it's deleted (for some APIs, for others it's not, varies on a case-by-case basis)
+* `PATCH` - Updates **SOME** properties of a record - only those we send in the request
+* `DELETE` - Deletes a record from the server
+
+One should take care to check how the API they're sending `PUT` requests to behaves. Some perform like `PATCH` and replace only the properties that were sent, others remove all properties missing from the request altogether.
